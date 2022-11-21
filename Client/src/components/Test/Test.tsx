@@ -17,8 +17,8 @@ const Test = () => {
          <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
             {loading && !error ? <h1>Cargando...</h1>
                : error ? <h1>Error: {error}</h1>
-                  : allData?.map(e =>
-                     <div>
+                  : allData?.map((e, i) =>
+                     <div key={i + 1}>
                      <TestCard
                         key={e.id}
                         title={e.title}
