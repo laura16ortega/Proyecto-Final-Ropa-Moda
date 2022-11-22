@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^5.13.15",
+    "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "name": "api",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
