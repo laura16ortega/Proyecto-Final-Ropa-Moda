@@ -29,7 +29,7 @@ export const Navbar = () => {
                         }}
                         color='inherit'
                         >
-                        Home
+                        Homee
                         </Button>
 
                         <Button 
