@@ -4,3 +4,8 @@
   box-sizing: border-box;
   font-family: "Roboto";
 }
+
+@font-face {
+  font-family: "New-Grotesk-Square";
+  src: url("./assets/fonts/NewGroteskSquare.ttf");
+}
