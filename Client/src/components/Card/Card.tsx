@@ -1,4 +1,4 @@
-import { Grid, Paper, Box, Typography, Button } from "@mui/material";
+import { Grid, Paper, Box, Typography, Button, Link } from "@mui/material";
 import s from "./Card.module.css";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
@@ -11,7 +11,6 @@ import {
   increaseGeneralQuantity,
   decreaseGeneralQuantity,
 } from "../../redux/slices/testSlice";
-import { Link } from "react-router-dom";
 
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
@@ -65,7 +64,7 @@ const Card = ({ product }: productProps) => {
           }}
         >
           {/* Special tags: limited edition, best seller, low calories, etc */}
-          <Link to={`/home/${product.id}`}>
+          <Link href={`/home/${product.id}`}>
             <Box>
               <img
                 src={product.image}
