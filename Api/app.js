@@ -1,4 +1,6 @@
 const express = require("express");
+
+const productRouter = require("./routes/productRoutes");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -6,6 +8,7 @@ const {auth} = require("express-openid-connect");
 const { config } = require("./services/authServices");
 const cookieParser = require("cookie-parser");
 require('./services/googleAuthServices');
+
 
 const app = express();
 
@@ -25,6 +28,8 @@ app.use((req, res, next) => {
   next();
 });
 
+//ROUTES
+app.use("/api/v1/products", productRouter); //middleware
+// app.use("/api/v1/users", userRouter); //middleware
 app.use(express.static(`${__dirname}/public`));
-
 module.exports = app;
