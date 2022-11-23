@@ -15,6 +15,11 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Copyright(props: any) {
+
+
+
+
+
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -28,6 +33,8 @@ function Copyright(props: any) {
 }
 
 const theme = createTheme();
+
+
 
 export default function SignInSide() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -79,7 +86,7 @@ export default function SignInSide() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -89,14 +96,14 @@ export default function SignInSide() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Contraseña"
                 type="password"
                 id="password"
                 autoComplete="current-password"
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                label="Recordarme"
               />
               <Button
                 type="submit"
@@ -114,7 +121,7 @@ export default function SignInSide() {
                 </Grid>
                 <Grid item>
                   <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                    {"Aun no tienes una cuenta? Registrate"}
                   </Link>
                 </Grid>
               </Grid>
