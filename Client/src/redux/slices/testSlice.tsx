@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { fetchingTest, testApiCall } from "../thunk-actions/testActions"
+import { fetchingTest, testApiCall, mappedDataType } from "../thunk-actions/testActions"
 
 type InitialState = {
    loading: boolean,
    error: null | string,
-   allData: null | testApiCall[]
+   allData: null | mappedDataType[]
 }
 
 const initialState = {
@@ -17,25 +17,28 @@ export const testSlice = createSlice({
    name: "test",
    initialState,
    reducers: {
-      /*
-          - - - Ejemplo de sintaxis - - -
-
-          searchByName: (state, action: PayloadAction<string>) => {
-              const filteredName = state.dataBackup && state.dataBackup.filter(e => e.title.toLowerCase().includes(action.payload.toLowerCase()))
-              return {
-                  ...state,
-                  allData: filteredName
-              }
-          },
-
-      */
+     increaseGeneralQuantity: (state, action: PayloadAction<number>) => {
+      const findProduct = state.allData && state.allData.find(e => e.id === action.payload)
+      if (findProduct) findProduct.quantity = findProduct.quantity + 1
+     },
+     decreaseGeneralQuantity: (state, action: PayloadAction<number>) => {
+      const findProduct = state.allData && state.allData.find(e => e.id === action.payload)
+      if (findProduct) {
+         findProduct.quantity = findProduct.quantity - 1
+         if (findProduct.quantity <= 0) findProduct.quantity = 0
+      }
+     },
+     clearGeneralQuantity: (state, action: PayloadAction<number>) => {
+      const findProduct = state.allData && state.allData.find(e => e.id === action.payload)
+      if (findProduct) findProduct.quantity = 0
+     },
    },
    extraReducers(builder) {
       builder
          .addCase(fetchingTest.pending, (state, action) => {
             state.loading = true
          })
-         .addCase(fetchingTest.fulfilled, (state, action: PayloadAction<testApiCall[]>) => {
+         .addCase(fetchingTest.fulfilled, (state, action: PayloadAction<mappedDataType[]>) => {
             state.loading = false
             state.allData = action.payload
          })
@@ -46,6 +49,5 @@ export const testSlice = createSlice({
    },
 })
 
-// export const { searchByName } = testSlice.actions
-
+export const { increaseGeneralQuantity, decreaseGeneralQuantity, clearGeneralQuantity } = testSlice.actions
 export default testSlice.reducer

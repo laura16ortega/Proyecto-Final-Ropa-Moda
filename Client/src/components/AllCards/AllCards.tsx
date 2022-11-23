@@ -11,16 +11,17 @@ const AllCards = () => {
    const { allData, error, loading } = useAppSelector(state => state.data)
    const dispatch = useAppDispatch()
 
-
-
-
-
    useEffect(() => {
+      if (!allData?.length) {
       dispatch(fetchingTest())
+      }
    }, [dispatch])
 
    return (
       <Container maxWidth={"xl"} sx={{ marginBottom: 5 }}>
+         <Link to="/cart">
+            cart
+         </Link>
          <Grid container spacing={1.5}>
             {loading && !error ? <h1>Loading</h1>
                : error ? <h1>Error: {error}</h1>
