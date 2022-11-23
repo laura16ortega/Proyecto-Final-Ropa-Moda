@@ -2,15 +2,15 @@ import { Container, Box, Button, Grid, Typography } from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../assets/hooks'
 import s from "./Cart.module.css"
 import paypalImg from "../../assets/images/paypal.png"
 import { increaseCartQuantity, decreaseCartQuantity, removeCartItem } from '../../redux/slices/cartSlice'
 import { increaseGeneralQuantity, decreaseGeneralQuantity, clearGeneralQuantity } from '../../redux/slices/testSlice';
-
+import Paypal from '../../components/Paypal/Paypal';
 const Cart = () => {
-
+    const [openPaypal, setOpenPaypal] = useState(false);
     const dispatch = useAppDispatch()
     const { cart, cartLoading, cartError } = useAppSelector(state => state.cart)
 
@@ -124,8 +124,8 @@ const Cart = () => {
                                         <Grid item md={4} xs={12}>
                                             <Box sx={{ padding: "2.5rem", backgroundColor: "rgb(245, 245, 245, 245)", textAlign: "left" }}>
                                                 <Box sx={{ marginBottom: "2rem" }}>
-                                                    <Typography variant='h4' className={s.orderSummary}>
-                                                        resumen de compra
+                                                    <Typography variant='h4' className={s.orderSummary} >
+                                                        Resumen de compra
                                                     </Typography>
                                                     {/*<h2 style={{ letterSpacing: "0.2em", lineHeight: "1.2", marginBottom: "2rem" }}>ORDER SUMMARY</h2>*/}
                                                 </Box>
@@ -155,20 +155,25 @@ const Cart = () => {
                                                         <p style={{ letterSpacing: "0.1em", lineHeight: 1.6 }}>125.45</p>*/}
                                                     </Box>
                                                     <Box sx={{ marginTop: "1.5rem", marginBottom: "2.5rem" }}>
-                                                        <Button variant="contained" disableElevation className={s.addButton}>
+                                                        <Button variant="contained" disableElevation className={s.addButton} >
                                                             Checkout
                                                         </Button>
-                                                        <Button variant='contained' disableElevation className={s.paypalButton}>
+                                                        <Button variant='contained' disableElevation className={s.paypalButton} onClick={() => {setOpenPaypal(!openPaypal)}}>
                                                             <span style={{ display: "flex", alignItems: "center" }}>
                                                                 <span>Checkout with</span>
                                                                 <img src={paypalImg} alt="" style={{ height: "1.25rem", marginLeft: "0.5rem" }} />
                                                             </span>
                                                         </Button>
+                                                        {openPaypal ? <div style={{marginTop:"1rem",height:"220px",width:"300px", overflow:"hidden"}}>
+                                                        <Paypal value={subTotalPrice} />
+                                                        </div> : <div></div>
+                                                        }
                                                     </Box>
                                                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                                                         <Typography variant='subtitle1' sx={{display: "flex"}}>
                                                             ¿Necesitas ayuda? Contáctanos
                                                         </Typography>
+
                                                     </Box>
                                                 </Box>
                                             </Box>
