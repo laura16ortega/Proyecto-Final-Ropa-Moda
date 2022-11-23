@@ -61,7 +61,7 @@ export default function Footer () {
                     </Grid>
                 </Grid>
                 <Box textAlign="center" pt={{xs: 5, sm: 10}} pb={{xs: 5, sm:0}}>
-                    Proyecto Final Ropa/Moda &reg; {new Date().getFullYear()}
+                     Ropa/Moda &reg; {new Date().getFullYear()}
                 </Box>
             </Container>
         </Box>
