@@ -2,7 +2,7 @@ import { Container, Box, Button, Grid, Typography } from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../assets/hooks'
 import s from "./Cart.module.css"
 import paypalImg from "../../assets/images/paypal.png"
@@ -63,10 +63,9 @@ const Cart = () => {
                                 </div>*/}
                             </Box>
                         </Box>
-
                         :
                         <Container maxWidth={'lg'}>
-                            <Box sx={{ paddingTop: "5rem" }}>
+                            <Box sx={{ paddingY: "5rem" }}>
                                 <Box sx={{ padding: "1rem", marginBottom: "2rem", marginLeft: "auto", marginRight: "auto", maxWidth: "72rem", fontSize: ".875rem", backgroundColor: "rgb(245,245,245)", textAlign: "left" }}>
                                     <Typography variant='subtitle2'>
                                         Los pedidos se realizan dentro de las 48 horas, de lunes a viernes. El minimo orden de pedido es $algo.
