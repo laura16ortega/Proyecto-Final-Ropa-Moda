@@ -16,25 +16,21 @@ export const Navbar = () => {
         window.location.href = '/'
       }, 500)
     }
-
     return (
-        <div>
-            <AppBar position='static'>
+      <div>
+<AppBar position='static'>
                 <Toolbar>
-                    <IconButton size='large' edge='start' color='inherit' aria-label='logo'>
+                <IconButton size='large' edge='start' color='inherit' aria-label='logo'>
                         <CheckroomIcon />
                     </IconButton>
                     <Typography variant='h6' component='div' sx={{ flexGrow: 1}}>
                         Moda
                     </Typography>
                     <Stack direction='row' spacing={2}>
-
-                       {/* <Search /> */}
-                        <Button 
+                    <Button 
                         component={NavLink}
                         to="/"
                         sx={{
-                            
                             textTransform: "none",
                           '&.active': {
                             background:'black',
@@ -44,7 +40,6 @@ export const Navbar = () => {
                         >
                         Home
                         </Button>
-
                         <Button 
                         component={NavLink}
                         to="/categorias"
@@ -73,8 +68,6 @@ export const Navbar = () => {
                         >
                         Ingresar
                         </Button> : <div></div> }
-                        {/* <UserNavBtns /> */}
-
 
                 {
                   window.localStorage.getItem('jwt') ? 
