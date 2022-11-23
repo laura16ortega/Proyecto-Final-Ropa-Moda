@@ -1,18 +1,28 @@
-import { Container, Box, Button, Grid, Typography } from '@mui/material'
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../assets/hooks'
-import s from "./Cart.module.css"
-import paypalImg from "../../assets/images/paypal.png"
-import { increaseCartQuantity, decreaseCartQuantity, removeCartItem } from '../../redux/slices/cartSlice'
-import { increaseGeneralQuantity, decreaseGeneralQuantity, clearGeneralQuantity } from '../../redux/slices/testSlice';
-import Paypal from '../../components/Paypal/Paypal';
+import { Container, Box, Button, Grid, Typography } from "@mui/material";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../assets/hooks";
+import s from "./Cart.module.css";
+import paypalImg from "../../assets/images/paypal.png";
+import {
+  increaseCartQuantity,
+  decreaseCartQuantity,
+  removeCartItem,
+} from "../../redux/slices/cartSlice";
+import {
+  increaseGeneralQuantity,
+  decreaseGeneralQuantity,
+  clearGeneralQuantity,
+} from "../../redux/slices/testSlice";
+import Paypal from "../../components/Paypal/Paypal";
 const Cart = () => {
-    const [openPaypal, setOpenPaypal] = useState(false);
-    const dispatch = useAppDispatch()
-    const { cart, cartLoading, cartError } = useAppSelector(state => state.cart)
+  const [openPaypal, setOpenPaypal] = useState(false);
+  const dispatch = useAppDispatch();
+  const { cart, cartLoading, cartError } = useAppSelector(
+    (state) => state.cart
+  );
 
   const subTotalPrice = cart?.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -108,62 +118,148 @@ const Cart = () => {
                     </Typography>
                     {/*<h2>Carro</h2>
                                                 <p style={{ marginLeft: "1rem" }}>{`${cart.length} items`}</p>*/}
-                                            </Box>
-                                            <Box sx={{ marginTop: "2.5rem" }}>
-                                                {cart?.map((e, i) =>
-                                                    <Box key={i + 1} className={s.productsContainer}>
-                                                        <Box sx={{ display: "flex", /*justifyContent: "space-between",*/ alignItems: "center" }}>
-                                                            <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
-                                                                <img src={e.image} alt="" className={s.productImage} />
-                                                            </Box>
-                                                            <Box sx={{ flex: 1 }}>
-                                                                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem", textAlign: "left" }}>
-                                                                    <Typography variant="h6" className={s.productName}>
-                                                                        {e.title} {/*<h2>{e.title}</h2>*/}
-                                                                    </Typography>
-                                                                    <Typography variant="subtitle1">
-                                                                        {`$${e.price}`} {/*<span>{`$${e.price}`}</span>*/}
-                                                                    </Typography>
-                                                                </Box>
-                                                                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                                                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                                                        <Button disableElevation className={s.counterButton} onClick={() => handleDecreaseCart(e.id)}>
-                                                                            <RemoveIcon sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px" }} />
-                                                                        </Button>
-                                                                        <h2 style={{ marginRight: "1rem", marginLeft: "1rem" }}>{e.quantity}</h2>
-                                                                        <Button disableElevation className={s.counterButton} onClick={() => handleIncreaseCart(e.id)}>
-                                                                            <AddIcon sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px" }} />
-                                                                        </Button>
-                                                                    </Box>
-                                                                    <Button onClick={() => handleDelete(e.id)} className={s.deleteIcon}>
-                                                                        <DeleteIcon />
-                                                                    </Button>
-                                                                </Box>
-                                                            </Box>
-                                                        </Box>
-                                                    </Box>
-                                                )}
-                                            </Box>
-                                        </Grid>
-                                        <Grid item md={4} xs={12}>
-                                            <Box sx={{ padding: "2.5rem", backgroundColor: "rgb(245, 245, 245, 245)", textAlign: "left" }}>
-                                                <Box sx={{ marginBottom: "2rem" }}>
-                                                    <Typography variant='h4' className={s.orderSummary} >
-                                                        Resumen de compra
-                                                    </Typography>
-                                                    {/*<h2 style={{ letterSpacing: "0.2em", lineHeight: "1.2", marginBottom: "2rem" }}>ORDER SUMMARY</h2>*/}
-                                                </Box>
-                                                <Box>
-                                                    <Box sx={{ marginBottom: "1.25rem" }}>
-                                                        {priceData.map((e, i) =>
-                                                            <Box key={i + 1} className={s.pricesContainer}>
-                                                                <Typography variant='subtitle1' sx={{ letterSpacing: "0.1em", lineHeight: 1.6, color: "black" }}>
-                                                                    {e.title}
-                                                                </Typography>
-                                                                <Typography variant='subtitle1' sx={{ letterSpacing: "0.1em", lineHeight: 1.6, color: "#333333" }}>
-                                                                    {e.price && e.price <= 0 ? "-" : `$${e.price}`}
-                                                                </Typography>
-                                                                {/*<p style={{ letterSpacing: "0.2em", lineHeight: 1.6 }}>{e.title}</p>
+                  </Box>
+                  <Box sx={{ marginTop: "2.5rem" }}>
+                    {cart?.map((e, i) => (
+                      <Box key={i + 1} className={s.productsContainer}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            /*justifyContent: "space-between",*/ alignItems:
+                              "center",
+                          }}
+                        >
+                          <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
+                            <img
+                              src={e.image}
+                              alt=""
+                              className={s.productImage}
+                            />
+                          </Box>
+                          <Box sx={{ flex: 1 }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                marginBottom: "1rem",
+                                textAlign: "left",
+                              }}
+                            >
+                              <Typography
+                                variant="h6"
+                                className={s.productName}
+                              >
+                                {e.title} {/*<h2>{e.title}</h2>*/}
+                              </Typography>
+                              <Typography variant="subtitle1">
+                                {`$${e.price}`}{" "}
+                                {/*<span>{`$${e.price}`}</span>*/}
+                              </Typography>
+                            </Box>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <Button
+                                  disableElevation
+                                  className={s.counterButton}
+                                  onClick={() => handleDecreaseCart(e.id)}
+                                >
+                                  <RemoveIcon
+                                    sx={{
+                                      color: "rgb(17, 17, 17)",
+                                      height: "100%",
+                                      width: "100%",
+                                      padding: "2px",
+                                    }}
+                                  />
+                                </Button>
+                                <h2
+                                  style={{
+                                    marginRight: "1rem",
+                                    marginLeft: "1rem",
+                                  }}
+                                >
+                                  {e.quantity}
+                                </h2>
+                                <Button
+                                  disableElevation
+                                  className={s.counterButton}
+                                  onClick={() => handleIncreaseCart(e.id)}
+                                >
+                                  <AddIcon
+                                    sx={{
+                                      color: "rgb(17, 17, 17)",
+                                      height: "100%",
+                                      width: "100%",
+                                      padding: "2px",
+                                    }}
+                                  />
+                                </Button>
+                              </Box>
+                              <Button
+                                onClick={() => handleDelete(e.id)}
+                                className={s.deleteIcon}
+                              >
+                                <DeleteIcon />
+                              </Button>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                    ))}
+                  </Box>
+                </Grid>
+                <Grid item md={4} xs={12}>
+                  <Box
+                    sx={{
+                      padding: "2.5rem",
+                      backgroundColor: "rgb(245, 245, 245, 245)",
+                      textAlign: "left",
+                    }}
+                  >
+                    <Box sx={{ marginBottom: "2rem" }}>
+                      <Typography variant="h4" className={s.orderSummary}>
+                        Resumen de compra
+                      </Typography>
+                      {/*<h2 style={{ letterSpacing: "0.2em", lineHeight: "1.2", marginBottom: "2rem" }}>ORDER SUMMARY</h2>*/}
+                    </Box>
+                    <Box>
+                      <Box sx={{ marginBottom: "1.25rem" }}>
+                        {priceData.map((e, i) => (
+                          <Box key={i + 1} className={s.pricesContainer}>
+                            <Typography
+                              variant="subtitle1"
+                              sx={{
+                                letterSpacing: "0.1em",
+                                lineHeight: 1.6,
+                                color: "black",
+                              }}
+                            >
+                              {e.title}
+                            </Typography>
+                            <Typography
+                              variant="subtitle1"
+                              sx={{
+                                letterSpacing: "0.1em",
+                                lineHeight: 1.6,
+                                color: "#333333",
+                              }}
+                            >
+                              {e.price && e.price <= 0 ? "-" : `$${e.price}`}
+                            </Typography>
+                            {/*<p style={{ letterSpacing: "0.2em", lineHeight: 1.6 }}>{e.title}</p>
                                                                 <p style={{ letterSpacing: "0.2em", lineHeight: 1.6 }}>{e.price <= 0 ? "-" : e.price}</p>*/}
                           </Box>
                         ))}
@@ -202,31 +298,69 @@ const Cart = () => {
                         </Typography>
                         {/*<p style={{ letterSpacing: "0.1em", lineHeight: 1.6 }}>Total</p>
                                                         <p style={{ letterSpacing: "0.1em", lineHeight: 1.6 }}>125.45</p>*/}
-                                                    </Box>
-                                                    <Box sx={{ marginTop: "1.5rem", marginBottom: "2.5rem" }}>
-                                                        <Button variant="contained" disableElevation className={s.addButton} >
-                                                            Checkout
-                                                        </Button>
-                                                        <Button variant='contained' disableElevation className={s.paypalButton} onClick={() => {setOpenPaypal(!openPaypal)}}>
-                                                            <span style={{ display: "flex", alignItems: "center" }}>
-                                                                <span>Checkout with</span>
-                                                                <img src={paypalImg} alt="" style={{ height: "1.25rem", marginLeft: "0.5rem" }} />
-                                                            </span>
-                                                        </Button>
-                                                        {openPaypal ? <div style={{marginTop:"1rem",height:"220px",width:"300px", overflow:"hidden"}}>
-                                                        <Paypal value={subTotalPrice} />
-                                                        </div> : <div></div>
-                                                        }
-                                                    </Box>
-                                                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                                        <Typography variant='subtitle1' sx={{display: "flex"}}>
-                                                            ¿Necesitas ayuda? Contáctanos
-                                                        </Typography>
-
-                                                    </Box>
-                                                </Box>
-                                            </Box>
-                                            {/*<div>
+                      </Box>
+                      <Box sx={{ marginTop: "1.5rem", marginBottom: "2.5rem" }}>
+                        <Button
+                          variant="contained"
+                          disableElevation
+                          className={s.addButton}
+                        >
+                          Checkout
+                        </Button>
+                        <Button
+                          variant="contained"
+                          disableElevation
+                          className={s.paypalButton}
+                          onClick={() => {
+                            setOpenPaypal(!openPaypal);
+                          }}
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <span>Checkout with</span>
+                            <img
+                              src={paypalImg}
+                              alt=""
+                              style={{
+                                height: "1.25rem",
+                                marginLeft: "0.5rem",
+                              }}
+                            />
+                          </span>
+                        </Button>
+                        {openPaypal ? (
+                          <div
+                            style={{
+                              marginTop: "1rem",
+                              height: "220px",
+                              width: "300px",
+                              overflow: "hidden",
+                            }}
+                          >
+                            <Paypal value={subTotalPrice} />
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ display: "flex" }}
+                        >
+                          ¿Necesitas ayuda? Contáctanos
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                  {/*<div>
                                                 Accepted cards
                                             </div>*/}
                 </Grid>
