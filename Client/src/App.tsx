@@ -1,11 +1,13 @@
-import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import './App.css';
+import Cart from './pages/Cart/Cart';
 import Search from "./components/Search/Search";
-import "./App.css";
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
 import SignInSide from "./pages/Login/SignInSide";
 import DetailCard from "./components/DetailCard/DetailCard";
+
 
 function App() {
   return (
