@@ -14,8 +14,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { Alert } from '@mui/material';
 
 
 
@@ -37,7 +37,23 @@ const theme = createTheme();
 
 
 export default function SignInSide() {
-  const dispatch = useDispatch();
+
+  const LoginUser = async (user: any) => {
+    try{
+      const response = await axios.post(`http://localhost:3001/api/auth/login`, user);
+      if(response){ 
+        alert('Logueado')
+        window.localStorage.setItem('jwt', response.data.loginData.token)
+        console.log(window.localStorage.getItem('jwt'))
+        setTimeout(() => {
+          window.location.href = '/'
+        },500)
+    }
+    }catch{
+      return alert('Email o contraseña erroneos');
+    }
+  }
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,19 +62,7 @@ export default function SignInSide() {
       "email":data.get('email'),
       "password":data.get('password')
     }
-    const response = await axios.post(`http://localhost:3001/api/auth/login`, user);
-    
-    if(response){ alert('logged in')
-  }else{
-    alert('wrong password or email')
-  }
-    
-   /*  console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    }); */
-
-
+    return LoginUser(user)
   };
 
   return (

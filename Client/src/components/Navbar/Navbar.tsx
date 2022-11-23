@@ -6,8 +6,16 @@ import PersonIcon from '@mui/icons-material/Person';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Search from "../Search/Search";
-import UserNavBtns from "../UserNavBtns/UserNavBtns";
+import { useEffect} from 'react';
+
 export const Navbar = () => {
+    const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault()
+      window.localStorage.removeItem('jwt')
+      setTimeout(() => {
+        window.location.href = '/'
+      }, 500)
+    }
 
     return (
         <div>
@@ -50,7 +58,8 @@ export const Navbar = () => {
                         >
                         Categorias
                         </Button>
-
+                        {
+                          !localStorage.getItem('jwt') ? 
                         <Button 
                         component={NavLink}
                         to="/login"
@@ -63,20 +72,31 @@ export const Navbar = () => {
                         color='inherit'
                         >
                         Ingresar
-                        </Button>
+                        </Button> : <div></div> }
                         {/* <UserNavBtns /> */}
-                        <IconButton  size='large' edge='start' color='inherit' aria-label='logo'>
-                    <PersonIcon />
-                </IconButton>
+
+
+                {
+                  window.localStorage.getItem('jwt') ? 
+                  <>
                 <IconButton  size='large' edge='start' color='inherit' aria-label='logo'>
-                    <ShoppingCartIcon />
+                  <PersonIcon />
                 </IconButton>
                 <IconButton  size='large' edge='start' color='inherit' aria-label='logo'>
                     <SettingsApplicationsIcon />
                 </IconButton>
+                </> : <div> </div>
+                }
                 <IconButton  size='large' edge='start' color='inherit' aria-label='logo'>
-                    <LogoutIcon />
+                    <ShoppingCartIcon />
                 </IconButton>
+
+                {
+                  window.localStorage.getItem('jwt') ?
+                <IconButton  size='large' edge='start' color='inherit' aria-label='logo' onClick={handleLogout}>
+                    <LogoutIcon />
+                </IconButton> : <div></div>
+                }
 
                     </Stack>
                 </Toolbar>
