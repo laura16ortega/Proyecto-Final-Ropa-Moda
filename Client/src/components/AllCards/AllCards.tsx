@@ -3,17 +3,23 @@ import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import { fetchingTest } from "../../redux/thunk-actions/testActions";
 import Card from "../Card/Card";
 import { Container, Grid, Box, Typography } from "@mui/material";
+import { Link } from 'react-router-dom';
 
 const AllCards = () => {
-  const { allData, error, loading } = useAppSelector((state) => state.data);
-  const dispatch = useAppDispatch();
+   const { allData, error, loading } = useAppSelector(state => state.data)
+   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    dispatch(fetchingTest());
-  }, [dispatch]);
+   useEffect(() => {
+      if (!allData?.length) {
+      dispatch(fetchingTest())
+      }
+   }, [dispatch])
 
-  return (
-    <Container maxWidth={"xl"} sx={{ marginBottom: 5 }}>
+   return (
+      <Container maxWidth={"xl"} sx={{ marginBottom: 5 }}>
+         <Link to="/cart">
+            cart
+         </Link>
       <Grid container spacing={1.5}>
         {loading && !error ? (
           <h1>Loading</h1>
