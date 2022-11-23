@@ -14,12 +14,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+
+
+
 function Copyright(props: any) {
-
-
-
-
-
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -37,13 +37,28 @@ const theme = createTheme();
 
 
 export default function SignInSide() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const user = {
+      "email":data.get('email'),
+      "password":data.get('password')
+    }
+    const response = await axios.post(`http://localhost:3001/api/auth/login`, user);
+    
+    if(response){ alert('logged in')
+  }else{
+    alert('wrong password or email')
+  }
+    
+   /*  console.log({
       email: data.get('email'),
       password: data.get('password'),
-    });
+    }); */
+
+
   };
 
   return (
@@ -78,7 +93,7 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Ingresar
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
