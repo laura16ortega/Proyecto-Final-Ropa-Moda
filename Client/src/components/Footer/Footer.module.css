@@ -2,7 +2,6 @@
 
 .body {
   width: 100%;
-  line-height: 1.5;
   font-family: "Poppins", sans-serif;
 }
 
@@ -14,7 +13,7 @@
 
 .row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 ul {
