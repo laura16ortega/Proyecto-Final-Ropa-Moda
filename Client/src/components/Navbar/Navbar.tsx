@@ -6,9 +6,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Search from "../Search/Search";
+import LoginIcon from '@mui/icons-material/Login';
 import { useEffect} from 'react';
 
 export const Navbar = () => {
+
     const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault()
       window.localStorage.removeItem('jwt')
@@ -20,10 +22,11 @@ export const Navbar = () => {
       <div>
 <AppBar position='static'>
                 <Toolbar>
-                <IconButton size='large' edge='start' color='inherit' aria-label='logo'>
+                  <Search />
+{/*                 <IconButton size='large' edge='start' color='inherit' aria-label='logo'>
                         <CheckroomIcon />
-                    </IconButton>
-                    <Typography variant='h6' component='div' sx={{ flexGrow: 1}}>
+                    </IconButton> */}
+                    <Typography variant='h6'  sx={{ flexGrow: 1}}>
                         Moda
                     </Typography>
                     <Stack direction='row' spacing={2}>
@@ -55,7 +58,7 @@ export const Navbar = () => {
                         </Button>
                         {
                           !localStorage.getItem('jwt') ? 
-                        <Button 
+/*                         <Button 
                         component={NavLink}
                         to="/login"
                         sx={{
@@ -67,12 +70,14 @@ export const Navbar = () => {
                         color='inherit'
                         >
                         Ingresar
-                        </Button> : <div></div> }
+                        </Button> */                 <IconButton  size='large' edge='start' color='inherit' aria-label='logo' onClick={() => { window.location.href = '/login'}}>
+                    <LoginIcon />
+                </IconButton> : <div></div> }
 
                 {
                   window.localStorage.getItem('jwt') ? 
                   <>
-                <IconButton  size='large' edge='start' color='inherit' aria-label='logo'>
+                <IconButton  size='large' edge='start' color='inherit' aria-label='logo' onClick={() => { window.location.href = '/profile'}}>
                   <PersonIcon />
                 </IconButton>
                 <IconButton  size='large' edge='start' color='inherit' aria-label='logo'>
@@ -80,7 +85,8 @@ export const Navbar = () => {
                 </IconButton>
                 </> : <div> </div>
                 }
-                <IconButton  size='large' edge='start' color='inherit' aria-label='logo'>
+                <IconButton component={NavLink}
+                        to="/cart" size='large' edge='start' color='inherit' aria-label='logo'>
                     <ShoppingCartIcon />
                 </IconButton>
 
