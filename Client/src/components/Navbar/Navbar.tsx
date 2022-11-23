@@ -1,7 +1,8 @@
 import { AppBar, Toolbar, IconButton, Typography, Stack, Button } from "@mui/material";
 import CheckroomIcon from '@mui/icons-material/Checkroom';
-import { NavLink } from 'react-router-dom';
-
+import { NavLink, UNSAFE_RouteContext } from 'react-router-dom';
+import Search from "../Search/Search";
+import UserNavBtns from "../UserNavBtns/UserNavBtns";
 export const Navbar = () => {
 
     return (
@@ -16,7 +17,7 @@ export const Navbar = () => {
                     </Typography>
                     <Stack direction='row' spacing={2}>
 
-                       
+                       {/* <Search /> */}
                         <Button 
                         component={NavLink}
                         to="/"
@@ -29,7 +30,7 @@ export const Navbar = () => {
                         }}
                         color='inherit'
                         >
-                        Homee
+                        Home
                         </Button>
 
                         <Button 
@@ -73,6 +74,21 @@ export const Navbar = () => {
                         >
                         Mujeres
                         </Button>
+
+                        <Button 
+                        component={NavLink}
+                        to="/login"
+                        sx={{
+                            textTransform: "none",
+                          '&.active': {
+                            background:'black',
+                          }
+                        }}
+                        color='inherit'
+                        >
+                        Ingresar
+                        </Button>
+                        <UserNavBtns />
 
                     </Stack>
                 </Toolbar>
