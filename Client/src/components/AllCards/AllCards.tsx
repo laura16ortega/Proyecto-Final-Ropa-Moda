@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import { fetchingTest } from "../../redux/thunk-actions/testActions";
 import Card from "../Card/Card";
 import { Container, Grid, Box, Typography } from "@mui/material";
+import { Link } from 'react-router-dom';
 
 const AllCards = () => {
    const { allData, error, loading } = useAppSelector(state => state.data)

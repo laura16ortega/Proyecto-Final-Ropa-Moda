@@ -11,8 +11,10 @@ import DetailCard from "./components/DetailCard/DetailCard";
 function App() {
   return (
     <div className="App">
+      <Navbar/>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path='/' element={<Cart/>}/>
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<SignInSide />} />
         <Route path="/home/:id" element={<DetailCard />} />

@@ -2,7 +2,7 @@ import { Container, Box, Button, Grid, Typography } from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../assets/hooks'
 import s from "./Cart.module.css"
 import paypalImg from "../../assets/images/paypal.png"
