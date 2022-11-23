@@ -1,6 +1,9 @@
 const express = require("express");
+
+const productRouter = require("./routes/productRoutes");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
+
 
 const app = express();
 
@@ -14,6 +17,8 @@ app.use((req, res, next) => {
   next();
 });
 
+//ROUTES
+app.use("/api/v1/products", productRouter); //middleware
+// app.use("/api/v1/users", userRouter); //middleware
 app.use(express.static(`${__dirname}/public`));
-
 module.exports = app;
