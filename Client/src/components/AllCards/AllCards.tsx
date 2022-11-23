@@ -16,10 +16,7 @@ const AllCards = () => {
    }, [dispatch])
 
    return (
-      <Container maxWidth={"xl"} sx={{ marginBottom: 5 }}>
-         <Link to="/cart">
-            cart
-         </Link>
+        <Box>
       <Grid container spacing={1.5}>
         {loading && !error ? (
           <h1>Loading</h1>
@@ -39,7 +36,7 @@ const AllCards = () => {
                   setPage={setPage} />
             </Grid>
          </Container>*/}
-    </Container>
+         </Box>
   );
 };
 
