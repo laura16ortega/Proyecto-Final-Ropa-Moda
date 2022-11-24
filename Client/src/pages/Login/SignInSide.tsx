@@ -14,6 +14,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import axios from 'axios';
+import { Alert } from '@mui/material';
+
+
+
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -29,14 +34,35 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
+
+
 export default function SignInSide() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const LoginUser = async (user: any) => {
+    try{
+      const response = await axios.post(`http://localhost:3001/api/auth/login`, user);
+      if(response){ 
+        alert('Logueado')
+        window.localStorage.setItem('jwt', response.data.loginData.token)
+        console.log(window.localStorage.getItem('jwt'))
+        setTimeout(() => {
+          window.location.href = '/'
+        },500)
+    }
+    }catch{
+      return alert('Email o contraseña erroneos');
+    }
+  }
+
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const user = {
+      "email":data.get('email'),
+      "password":data.get('password')
+    }
+    return LoginUser(user)
   };
 
   return (
@@ -71,7 +97,7 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Ingresar
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
@@ -79,7 +105,7 @@ export default function SignInSide() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -89,14 +115,14 @@ export default function SignInSide() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Contraseña"
                 type="password"
                 id="password"
                 autoComplete="current-password"
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                label="Recordarme"
               />
               <Button
                 type="submit"
@@ -114,7 +140,7 @@ export default function SignInSide() {
                 </Grid>
                 <Grid item>
                   <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                    {"Aun no tienes una cuenta? Registrate"}
                   </Link>
                 </Grid>
               </Grid>

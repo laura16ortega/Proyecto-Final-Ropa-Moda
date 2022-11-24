@@ -1,12 +1,12 @@
 import { Avatar, Button, Grid, Paper, TextField, Typography } from "@mui/material";
-import React from "react";
+import React from 'react'
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
+
 
 
 const Register = () => {
@@ -15,6 +15,7 @@ const Register = () => {
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
     const marginTop = { marginTop: 5 }
+
 
     return (
         <Grid>
@@ -27,7 +28,9 @@ const Register = () => {
                     <Typography variant='caption' gutterBottom>please fill this form to create an account !</Typography>
                 </Grid>
                 <form>
-                    <TextField fullWidth label='Name' placeholder="Enter you name" />
+                    <TextField 
+                    fullWidth label='Name' 
+                    placeholder="Enter you name" />
                     <TextField fullWidth label='Email' />
                     <FormControl component="fieldset" style={marginTop}>
                         <FormLabel component="legend">Gender</FormLabel>
