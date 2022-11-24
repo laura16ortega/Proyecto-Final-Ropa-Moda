@@ -42,6 +42,7 @@ const productSchema = new mongoose.Schema({
   },
   tallaCamiseta: { type: String, enum: ["S", "M", "L", "XL"] },
   tallaPantalón: { type: String, enum: ["26", "28", "30", "32", "34"] },
+  marca: String,
 });
 const Product = mongoose.model("Product", productSchema);
 
