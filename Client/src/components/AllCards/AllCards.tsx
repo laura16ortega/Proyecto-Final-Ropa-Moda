@@ -32,7 +32,7 @@ const AllCards = () => {
                   <Skeleton
                     variant="rectangular"
                     width={280}
-                    height={530}
+                    height={700}
                     sx={{
                       padding: ".5rem",
                       display: "flex",
