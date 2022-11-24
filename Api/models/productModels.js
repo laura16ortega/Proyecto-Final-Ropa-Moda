@@ -37,8 +37,8 @@ const productSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    required: [true, "A product must have a category"],
-    enum: ["Mujer", "Hombre"],
+    required: [true, "A product must have a gender"],
+    enum: ["Mujer", "Hombre", "Unisex"],
   },
   category: {
     type: String,
