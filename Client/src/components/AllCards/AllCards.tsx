@@ -16,15 +16,10 @@ const AllCards = () => {
     }
   }, [dispatch]);
 
-<<<<<<< HEAD
-   return (
-        <Box>
-=======
   let arr = [0, 1, 2, 3, 4, 5, 6, 7];
 
   return (
     <Container maxWidth={"xl"} sx={{ marginBottom: 5 }}>
->>>>>>> e0836681de23a2edc6348cb041c60f84ca6004c5
       <Grid container spacing={1.5}>
         {loading && !error ? (
           arr.map((item) => {
@@ -65,7 +60,7 @@ const AllCards = () => {
                   setPage={setPage} />
             </Grid>
          </Container>*/}
-         </Box>
+         </Container>
   );
 };
 

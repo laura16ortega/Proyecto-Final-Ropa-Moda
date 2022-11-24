@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Typography, Select, MenuItem, Collapse, Button } from "@mui/material"
+import { Box, Typography, Select, MenuItem, Collapse, SelectChangeEvent } from "@mui/material"
 import FilterPopup from '../FilterPopup/FilterPopup';
 import s from "./Filters.module.css"
 import ClearIcon from '@mui/icons-material/Clear';
