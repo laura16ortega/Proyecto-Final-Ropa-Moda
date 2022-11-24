@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+.body {
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+}
+
+.container {
+  max-width: 1170px;
+  margin-bottom: 0px;
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+ul {
+  list-style: none;
+}
+
+.footer {
+  background-color: #24262b;
+  padding: 20px 0px;
+}
+
+.footerCol {
+  width: 33%;
+  padding: 0px 15px;
+}
+
+.footerCol h4 {
+  font-size: 18px;
+  color: #ffffff;
+  text-transform: capitalize;
+  margin-bottom: 35px;
+  font-weight: 500;
+  position: relative;
+}
+
+.footerCol h4::before {
+  content: "";
+  position: absolute;
+  left: 10;
+  bottom: -10px;
+  background-color: #e91e63;
+  height: 2px;
+  box-sizing: border-box;
+  width: 30px;
+}
+
+.footerCol ul li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.footerCol ul li a {
+  font-size: 16px;
+  text-transform: capitalize;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 300;
+  color: #bbbbbb;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.footerCol ul li a:hover {
+  color: #ffffff;
+  padding-left: 8px;
+}
+
+/*responsive*/
+@media (max-width: 767px) {
+  .footerCol {
+    width: 50%;
+    margin-bottom: 30px;
+  }
+}
+@media (max-width: 574px) {
+  .footerCol {
+    width: 100%;
+  }
+}

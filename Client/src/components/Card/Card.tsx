@@ -1,50 +1,55 @@
-import { Grid, Paper, Box, Typography, Button } from '@mui/material'
-import s from "./Card.module.css"
-import React from 'react'
-import { useAppDispatch, useAppSelector } from '../../assets/hooks'
-import { addProductToCart } from '../../redux/thunk-actions/cartActions'
-import { increaseCartQuantity, decreaseCartQuantity } from '../../redux/slices/cartSlice'
-import { increaseGeneralQuantity, decreaseGeneralQuantity } from '../../redux/slices/testSlice'
-import { Link } from "react-router-dom";
+import { Grid, Paper, Box, Typography, Button, Link } from "@mui/material";
+import s from "./Card.module.css";
+import React from "react";
+import { useAppDispatch, useAppSelector } from "../../assets/hooks";
+import { addProductToCart } from "../../redux/thunk-actions/cartActions";
+import {
+  increaseCartQuantity,
+  decreaseCartQuantity,
+} from "../../redux/slices/cartSlice";
+import {
+  increaseGeneralQuantity,
+  decreaseGeneralQuantity,
+} from "../../redux/slices/testSlice";
 
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 
 type Product = {
-    id: number
-    title: string
-    price: number
-    description: string
-    category: string
-    image: string
-    quantity: number
-}
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  quantity: number;
+};
 
 type productProps = {
   product: Product;
 };
 
 const Card = ({ product }: productProps) => {
-    const dispatch = useAppDispatch()
-    const { cartLoading } = useAppSelector(state => state.cart)
+  const dispatch = useAppDispatch();
+  const { cartLoading } = useAppSelector((state) => state.cart);
 
-    //TODO Bunch of junk code, maybe using localStorage should fix this
+  //TODO Bunch of junk code, maybe using localStorage should fix this
 
-    const handleCart = (productId: number) => {
-        dispatch(addProductToCart(productId))
-        dispatch(increaseGeneralQuantity(productId))
-    }
+  const handleCart = (productId: number) => {
+    dispatch(addProductToCart(productId));
+    dispatch(increaseGeneralQuantity(productId));
+  };
 
-    const handleIncreaseCart = (productId: number) => {
-        // ! if quantity > stock === error
-        dispatch(increaseCartQuantity(productId))
-        dispatch(increaseGeneralQuantity(productId))
-    }
+  const handleIncreaseCart = (productId: number) => {
+    // ! if quantity > stock === error
+    dispatch(increaseCartQuantity(productId));
+    dispatch(increaseGeneralQuantity(productId));
+  };
 
-    const handleDecreaseCart = (productId: number) => {
-        dispatch(decreaseGeneralQuantity(productId))
-        dispatch(decreaseCartQuantity(productId))
-    }
+  const handleDecreaseCart = (productId: number) => {
+    dispatch(decreaseGeneralQuantity(productId));
+    dispatch(decreaseCartQuantity(productId));
+  };
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -59,7 +64,7 @@ const Card = ({ product }: productProps) => {
           }}
         >
           {/* Special tags: limited edition, best seller, low calories, etc */}
-          <Link to={`/home/${product.id}`}>
+          <Link href={`/home/${product.id}`}>
             <Box>
               <img
                 src={product.image}
@@ -103,20 +108,58 @@ const Card = ({ product }: productProps) => {
               </Typography>
             </Box>
             <Box sx={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
-              {product.quantity <= 0 ?
-                                <Button variant="contained" disableElevation size='small' className={s.addButton} onClick={() => handleCart(product.id)} disabled={cartLoading}>
-                                    {cartLoading ? "Agregando... icon" : "Agregar al carro"}
-                                </Button>
-                                : <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Button disableElevation className={s.counterButton} onClick={() => handleDecreaseCart(product.id)}>
-                                        <RemoveIcon sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px" }} />
-                                    </Button>
-                                    <h2 style={{ marginRight: "1rem", marginLeft: "1rem" }}>{product.quantity}</h2>
-                                    <Button disableElevation className={s.counterButton} onClick={() => handleIncreaseCart(product.id)}>
-                                        <AddIcon sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px" }} />
-                                    </Button>
-                                </Box>
-                            }
+              {product.quantity <= 0 ? (
+                <Button
+                  variant="contained"
+                  disableElevation
+                  size="small"
+                  className={s.addButton}
+                  onClick={() => handleCart(product.id)}
+                  disabled={cartLoading}
+                >
+                  {cartLoading ? "Agregando... icon" : "Agregar al carro"}
+                </Button>
+              ) : (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    disableElevation
+                    className={s.counterButton}
+                    onClick={() => handleDecreaseCart(product.id)}
+                  >
+                    <RemoveIcon
+                      sx={{
+                        color: "rgb(17, 17, 17)",
+                        height: "100%",
+                        width: "100%",
+                        padding: "2px",
+                      }}
+                    />
+                  </Button>
+                  <h2 style={{ marginRight: "1rem", marginLeft: "1rem" }}>
+                    {product.quantity}
+                  </h2>
+                  <Button
+                    disableElevation
+                    className={s.counterButton}
+                    onClick={() => handleIncreaseCart(product.id)}
+                  >
+                    <AddIcon
+                      sx={{
+                        color: "rgb(17, 17, 17)",
+                        height: "100%",
+                        width: "100%",
+                        padding: "2px",
+                      }}
+                    />
+                  </Button>
+                </Box>
+              )}
             </Box>
           </Box>
         </Box>

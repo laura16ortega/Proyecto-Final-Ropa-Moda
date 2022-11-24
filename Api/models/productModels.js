@@ -35,11 +35,19 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "A product must have a stock"],
   },
+  gender: {
+    type: String,
+    required: [true, "A product must have a gender"],
+    enum: ["Mujer", "Hombre", "Unisex"],
+  },
   category: {
     type: String,
     required: [true, "A product must have a category"],
     enum: ["Camiseta", "Pantalones", "Mujer", "Hombre"],
   },
+  tallaCamiseta: [String],
+  tallaPantalón: [String],
+  marca: String,
 });
 const Product = mongoose.model("Product", productSchema);
 
