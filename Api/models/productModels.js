@@ -40,6 +40,8 @@ const productSchema = new mongoose.Schema({
     required: [true, "A product must have a category"],
     enum: ["Camiseta", "Pantalones", "Mujer", "Hombre"],
   },
+  tallaCamiseta: { type: String, enum: ["S", "M", "L", "XL"] },
+  tallaPantalón: { type: String, enum: ["26", "28", "30", "32", "34"] },
 });
 const Product = mongoose.model("Product", productSchema);
 
