@@ -11,11 +11,11 @@ type FilterTypes = {
 
 type Filter = {
     filterDetails: FilterTypes
-    filter: FilterTypedState
-    setFilter: React.Dispatch<React.SetStateAction<FilterTypedState>>
+    filters: FilterTypedState
+    setFilters: React.Dispatch<React.SetStateAction<FilterTypedState>>
 }
 
-const FilterPopup = ({ filterDetails, filter, setFilter }: Filter) => {
+const FilterPopup = ({ filterDetails, filters, setFilters }: Filter) => {
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -24,17 +24,16 @@ const FilterPopup = ({ filterDetails, filter, setFilter }: Filter) => {
     };
 
     const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target)
 
         if (e.target.checked) {
-            setFilter({
-                ...filter,
-                [e.target.name]: [...filter[e.target.name], e.target.value]
+            setFilters({
+                ...filters,
+                [e.target.name]: [...filters[e.target.name], e.target.value]
             })
         } else {
-            setFilter({
-                ...filter,       // cosa rara, tiraba "property filter does not exist on type string | string[]", tirarle as string[] lo arreglo
-                [e.target.name]: (filter[e.target.name] as string[]).filter(f => f !== e.target.value)
+            setFilters({
+                ...filters,       // cosa rara, tiraba "property filter does not exist on type string | string[]", tirarle as string[] lo arreglo
+                [e.target.name]: (filters[e.target.name] as string[]).filter(f => f !== e.target.value)
             })
         }
     }
@@ -49,7 +48,7 @@ const FilterPopup = ({ filterDetails, filter, setFilter }: Filter) => {
                 </Typography>
                 <KeyboardArrowDownIcon />
             </Button>
-            <Popper open={open} anchorEl={anchorEl} placement="bottom-start">
+            <Popper open={open} anchorEl={anchorEl} placement="bottom-start" disablePortal>
             <Grow in={open} style={{transformOrigin: "0 0 0"}} timeout={200}>
                 <Box className={s.optionsContainer}>
                     {/*2nd child marginTop 1 rme */}
