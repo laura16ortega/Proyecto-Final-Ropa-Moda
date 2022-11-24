@@ -7,6 +7,7 @@ import store from './redux/store';
 import { BrowserRouter } from 'react-router-dom';
 import { Auth0Provider } from '@auth0/auth0-react';
 import credentials from './auth_config.json';
+import { Notification } from './components/Notification/Notification';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <Auth0Provider domain={credentials.domain} clientId={credentials.clientId}
     redirectUri={window.location.href} useRefreshTokens cacheLocation="localstorage">
         <App />
+        <Notification />
         </Auth0Provider>
       </BrowserRouter>
     </Provider>
