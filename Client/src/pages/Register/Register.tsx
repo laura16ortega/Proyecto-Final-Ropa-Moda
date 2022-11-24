@@ -10,7 +10,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { FormHelperText } from "@mui/material";
 import * as Yup from 'yup'
-import { useNotification } from '../../components/UseNotification/UseNotification';
+import { useNotification } from "../../components/UseNotification/UseNotification";
 
 
 const Register = () => {
@@ -40,6 +40,8 @@ const Register = () => {
         termsAndConditions: Yup.string().oneOf(["true"], "Aceptar términos y condiciones")
     })
 
+    const { displayNotification } = useNotification();
+
     const onSubmit = (values, props) => {
         console.log(values)
         console.log(props)
@@ -50,6 +52,7 @@ const Register = () => {
         },2000)
         displayNotification({ message: "Se registró satisfactoriamente ! ", type:"success" })
     }
+
 
 
 
