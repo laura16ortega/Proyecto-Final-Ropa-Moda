@@ -10,6 +10,7 @@ import DetailCard from "./components/DetailCard/DetailCard";
 import Profile from './components/Profile/Profile';
 import LandingPage from './pages/LandingPage/LandingPage';
 import Register from './pages/Register/Register';
+import Contact from './pages/ContactUs/Contact';
 
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path='/landingPage' element={<LandingPage />} />
         <Route path='/register' element={<Register />} />
+        <Route path="/contact" element={<Contact/>}/>
       </Routes>
       <Footer />
 
