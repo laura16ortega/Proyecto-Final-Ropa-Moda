@@ -1,5 +1,5 @@
 const {encrypt, verified} = require("../services/authServices");
-const User = require("../models/userModels");
+const User = require("../models/UserModel");
 const { generateToken } = require("../services/JwtServices");
 const passport = require("passport");
 
@@ -62,7 +62,18 @@ const registerCtrl = async(request,response)=>{
         }
 
 }
-
+//User Logout
+const logoutCtrl = async(_request,response)=>{
+    try {
+        response.cookie("token", null,{
+            expires: new Date(Date.now()),
+            httpOnly: true
+        });
+        response.status(200).json({message:"Logged out succesfully"})
+    } catch (error) {
+        response.status(500).json({message:error})
+    }
+}
 //User Login
 const loginCtrl = async(request,response)=>{
     const {email, password} = request.body;
@@ -84,14 +95,15 @@ const loginCtrl = async(request,response)=>{
                 sameSite:"none",
                 secure:true
             })
-
-            const {isAdmin, fullName} = checkIs;
+            console.log(checkIs)
+            const {isAdmin, fullName,_id} = checkIs;
             const loginData = {
                 token,
                 user: {
                     isAdmin,
                     fullName,
-                    email
+                    email,
+                    userId: _id
                 }
             }
             response.status(200).json({loginData})
@@ -127,5 +139,6 @@ module.exports = {
     registerCtrl,
     loginCtrl,
     googleCtrl,
-    callbackCtrl
+    callbackCtrl,
+    logoutCtrl
 }

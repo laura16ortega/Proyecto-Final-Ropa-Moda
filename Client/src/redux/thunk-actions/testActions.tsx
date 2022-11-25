@@ -4,6 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit"
 type ratingApiCall = {
    rate: number
    count: number
+   [index: string]: string | string[] | number | ratingApiCall
 }
 
 export type testApiCall = {
@@ -25,6 +26,7 @@ export type mappedDataType = {
    image: string
    rating: ratingApiCall
    quantity: number
+   [index: string]: any
 }
 
 export const fetchingTest = createAsyncThunk<mappedDataType[]>(
