@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { Box, Container, Grid, Typography, Button } from "@mui/material"
 import s from "./Contact.module.css"
 import { Formik, FormikHelpers, Form, Field } from 'formik'
+import PlaceIcon from '@mui/icons-material/Place';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import EmailIcon from '@mui/icons-material/Email';
 import InputField from "./InputField"
 import emailjs from "@emailjs/browser"
 import * as yup from "yup"
@@ -88,15 +91,15 @@ const Contact = () => {
                         <Grid item md={6} className={s.contactLeft}>
                             <Box className={s.leftContainer}>
                                 <Typography variant='h3'>Direccion</Typography>
-                                <Typography variant="subtitle1">Calle Falsa 123</Typography>
+                                <Typography variant="subtitle1"><PlaceIcon sx={{marginRight: "3px"}}/>Calle Falsa 123</Typography>
                             </Box>
                             <Box className={s.leftContainer}>
                                 <Typography variant='h3'>Telefono</Typography>
-                                <Typography variant="subtitle1">(012) 345-6789</Typography>
+                                <Typography variant="subtitle1"><LocalPhoneIcon/>(012) 345-6789</Typography>
                             </Box>
                             <Box className={s.leftContainer}>
                                 <Typography variant='h3'>Envianos un email</Typography>
-                                <Typography variant="subtitle1">Llena este formulario</Typography>
+                                <Typography variant="subtitle1"><EmailIcon/>Llena este formulario</Typography>
                             </Box>
                         </Grid>
                         <Grid item md={6}>
