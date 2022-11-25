@@ -9,6 +9,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { ThemeProvider } from "@mui/material/styles";
 import credentials from "./auth_config.json";
 import lightTheme from "./Theme";
+import { Notification } from "./components/Notification/Notification";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             cacheLocation="localstorage"
           >
             <App />
+            <Notification />
           </Auth0Provider>
         </BrowserRouter>
       </ThemeProvider>

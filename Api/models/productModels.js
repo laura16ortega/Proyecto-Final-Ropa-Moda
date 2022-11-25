@@ -52,13 +52,18 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "A product must have a stock"],
   },
+  gender: {
+    type: String,
+    required: [true, "A product must have a gender"],
+    enum: ["Mujer", "Hombre", "Unisex"],
+  },
   category: {
     type: String,
     required: [true, "A product must have a category"],
     enum: ["Camiseta", "Pantalones", "Mujer", "Hombre"],
   },
-  tallaCamiseta: { type: String, enum: ["S", "M", "L", "XL"] },
-  tallaPantalón: { type: String, enum: ["26", "28", "30", "32", "34"] },
+  tallaCamiseta: [String],
+  tallaPantalón: [String],
   marca: String,
   reviews:[reviewSchema],
 });
