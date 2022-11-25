@@ -1,7 +1,5 @@
-const User = require("../models/userModels");
-const bcrypt = require("bcryptjs");
-
-
+const User = require("../models/UserModel");
+const { encrypt } = require("../services/authServices");
 
 //Get All Users
 const getAllUsers = async(request,response)=>{
@@ -57,18 +55,34 @@ const deleteUser = async(request,response)=>{
         await User.findByIdAndDelete(request.params.id);
         response.status(200).json({message:"User has been deleted succesfully"})
     } catch (error) {
-        console.log(error)
         response.status(500).json({message:error})
     }
 }
-//Change a User Password
-const changePass = async(request,response)=>{
-    const user = await User.findById(request.user);
-    response.send(user);  
-}
-const changePass2 = async(request,response)=>{
-    //const user = await User.findById(request.user);
-    response.send('hola');  
+//Update User Password
+const updatePassword = async(request,response)=>{
+    try {
+        const user = await User.findById(request.user.id).select("+password");
+        const{oldPassword, confirmPassword, newPassword} = request.body;
+        if(!oldPassword || !confirmPassword || !newPassword){
+            return response.status(500).json({message:"Please provide all parameters"})
+        }
+        const isPasswordMatched = await user.comparePassword(oldPassword)
+        if(!isPasswordMatched){
+            return response.status(400).json({message:"Old password is incorrect"})
+        }
+
+        if( newPassword !== confirmPassword){
+            return response.status(400).json({message:"Passwords does not match"})
+        }
+        const passHash = await encrypt(newPassword)
+        user.password = passHash
+
+        await user.save()
+        response.status(200).json({message:"Password Updated Succesfully", user})
+    } catch (error) {
+        response.status(500).json({message:error})
+    }
+    
 }
 
 module.exports = {
@@ -76,6 +90,5 @@ module.exports = {
     getUser,
     deleteUser,
     updatedUser,
-    changePass,
-    changePass2
+    updatePassword
 }
