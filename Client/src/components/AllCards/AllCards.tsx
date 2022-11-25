@@ -60,7 +60,7 @@ const AllCards = () => {
                   setPage={setPage} />
             </Grid>
          </Container>*/}
-    </Container>
+         </Container>
   );
 };
 
