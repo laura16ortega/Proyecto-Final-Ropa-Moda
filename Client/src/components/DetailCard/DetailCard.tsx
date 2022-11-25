@@ -18,7 +18,7 @@ export default function DetailCard() {
             alt={`${data ? data[0].title : ""} not found`}
             style={{
               height: "300px",
-              width: "300px",
+              width: "250px",
               minWidth: "200px",
             }}
           />
