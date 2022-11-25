@@ -11,10 +11,19 @@ import Profile from "./components/Profile/Profile";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import Register from "./pages/Register/Register";
 import Contact from './pages/ContactUs/Contact';
+import { useEffect } from "react"
 
 
 
 function App() {
+
+  useEffect(() => {
+    const findCart = localStorage.getItem("cart")
+    if (!findCart) {
+      localStorage.setItem('cart', JSON.stringify([]))
+    }
+  }, [])
+      
   return (
     <div className="App">
       <Navbar />
