@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Container, Grid, Typography, Button } from "@mui/material"
 import s from "./Contact.module.css"
 import { Formik, FormikHelpers, Form, Field } from 'formik'
@@ -70,6 +70,9 @@ const Contact = () => {
         }
     ]
 
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
 
     return (
         <Box sx={{ backgroundColor: "#3e3e3e"}}>
