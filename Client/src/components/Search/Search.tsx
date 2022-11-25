@@ -4,6 +4,9 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { useState } from "react";
+import { useAppDispatch } from "../../assets/hooks";
+import { filterSearch } from "../../redux/slices/testSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -47,19 +50,36 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchBar() {
+  const [search, setSearch] = useState("");
+
+  let dispatch = useAppDispatch();
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    dispatch(filterSearch(search));
+  };
+
+  const handleChange = (e: any) => {
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
   return (
     <Box>
-      <AppBar position="static">
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ "aria-label": "search" }}
-          />
-        </Search>
-      </AppBar>
+      <form onSubmit={handleSubmit} className="form">
+        <AppBar position="static">
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Buscar…"
+              inputProps={{ "aria-label": "search" }}
+              onChange={handleChange}
+              value={search}
+            />
+          </Search>
+        </AppBar>
+      </form>
     </Box>
   );
 }

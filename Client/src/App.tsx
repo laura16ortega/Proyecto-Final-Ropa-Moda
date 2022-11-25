@@ -15,11 +15,16 @@ import Contact from './pages/ContactUs/Contact';
 
 
 
+
+
+
 function App() {
+      
   return (
     <div className="App">
- 
+
       <Navbar/>
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/cart' element={<Cart/>}/>
@@ -31,6 +36,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path="/contact" element={<Contact/>}/>
       </Routes>
+
       <Footer />
 
     </div>
