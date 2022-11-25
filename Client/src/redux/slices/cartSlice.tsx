@@ -22,6 +22,7 @@ export const cartSlice = createSlice({
             if (findOnCart) {
                 const newqty = findOnCart.quantity = findOnCart.quantity + 1
                 findOnCart.quantity = newqty
+                localStorage.setItem('cart', JSON.stringify(state.cart));
             }
         },
         decreaseCartQuantity: (state, action: PayloadAction<number>) => {
@@ -29,10 +30,12 @@ export const cartSlice = createSlice({
 
             if (findOnCart) {
                 findOnCart.quantity = findOnCart.quantity - 1
+                localStorage.setItem('cart', JSON.stringify(state.cart));
                 if (findOnCart.quantity <= 0) {
                     // No optimo :ss
                     const newState = state.cart && state.cart.filter(e => e.id !== action.payload)
                     state.cart = newState
+                    localStorage.setItem('cart', JSON.stringify(state.cart));
                 }
             }
 
@@ -40,6 +43,7 @@ export const cartSlice = createSlice({
         removeCartItem: (state, action: PayloadAction<number>) => {
             const newState = state.cart && state.cart.filter(e => e.id !== action.payload)
             state.cart = newState
+            localStorage.setItem('cart', JSON.stringify(state.cart));
         },
     },
     extraReducers(builder) {
@@ -50,6 +54,7 @@ export const cartSlice = createSlice({
             .addCase(addProductToCart.fulfilled, (state, action: PayloadAction<mappedDataType>) => {
                 state.cartLoading = false
                 state.cart && state.cart.push(action.payload) // Immer deja alterar el estado con javascript puro
+                localStorage.setItem('cart', JSON.stringify(state.cart));
             })
             .addCase(addProductToCart.rejected, (state, action: PayloadAction<any>) => {
                 state.cartLoading = false
