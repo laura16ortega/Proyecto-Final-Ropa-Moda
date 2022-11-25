@@ -14,13 +14,13 @@ export default function Footer() {
               <h4>Ayuda</h4>
               <ul>
                 <li>
-                  <a href="/">Contacto</a>
+                  <a>Contacto</a>
                 </li>
                 <li>
-                  <a href="/">Soporte</a>
+                  <a>Soporte</a>
                 </li>
                 <li>
-                  <a href="/">Privacidad</a>
+                  <a>Privacidad</a>
                 </li>
               </ul>
             </div>
@@ -28,10 +28,10 @@ export default function Footer() {
               <h4>Cuenta</h4>
               <ul>
                 <li>
-                  <a href="/">Acceso</a>
+                  <a href="/login">Acceso</a>
                 </li>
                 <li>
-                  <a href="/">Registro</a>
+                  <a href="/register">Registro</a>
                 </li>
               </ul>
             </div>
@@ -39,10 +39,10 @@ export default function Footer() {
               <h4>Mensajes</h4>
               <ul>
                 <li>
-                  <a href="/">Respaldo</a>
+                  <a>Respaldo</a>
                 </li>
                 <li>
-                  <a href="/">Historia</a>
+                  <a>Historia</a>
                 </li>
                 <li>
                   <a href="/">Lista</a>
