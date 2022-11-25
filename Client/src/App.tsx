@@ -14,11 +14,16 @@ import Register from './pages/Register/Register';
 
 
 
+
+
+
 function App() {
+      
   return (
     <div className="App">
- 
+
       <Navbar/>
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/cart' element={<Cart/>}/>
@@ -29,6 +34,7 @@ function App() {
         <Route path='/landingPage' element={<LandingPage />} />
         <Route path='/register' element={<Register />} />
       </Routes>
+
       <Footer />
 
     </div>
