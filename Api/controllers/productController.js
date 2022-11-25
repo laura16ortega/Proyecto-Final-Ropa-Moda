@@ -1,5 +1,4 @@
 const Product = require("./../models/productModels");
-const Review = require("../models/ReviewModel");
 const cloudinary = require("../services/cloudinaryServices")
 
 //ROUTE HANDLERS
