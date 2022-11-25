@@ -64,7 +64,7 @@ const Card = ({ product }: productProps) => {
           }}
         >
           {/* Special tags: limited edition, best seller, low calories, etc */}
-          <Link href={`/home/${product.id}`}>
+          <Link href={`/${product.id}`}>
             <Box>
               <img
                 src={product.image}
