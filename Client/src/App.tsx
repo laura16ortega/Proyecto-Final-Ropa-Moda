@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { useEffect } from "react"
 import Home from './pages/Home/Home';
 import "./App.css"
 import Cart from './pages/Cart/Cart';
@@ -19,6 +20,13 @@ import Contact from './pages/ContactUs/Contact';
 
 
 function App() {
+
+  useEffect(() => {
+    const findCart = localStorage.getItem("cart")
+    if (!findCart) {
+      localStorage.setItem('cart', JSON.stringify([]))
+    }
+  }, [])
       
   return (
     <div className="App">
