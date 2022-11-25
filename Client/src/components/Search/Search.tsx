@@ -6,6 +6,7 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { useAppDispatch } from "../../assets/hooks";
+import { filterSearch } from "../../redux/slices/testSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -55,6 +56,7 @@ export default function SearchBar() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    dispatch(filterSearch(search));
   };
 
   const handleChange = (e: any) => {
