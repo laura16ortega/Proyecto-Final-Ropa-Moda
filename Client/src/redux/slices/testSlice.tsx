@@ -28,24 +28,6 @@ export const testSlice = createSlice({
   name: "test",
   initialState,
   reducers: {
-    increaseGeneralQuantity: (state, action: PayloadAction<number>) => {
-      const findProduct =
-        state.allData && state.allData.find((e) => e.id === action.payload);
-      if (findProduct) findProduct.quantity = findProduct.quantity + 1;
-    },
-    decreaseGeneralQuantity: (state, action: PayloadAction<number>) => {
-      const findProduct =
-        state.allData && state.allData.find((e) => e.id === action.payload);
-      if (findProduct) {
-        findProduct.quantity = findProduct.quantity - 1;
-        if (findProduct.quantity <= 0) findProduct.quantity = 0;
-      }
-    },
-    clearGeneralQuantity: (state, action: PayloadAction<number>) => {
-      const findProduct =
-        state.allData && state.allData.find((e) => e.id === action.payload);
-      if (findProduct) findProduct.quantity = 0;
-    },
     filterSearch: (state, action: PayloadAction<string>) => {
       const filteredCards =
         state.allData &&
@@ -69,7 +51,7 @@ export const testSlice = createSlice({
             if (filters[key].length <= 0) return true;
             isValid =
               isValid && // Tuve que meter tipo any en ratingApiCall por el includes <-- se arregla cuando se trae de la api ( ._.)b
-              (filters[key] as string[]).some((el) => card[key].includes(el)); // ! Cuando no tiene nada se limpia y no tira resultados - Arreglado en linea 48, dejo por las dudas
+              (filters[key] as string[]).some((el) => card[key].includes(el)); // ! Cuando no tiene nada se limpia y no tira resultados - Arreglado 3 lineas arriba, dejo por las dudas
             //card[key].toLowerCase().includes((filters[key] as string[])[0] || (filters[key] as string[])[1]) <-- funcion previa, filtra solo por el primer string del array
           }
           return isValid;
@@ -119,9 +101,6 @@ export const testSlice = createSlice({
 });
 
 export const {
-  increaseGeneralQuantity,
-  decreaseGeneralQuantity,
-  clearGeneralQuantity,
   filterElements,
   sortProducts,
   filterSearch,

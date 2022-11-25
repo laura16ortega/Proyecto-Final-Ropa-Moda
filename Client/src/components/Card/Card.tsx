@@ -7,11 +7,6 @@ import {
   increaseCartQuantity,
   decreaseCartQuantity,
 } from "../../redux/slices/cartSlice";
-import {
-  increaseGeneralQuantity,
-  decreaseGeneralQuantity,
-} from "../../redux/slices/testSlice";
-
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -31,23 +26,21 @@ type productProps = {
 
 const Card = ({ product }: productProps) => {
   const dispatch = useAppDispatch();
-  const { cartLoading } = useAppSelector((state) => state.cart);
+  const { cartLoading, cart } = useAppSelector((state) => state.cart);
 
-  //TODO Bunch of junk code, maybe using localStorage should fix this
+  const cartProd: Product[] = JSON.parse(localStorage.getItem('cart') || "")
+  const foundOnCart = cartProd.find(e => e.title === product.title)
 
   const handleCart = (productId: number) => {
     dispatch(addProductToCart(productId));
-    dispatch(increaseGeneralQuantity(productId));
   };
 
   const handleIncreaseCart = (productId: number) => {
     // ! if quantity > stock === error
     dispatch(increaseCartQuantity(productId));
-    dispatch(increaseGeneralQuantity(productId));
   };
 
   const handleDecreaseCart = (productId: number) => {
-    dispatch(decreaseGeneralQuantity(productId));
     dispatch(decreaseCartQuantity(productId));
   };
 
@@ -108,55 +101,21 @@ const Card = ({ product }: productProps) => {
               </Typography>
             </Box>
             <Box sx={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
-              {product.quantity <= 0 ? (
-                <Button
-                  variant="contained"
-                  disableElevation
-                  size="small"
-                  className={s.addButton}
-                  onClick={() => handleCart(product.id)}
-                  disabled={cartLoading}
-                >
-                  {cartLoading ? "Agregando... icon" : "Agregar al carro"}
+              {!foundOnCart ? (
+                <Button variant="contained" disableElevation size="small" className={s.addButton} onClick={() => handleCart(product.id)} disabled={cartLoading}>
+                  {cartLoading ? "Agregando..." : "Agregar al carro"}
                 </Button>
               ) : (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button
-                    disableElevation
-                    className={s.counterButton}
-                    onClick={() => handleDecreaseCart(product.id)}
-                  >
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", }}>
+                  <Button disableElevation className={s.counterButton} onClick={() => handleDecreaseCart(product.id)} >
                     <RemoveIcon
-                      sx={{
-                        color: "rgb(17, 17, 17)",
-                        height: "100%",
-                        width: "100%",
-                        padding: "2px",
-                      }}
-                    />
+                      sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px", }} />
                   </Button>
                   <h2 style={{ marginRight: "1rem", marginLeft: "1rem" }}>
-                    {product.quantity}
+                    {foundOnCart.quantity}
                   </h2>
-                  <Button
-                    disableElevation
-                    className={s.counterButton}
-                    onClick={() => handleIncreaseCart(product.id)}
-                  >
-                    <AddIcon
-                      sx={{
-                        color: "rgb(17, 17, 17)",
-                        height: "100%",
-                        width: "100%",
-                        padding: "2px",
-                      }}
-                    />
+                  <Button disableElevation className={s.counterButton} onClick={() => handleIncreaseCart(product.id)} >
+                    <AddIcon sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px", }} />
                   </Button>
                 </Box>
               )}
