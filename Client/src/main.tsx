@@ -29,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           </Auth0Provider>
         </BrowserRouter>
       </ThemeProvider>
-}
+
     </Provider>
   </React.StrictMode>
 );

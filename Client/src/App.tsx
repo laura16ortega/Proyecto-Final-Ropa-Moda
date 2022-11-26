@@ -10,7 +10,7 @@ import DetailCard from "./components/DetailCard/DetailCard";
 import Profile from './components/Profile/Profile';
 import LandingPage from './pages/LandingPage/LandingPage';
 import Register from './pages/Register/Register';
-
+import BuyConfirmed from './pages/BuyConfirmed/BuyConfirmed';
 
 
 
@@ -28,6 +28,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path='/landingPage' element={<LandingPage />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/confirmed' element={<BuyConfirmed /> } />
       </Routes>
       <Footer />
 
