@@ -21,10 +21,11 @@ type Product = {
 };
 
 type productProps = {
-  product: Product;
+  product: Product
+  margin?: string // Slider
 };
 
-const Card = ({ product }: productProps) => {
+const Card = ({ product, margin }: productProps) => {
   const dispatch = useAppDispatch();
   const { cartLoading, cart } = useAppSelector((state) => state.cart);
 
@@ -45,7 +46,7 @@ const Card = ({ product }: productProps) => {
   };
 
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3}>
+    <Grid item xs={12} sm={6} md={4} lg={3} sx={{margin: margin ? margin : "0px"}}>
       <Paper elevation={3} sx={{ display: "flex", height: "100%" }}>
         <Box
           sx={{
