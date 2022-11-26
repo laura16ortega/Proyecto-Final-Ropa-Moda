@@ -5,18 +5,28 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import s from "./Cart.module.css";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import paypalImg from "../../assets/images/paypal.png";
+
 import {
   increaseCartQuantity,
   decreaseCartQuantity,
   removeCartItem,
 } from "../../redux/slices/cartSlice";
-import Paypal from "../../components/Paypal/Paypal";
+
+import {
+  increaseGeneralQuantity,
+  decreaseGeneralQuantity,
+  clearGeneralQuantity,
+} from "../../redux/slices/testSlice";
+import { useNotification } from '../../components/UseNotification/UseNotification';
 import type { mappedDataType } from "../../redux/thunk-actions/testActions"
 import { fetchingTest } from "../../redux/thunk-actions/testActions";
 import CartSlider from "../../components/CartSlider/CartSlider";
 
+
 const Cart = () => {
+  const { displayNotification } = useNotification();
   const [openPaypal, setOpenPaypal] = useState(false);
   const dispatch = useAppDispatch();
   const { cart, cartLoading, cartError } = useAppSelector(
@@ -333,20 +343,32 @@ const Cart = () => {
                             />
                           </span>
                         </Button>
-                        {openPaypal ? (
-                          <div
-                            style={{
-                              marginTop: "1rem",
-                              height: "220px",
-                              width: "300px",
-                              overflow: "hidden",
-                            }}
-                          >
-                            <Paypal value={subTotalPrice} />
-                          </div>
-                        ) : (
-                          <div></div>
-                        )}
+
+                          { openPaypal ? <PayPalScriptProvider options={{"client-id": "Af_2kGfokFGu8n5l3n7OC64eb-BSX4kRvnCZu65B4_48mFGOC6R5f937BMhEM5b-GvfLE-wulIotXk6S"}}>
+                          <PayPalButtons  createOrder={(data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: {
+                    value: subTotalPrice,
+                  },
+                },
+              ],
+            });
+          }}
+          onApprove={async (data, actions) => {
+            const details = await actions.order.capture();
+            
+            const name = details.payer.name.given_name;
+            console.log(details);
+            displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type:"success" })
+            setTimeout(() => {
+              window.location.href = '/confirmed'
+            }, 500)
+
+          }}
+          />
+                        </PayPalScriptProvider> : <div></div>}
                       </Box>
                       <Box
                         sx={{
