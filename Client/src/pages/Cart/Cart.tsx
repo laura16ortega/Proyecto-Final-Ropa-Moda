@@ -13,6 +13,8 @@ import {
 } from "../../redux/slices/cartSlice";
 import Paypal from "../../components/Paypal/Paypal";
 import type { mappedDataType } from "../../redux/thunk-actions/testActions"
+import { fetchingTest } from "../../redux/thunk-actions/testActions";
+import CartSlider from "../../components/CartSlider/CartSlider";
 
 const Cart = () => {
   const [openPaypal, setOpenPaypal] = useState(false);
@@ -20,6 +22,7 @@ const Cart = () => {
   const { cart, cartLoading, cartError } = useAppSelector(
     (state) => state.cart
   );
+  const { allData, loading } = useAppSelector((state) => state.data);
 
   const cartProd: mappedDataType[] = JSON.parse(localStorage.getItem('cart') || "")
 
@@ -47,6 +50,12 @@ const Cart = () => {
     dispatch(removeCartItem(productId));
   };
 
+  useEffect(() => {
+    if (!allData?.length) {
+      dispatch(fetchingTest());
+    }
+  }, [dispatch]);
+
   return (
     <div>
       {cartLoading ? (
@@ -65,12 +74,14 @@ const Cart = () => {
               recomendados abajo
             </Typography>
           </Box>
-          <Box sx={{ marginBottom: "1rem" }}>
-            {/*<div>
-                                    <h1 style={{ fontSize: "3.5rem", textAlign: "left" }}>RECOMENDAMOS</h1>
-                                    <div>Swipper de productos recomendados</div>
-                                </div>*/}
-          </Box>
+          {loading ? <h1>Loading</h1> : allData &&
+            <Box sx={{}}>
+              <Typography variant="h3" sx={{ textAlign: "left", fontFamily: "poppins", fontWeight: "600", margin: "1.6rem .4rem" }}>
+                RECOMENDAMOS
+              </Typography>
+              <CartSlider allData={allData} />
+            </Box>
+          }
         </Box>
       ) : (
         <Container maxWidth={"lg"}>
@@ -348,7 +359,7 @@ const Cart = () => {
                           variant="subtitle1"
                           sx={{ display: "flex" }}
                         >
-                          ¿Necesitas ayuda? <Link href="/contact" sx={{marginLeft: "5px"}}>Contáctanos</Link>
+                          ¿Necesitas ayuda? <Link href="/contact" sx={{ marginLeft: "5px" }}>Contáctanos</Link>
                         </Typography>
                       </Box>
                     </Box>
