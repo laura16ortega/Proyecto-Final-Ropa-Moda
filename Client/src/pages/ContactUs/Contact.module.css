@@ -1,0 +1,86 @@
+.inputField label {
+    color: gray !important;
+    font-size: 1.7rem;
+    top: 17px;
+}
+
+.inputField:nth-child(n+1) div {
+    margin-top: 2.6rem;
+}
+
+.inputField div::before {
+    border-bottom: 3px solid white;
+}
+
+.inputField div::after {
+    border-bottom: 3px solid white !important;
+}
+
+.inputField textarea {
+    font-size: 2rem;
+    padding: 2px;
+    height: 100%;
+    color: white;
+    line-height: 1;
+}
+
+.inputField input {
+    font-size: 2rem;
+    padding: 2px;
+    height: 100%;
+    color: white;
+}
+
+.leftContainer:nth-child(n+2) {
+    margin-top: 2rem;
+}
+
+.inputField p {
+    color: #f44336 !important;
+    font-size: .9rem;
+}
+
+.contactLeft {
+    text-align: right;
+    color: white;
+    margin-top: 2.5rem !important;
+}
+
+.contactLeft h3 {
+    font-family: "poppins";
+    font-weight: 600;
+}
+
+.contactLeft h6 {
+    font-family: "poppins";
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.contactLeft svg {
+    margin-right: 5px;
+}
+
+.contactHeader {
+    background-image: url("https://images.unsplash.com/photo-1525562723836-dca67a71d5f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: unset;
+    height: 500px;
+    font-family: "poppins";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    text-shadow: 2px 2px black;
+}
+
+@media (max-width: 900px) {
+    .contactLeft {
+        text-align: center;
+        width: 100%;
+    }
+}

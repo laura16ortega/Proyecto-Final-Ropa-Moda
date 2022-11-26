@@ -1,5 +1,14 @@
 const mongoose = require("mongoose");
 
+const reviewSchema = new mongoose.Schema({
+  userId:{type:String, required:[true,"a reveiw must have a name"]},
+  comment:{type:String, required:[true,"a reveiw must have a name"]},
+  rating:{type:Number, required:[true,"a reveiw must have a name"]}
+  },{
+  timestamps:true,
+  versionKey: false
+})
+
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -24,8 +33,16 @@ const productSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-
-  images: [String], //acá aclaro que para esta propiedad quiero un arreglo de strings
+  images: {
+      public_id:{
+        type:String,
+        required:true
+      },
+      url:{
+        type:String,
+        required:true
+      }
+  }, //acá aclaro que para esta propiedad quiero un arreglo de strings
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -35,14 +52,20 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "A product must have a stock"],
   },
+  gender: {
+    type: String,
+    required: [true, "A product must have a gender"],
+    enum: ["Mujer", "Hombre", "Unisex"],
+  },
   category: {
     type: String,
     required: [true, "A product must have a category"],
     enum: ["Camiseta", "Pantalones", "Mujer", "Hombre"],
   },
-  tallaCamiseta: { type: String, enum: ["S", "M", "L", "XL"] },
-  tallaPantalón: { type: String, enum: ["26", "28", "30", "32", "34"] },
+  tallaCamiseta: [String],
+  tallaPantalón: [String],
   marca: String,
+  reviews:[reviewSchema],
 });
 const Product = mongoose.model("Product", productSchema);
 

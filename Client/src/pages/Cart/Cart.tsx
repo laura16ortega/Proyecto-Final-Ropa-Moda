@@ -1,4 +1,4 @@
-import { Container, Box, Button, Grid, Typography } from "@mui/material";
+import { Container, Box, Button, Grid, Typography, Link } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -13,12 +13,14 @@ import {
   decreaseCartQuantity,
   removeCartItem,
 } from "../../redux/slices/cartSlice";
+
 import {
   increaseGeneralQuantity,
   decreaseGeneralQuantity,
   clearGeneralQuantity,
 } from "../../redux/slices/testSlice";
 import { useNotification } from '../../components/UseNotification/UseNotification';
+import type { mappedDataType } from "../../redux/thunk-actions/testActions"
 
 
 const Cart = () => {
@@ -29,11 +31,13 @@ const Cart = () => {
     (state) => state.cart
   );
 
-  const subTotalPrice = cart?.reduce(
+  const cartProd: mappedDataType[] = JSON.parse(localStorage.getItem('cart') || "")
+
+  const subTotalPrice = cartProd?.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
-  const itemRes = cart?.reduce((total, item) => total + item.quantity, 0);
+  const itemRes = cartProd?.reduce((total, item) => total + item.quantity, 0);
 
   const priceData = [
     { title: "Subtotal", price: subTotalPrice },
@@ -41,21 +45,16 @@ const Cart = () => {
     { title: "Impuestos", price: 0 },
   ];
 
-  //TODO: Bunch of junk code, maybe using localStorage should fix this
-
   const handleIncreaseCart = (productId: number) => {
     dispatch(increaseCartQuantity(productId));
-    dispatch(increaseGeneralQuantity(productId));
   };
 
   const handleDecreaseCart = (productId: number) => {
     dispatch(decreaseCartQuantity(productId));
-    dispatch(decreaseGeneralQuantity(productId));
   };
 
   const handleDelete = (productId: number) => {
     dispatch(removeCartItem(productId));
-    dispatch(clearGeneralQuantity(productId));
   };
 
   return (
@@ -64,9 +63,8 @@ const Cart = () => {
         <h1>CartLoading</h1>
       ) : cartError ? (
         <h1>CartError: {cartError}</h1>
-      ) : !cart?.length ? (
+      ) : !cartProd?.length ? (
         <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
-          {" "}
           {/* Container MUI */}
           <Box sx={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
@@ -125,7 +123,7 @@ const Cart = () => {
                                                 <p style={{ marginLeft: "1rem" }}>{`${cart.length} items`}</p>*/}
                   </Box>
                   <Box sx={{ marginTop: "2.5rem" }}>
-                    {cart?.map((e, i) => (
+                    {cartProd?.map((e, i) => (
                       <Box key={i + 1} className={s.productsContainer}>
                         <Box
                           sx={{
@@ -372,7 +370,7 @@ const Cart = () => {
                           variant="subtitle1"
                           sx={{ display: "flex" }}
                         >
-                          ¿Necesitas ayuda? Contáctanos
+                          ¿Necesitas ayuda? <Link href="/contact" sx={{marginLeft: "5px"}}>Contáctanos</Link>
                         </Typography>
                       </Box>
                     </Box>
