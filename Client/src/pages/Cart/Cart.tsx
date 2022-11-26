@@ -14,11 +14,6 @@ import {
   removeCartItem,
 } from "../../redux/slices/cartSlice";
 
-import {
-  increaseGeneralQuantity,
-  decreaseGeneralQuantity,
-  clearGeneralQuantity,
-} from "../../redux/slices/testSlice";
 import { useNotification } from '../../components/UseNotification/UseNotification';
 import type { mappedDataType } from "../../redux/thunk-actions/testActions"
 import { fetchingTest } from "../../redux/thunk-actions/testActions";
