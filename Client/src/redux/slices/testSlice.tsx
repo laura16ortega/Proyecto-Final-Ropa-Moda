@@ -1,15 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  fetchingTest,
-  testApiCall,
-  mappedDataType,
-} from "../thunk-actions/testActions";
+import { getAllProducts } from "../thunk-actions/testActions";
+import { mappedDbProductsType } from "../types/productTypes"
 
 type InitialState = {
   loading: boolean;
   error: null | string;
-  allData: null | mappedDataType[];
-  dataBackup: null | mappedDataType[];
+  allData: null | mappedDbProductsType[];
+  dataBackup: null | mappedDbProductsType[];
 };
 
 const initialState = {
@@ -32,7 +29,7 @@ export const testSlice = createSlice({
       const filteredCards =
         state.allData &&
         state.allData.filter((card) => {
-          return card.title
+          return card.name
             .toLowerCase()
             .includes(action.payload.toLowerCase());
         });
@@ -48,9 +45,10 @@ export const testSlice = createSlice({
         state.dataBackup.filter((card) => {
           let isValid = true;
           for (let key in filters) {
+            console.log("filters[key]: ", filters[key])
             if (filters[key].length <= 0) return true;
             isValid =
-              isValid && // Tuve que meter tipo any en ratingApiCall por el includes <-- se arregla cuando se trae de la api ( ._.)b
+              isValid && // Tuve que meter tipo any en EL INDEX por el includes
               (filters[key] as string[]).some((el) => card[key].includes(el)); // ! Cuando no tiene nada se limpia y no tira resultados - Arreglado 3 lineas arriba, dejo por las dudas
             //card[key].toLowerCase().includes((filters[key] as string[])[0] || (filters[key] as string[])[1]) <-- funcion previa, filtra solo por el primer string del array
           }
@@ -73,27 +71,27 @@ export const testSlice = createSlice({
           return a.price - b.price;
         }
         if (action.payload === "Rating") {
-          return b.rating.rate - a.rating.rate;
+          return b.ratingsAverage - a.ratingsAverage; // ! (a, b).ratingsAverage
         } else {
-          return a.id - b.id;
+          return a.id - b.id; // ! ???? no _id
         }
       });
     },
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchingTest.pending, (state, action) => {
+      .addCase(getAllProducts.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(
-        fetchingTest.fulfilled,
-        (state, action: PayloadAction<mappedDataType[]>) => {
+        getAllProducts.fulfilled,
+        (state, action: PayloadAction<mappedDbProductsType[]>) => {
           state.loading = false;
           state.allData = action.payload;
           state.dataBackup = action.payload;
         }
       )
-      .addCase(fetchingTest.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(getAllProducts.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
       });

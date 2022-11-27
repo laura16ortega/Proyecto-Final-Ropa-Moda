@@ -3,11 +3,11 @@ import { Box } from "@mui/material"
 import "swiper/css/bundle";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Scrollbar } from "swiper";
-import type { mappedDataType } from "../../redux/thunk-actions/testActions"
 import Card from "../Card/Card"
+import { mappedDbProductsType } from "../../redux/types/productTypes"
 
 type CartSliderProps = {
-    allData: mappedDataType[]
+    allData: mappedDbProductsType[]
 }
 
 // ! No mapear todos los productos

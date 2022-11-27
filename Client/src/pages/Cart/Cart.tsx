@@ -15,8 +15,8 @@ import {
 } from "../../redux/slices/cartSlice";
 
 import { useNotification } from '../../components/UseNotification/UseNotification';
-import type { mappedDataType } from "../../redux/thunk-actions/testActions"
-import { fetchingTest } from "../../redux/thunk-actions/testActions";
+import type { mappedDbProductsType } from "../../redux/types/productTypes"
+import { getAllProducts } from "../../redux/thunk-actions/testActions";
 import CartSlider from "../../components/CartSlider/CartSlider";
 
 
@@ -29,7 +29,7 @@ const Cart = () => {
   );
   const { allData, loading } = useAppSelector((state) => state.data);
 
-  const cartProd: mappedDataType[] = JSON.parse(localStorage.getItem('cart') || "")
+  const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "") // ! mappedDataType
 
   const subTotalPrice = cartProd?.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -43,21 +43,21 @@ const Cart = () => {
     { title: "Impuestos", price: 0 },
   ];
 
-  const handleIncreaseCart = (productId: number) => {
+  const handleIncreaseCart = (productId: string) => { // ! productId: string
     dispatch(increaseCartQuantity(productId));
   };
 
-  const handleDecreaseCart = (productId: number) => {
+  const handleDecreaseCart = (productId: string) => { // ! productId: string
     dispatch(decreaseCartQuantity(productId));
   };
 
-  const handleDelete = (productId: number) => {
+  const handleDelete = (productId: string) => { // ! productId: string
     dispatch(removeCartItem(productId));
   };
 
   useEffect(() => {
     if (!allData?.length) {
-      dispatch(fetchingTest());
+      dispatch(getAllProducts());
     }
   }, [dispatch]);
 
@@ -140,7 +140,7 @@ const Cart = () => {
                         >
                           <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
                             <img
-                              src={e.image}
+                              src={e.images[0]}
                               alt=""
                               className={s.productImage}
                             />
@@ -159,10 +159,10 @@ const Cart = () => {
                                 variant="h6"
                                 className={s.productName}
                               >
-                                {e.title} {/*<h2>{e.title}</h2>*/}
+                                {e.name}
                               </Typography>
                               <Typography variant="subtitle1">
-                                {`$${e.price}`}{" "}
+                                {`$${e.price}`}
                                 {/*<span>{`$${e.price}`}</span>*/}
                               </Typography>
                             </Box>
@@ -183,7 +183,7 @@ const Cart = () => {
                                 <Button
                                   disableElevation
                                   className={s.counterButton}
-                                  onClick={() => handleDecreaseCart(e.id)}
+                                  onClick={() => handleDecreaseCart(e._id)}
                                 >
                                   <RemoveIcon
                                     sx={{
@@ -205,7 +205,7 @@ const Cart = () => {
                                 <Button
                                   disableElevation
                                   className={s.counterButton}
-                                  onClick={() => handleIncreaseCart(e.id)}
+                                  onClick={() => handleIncreaseCart(e._id)}
                                 >
                                   <AddIcon
                                     sx={{
@@ -218,7 +218,7 @@ const Cart = () => {
                                 </Button>
                               </Box>
                               <Button
-                                onClick={() => handleDelete(e.id)}
+                                onClick={() => handleDelete(e._id)}
                                 className={s.deleteIcon}
                               >
                                 <DeleteIcon />

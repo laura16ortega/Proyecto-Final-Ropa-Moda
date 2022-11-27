@@ -9,19 +9,10 @@ import {
 } from "../../redux/slices/cartSlice";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-
-type Product = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  quantity: number;
-};
+import type { mappedDbProductsType } from "../../redux/types/productTypes"
 
 type productProps = {
-  product: Product
+  product: mappedDbProductsType 
   margin?: string // Slider
 };
 
@@ -29,19 +20,19 @@ const Card = ({ product, margin }: productProps) => {
   const dispatch = useAppDispatch();
   const { cartLoading, cart } = useAppSelector((state) => state.cart);
 
-  const cartProd: Product[] = JSON.parse(localStorage.getItem('cart') || "")
-  const foundOnCart = cartProd.find(e => e.title === product.title)
+  const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
+  const foundOnCart = cartProd.find(e => e.name === product.name)
 
-  const handleCart = (productId: number) => {
+  const handleCart = (productId: string) => {
     dispatch(addProductToCart(productId));
   };
 
-  const handleIncreaseCart = (productId: number) => {
+  const handleIncreaseCart = (productId: string) => {
     // ! if quantity > stock === error
     dispatch(increaseCartQuantity(productId));
   };
 
-  const handleDecreaseCart = (productId: number) => {
+  const handleDecreaseCart = (productId: string) => {
     dispatch(decreaseCartQuantity(productId));
   };
 
@@ -58,20 +49,20 @@ const Card = ({ product, margin }: productProps) => {
           }}
         >
           {/* Special tags: limited edition, best seller, low calories, etc */}
-          <Link href={`/${product.id}`}>
+          <Link href={`/${product._id}`}>
             <Box>
               <img
-                src={product.image}
-                alt={`${product.title} not found`}
+                src={product.images[0]}
+                alt={`${product.name} not found`}
                 className={s.image}
                 style={{ marginBottom: ".7rem" }}
               />
               <Typography variant="h3" component="p" className={s.title}>
-                {product.title}
+                {product.name}
               </Typography>
             </Box>
           </Link>
-          <Box sx={{ flex: "1 1 auto" }}>
+          <Box sx={{ flex: "1 1 auto" }}> {/*// ! al Pedo, sacar esto */}
             <Typography
               variant="subtitle1"
               component="p"
@@ -103,19 +94,19 @@ const Card = ({ product, margin }: productProps) => {
             </Box>
             <Box sx={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
               {!foundOnCart ? (
-                <Button variant="contained" disableElevation size="small" className={s.addButton} onClick={() => handleCart(product.id)} disabled={cartLoading}>
+                <Button variant="contained" disableElevation size="small" className={s.addButton} onClick={() => handleCart(product._id)} disabled={cartLoading}>
                   {cartLoading ? "Agregando..." : "Agregar al carro"}
                 </Button>
               ) : (
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", }}>
-                  <Button disableElevation className={s.counterButton} onClick={() => handleDecreaseCart(product.id)} >
+                  <Button disableElevation className={s.counterButton} onClick={() => handleDecreaseCart(product._id)} >
                     <RemoveIcon
                       sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px", }} />
                   </Button>
                   <h2 style={{ marginRight: "1rem", marginLeft: "1rem" }}>
                     {foundOnCart.quantity}
                   </h2>
-                  <Button disableElevation className={s.counterButton} onClick={() => handleIncreaseCart(product.id)} >
+                  <Button disableElevation className={s.counterButton} onClick={() => handleIncreaseCart(product._id)} >
                     <AddIcon sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px", }} />
                   </Button>
                 </Box>
