@@ -42,8 +42,6 @@ const ConditionalRendering = ({ filterDetails, filters, setFilters }: Filter) =>
 
     const open = Boolean(anchorEl);
 
-    // ! RENDERIZA 2 POPUPS, POSIBLEMENTE MAPEAR DESDE LA FILTRACION
-
     if (filters.category.includes(filterDetails.nameValue)) {
         return (
             <Box className={s.container}>
@@ -83,7 +81,7 @@ const ConditionalRendering = ({ filterDetails, filters, setFilters }: Filter) =>
     } else {
         return (
             <Box>
-                
+
             </Box>
         )
     }
