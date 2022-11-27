@@ -1,4 +1,4 @@
-import { Grid, Paper, Box, Typography, Button, Link } from "@mui/material";
+import { Grid, Paper, Box, Typography, Button, Link, Rating } from "@mui/material";
 import s from "./Card.module.css";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
@@ -62,24 +62,11 @@ const Card = ({ product, margin }: productProps) => {
               </Typography>
             </Box>
           </Link>
-          <Box sx={{ flex: "1 1 auto" }}> {/*// ! al Pedo, sacar esto */}
-            <Typography
-              variant="subtitle1"
-              component="p"
-              sx={{ marginBottom: ".25rem" }}
-            >
-              Not. FIFA. Endorsed.
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              component="p"
-              sx={{
-                marginBottom: ".25rem",
-                fontSize: "1rem",
-                color: "rgba(119,119,119, 1);",
-              }}
-            >
-              Lager ‧ 4.5% ‧ 12 x Can (330ml)
+          <Box>
+          <Box sx={{ flex: "1 1 auto", display: "flex", alignItems: "center", justifyContent: "center", marginY: ".25rem"}}>
+            <Rating value={product.ratingsAverage} readOnly precision={0.5}/>
+            <Typography variant="subtitle2" sx={{color: "gray", userSelect: "none", marginLeft: "3px"}}>
+              {product.ratingsQuantity} review/s
             </Typography>
           </Box>
           <Box>
@@ -112,6 +99,7 @@ const Card = ({ product, margin }: productProps) => {
                 </Box>
               )}
             </Box>
+          </Box>
           </Box>
         </Box>
       </Paper>
