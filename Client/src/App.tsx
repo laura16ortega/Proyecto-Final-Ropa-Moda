@@ -7,12 +7,12 @@ import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
 import SignInSide from "./pages/Login/SignInSide";
 import DetailCard from "./components/DetailCard/DetailCard";
+
 import Profile from "./components/Profile/Profile";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import Register from "./pages/Register/Register";
 import Contact from "./pages/ContactUs/Contact";
 import { useEffect } from "react";
-import CreateForm from "./pages/CreateForm/CreateForm";
 
 function App() {
   useEffect(() => {
@@ -36,7 +36,8 @@ function App() {
         <Route path="/landingPage" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/create" element={<CreateForm />} />
+        <Route path="/create" element={<CreateForm />} />{" "}
+        <Route path="/confirmed" element={<BuyConfirmed />} />
       </Routes>
 
       <Footer />

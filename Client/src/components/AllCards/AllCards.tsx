@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
-import { fetchingTest } from "../../redux/thunk-actions/testActions";
+import { getAllProducts } from "../../redux/thunk-actions/testActions";
 import Card from "../Card/Card";
-import { Container, Grid, Skeleton, Paper} from "@mui/material";
-import { Link } from "react-router-dom";
+import { Container, Grid, Skeleton, Paper, Box, Typography} from "@mui/material";
 import Loading from "../Loading/loading";
 import Pagination from '../Pagination/Pagination'
 
@@ -13,7 +12,7 @@ const AllCards = () => {
 
   useEffect(() => {
     if (!allData?.length) {
-      dispatch(fetchingTest());
+      dispatch(getAllProducts());
     }
   }, [dispatch]);
 
@@ -65,7 +64,11 @@ const AllCards = () => {
        ) : error ? (
          <h1>Error: {error}</h1>
        ) : allData?.length === 0 ? (
-         <h1>No results</h1>
+        <Box sx={{minHeight: "40vh", display: "flex", alignItems: "center", justifyContent: "center", width: "inherit"}}>
+          <Typography variant="h3" fontFamily={"poppins"} fontWeight="600">
+            Sin resultados
+          </Typography>
+        </Box>
        ) : (
          allData.slice (
           (pagina - 1) * productosPorPagina,
@@ -74,15 +77,6 @@ const AllCards = () => {
        
       </>      
       </Grid>
-      {/*<Container maxWidth="xs" sx={{ mt: 7 }}>
-            <Grid container sx={{ justifyContent: "center" }}>
-               <TestPagination
-                  numPages={TotalPages}
-                  page={page}
-                  setPage={setPage} />
-            </Grid>
-         </Container>*/}
-       
     </Container>
   );
 };

@@ -5,23 +5,31 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import s from "./Cart.module.css";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import paypalImg from "../../assets/images/paypal.png";
+
 import {
   increaseCartQuantity,
   decreaseCartQuantity,
   removeCartItem,
 } from "../../redux/slices/cartSlice";
-import Paypal from "../../components/Paypal/Paypal";
-import type { mappedDataType } from "../../redux/thunk-actions/testActions"
+
+import { useNotification } from '../../components/UseNotification/UseNotification';
+import type { mappedDbProductsType } from "../../redux/types/productTypes"
+import { getAllProducts } from "../../redux/thunk-actions/testActions";
+import CartSlider from "../../components/CartSlider/CartSlider";
+
 
 const Cart = () => {
+  const { displayNotification } = useNotification();
   const [openPaypal, setOpenPaypal] = useState(false);
   const dispatch = useAppDispatch();
   const { cart, cartLoading, cartError } = useAppSelector(
     (state) => state.cart
   );
+  const { allData, loading } = useAppSelector((state) => state.data);
 
-  const cartProd: mappedDataType[] = JSON.parse(localStorage.getItem('cart') || "")
+  const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "") // ! mappedDataType
 
   const subTotalPrice = cartProd?.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -35,17 +43,23 @@ const Cart = () => {
     { title: "Impuestos", price: 0 },
   ];
 
-  const handleIncreaseCart = (productId: number) => {
+  const handleIncreaseCart = (productId: string) => { // ! productId: string
     dispatch(increaseCartQuantity(productId));
   };
 
-  const handleDecreaseCart = (productId: number) => {
+  const handleDecreaseCart = (productId: string) => { // ! productId: string
     dispatch(decreaseCartQuantity(productId));
   };
 
-  const handleDelete = (productId: number) => {
+  const handleDelete = (productId: string) => { // ! productId: string
     dispatch(removeCartItem(productId));
   };
+
+  useEffect(() => {
+    if (!allData?.length) {
+      dispatch(getAllProducts());
+    }
+  }, [dispatch]);
 
   return (
     <div>
@@ -65,12 +79,14 @@ const Cart = () => {
               recomendados abajo
             </Typography>
           </Box>
-          <Box sx={{ marginBottom: "1rem" }}>
-            {/*<div>
-                                    <h1 style={{ fontSize: "3.5rem", textAlign: "left" }}>RECOMENDAMOS</h1>
-                                    <div>Swipper de productos recomendados</div>
-                                </div>*/}
-          </Box>
+          {loading ? <h1>Loading</h1> : allData &&
+            <Box sx={{}}>
+              <Typography variant="h3" sx={{ textAlign: "left", fontFamily: "poppins", fontWeight: "600", margin: "1.6rem .4rem" }}>
+                RECOMENDAMOS
+              </Typography>
+              <CartSlider allData={allData} />
+            </Box>
+          }
         </Box>
       ) : (
         <Container maxWidth={"lg"}>
@@ -124,7 +140,7 @@ const Cart = () => {
                         >
                           <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
                             <img
-                              src={e.image}
+                              src={e.images[0]}
                               alt=""
                               className={s.productImage}
                             />
@@ -143,10 +159,10 @@ const Cart = () => {
                                 variant="h6"
                                 className={s.productName}
                               >
-                                {e.title} {/*<h2>{e.title}</h2>*/}
+                                {e.name}
                               </Typography>
                               <Typography variant="subtitle1">
-                                {`$${e.price}`}{" "}
+                                {`$${e.price}`}
                                 {/*<span>{`$${e.price}`}</span>*/}
                               </Typography>
                             </Box>
@@ -167,7 +183,7 @@ const Cart = () => {
                                 <Button
                                   disableElevation
                                   className={s.counterButton}
-                                  onClick={() => handleDecreaseCart(e.id)}
+                                  onClick={() => handleDecreaseCart(e._id)}
                                 >
                                   <RemoveIcon
                                     sx={{
@@ -189,7 +205,7 @@ const Cart = () => {
                                 <Button
                                   disableElevation
                                   className={s.counterButton}
-                                  onClick={() => handleIncreaseCart(e.id)}
+                                  onClick={() => handleIncreaseCart(e._id)}
                                 >
                                   <AddIcon
                                     sx={{
@@ -202,7 +218,7 @@ const Cart = () => {
                                 </Button>
                               </Box>
                               <Button
-                                onClick={() => handleDelete(e.id)}
+                                onClick={() => handleDelete(e._id)}
                                 className={s.deleteIcon}
                               >
                                 <DeleteIcon />
@@ -322,20 +338,32 @@ const Cart = () => {
                             />
                           </span>
                         </Button>
-                        {openPaypal ? (
-                          <div
-                            style={{
-                              marginTop: "1rem",
-                              height: "220px",
-                              width: "300px",
-                              overflow: "hidden",
-                            }}
-                          >
-                            <Paypal value={subTotalPrice} />
-                          </div>
-                        ) : (
-                          <div></div>
-                        )}
+
+                          { openPaypal ? <PayPalScriptProvider options={{"client-id": "Af_2kGfokFGu8n5l3n7OC64eb-BSX4kRvnCZu65B4_48mFGOC6R5f937BMhEM5b-GvfLE-wulIotXk6S"}}>
+                          <PayPalButtons  createOrder={(data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: {
+                    value: subTotalPrice,
+                  },
+                },
+              ],
+            });
+          }}
+          onApprove={async (data, actions) => {
+            const details = await actions.order.capture();
+            
+            const name = details.payer.name.given_name;
+            console.log(details);
+            displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type:"success" })
+            setTimeout(() => {
+              window.location.href = '/confirmed'
+            }, 500)
+
+          }}
+          />
+                        </PayPalScriptProvider> : <div></div>}
                       </Box>
                       <Box
                         sx={{
@@ -348,7 +376,7 @@ const Cart = () => {
                           variant="subtitle1"
                           sx={{ display: "flex" }}
                         >
-                          ¿Necesitas ayuda? <Link href="/contact" sx={{marginLeft: "5px"}}>Contáctanos</Link>
+                          ¿Necesitas ayuda? <Link href="/contact" sx={{ marginLeft: "5px" }}>Contáctanos</Link>
                         </Typography>
                       </Box>
                     </Box>
