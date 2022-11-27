@@ -40,21 +40,17 @@ export const testSlice = createSlice({
     },
     filterElements: (state, action: PayloadAction<FilterTypedState>) => {
       const filters = action.payload;
+      const cleanFilters = Object.fromEntries(Object.entries(filters).filter(([_, val]) => val.length > 0)) // Elimina objetos del filtrado que esten vacios
       const filteredCards =
         state.dataBackup &&
         state.dataBackup.filter((card) => {
           let isValid = true;
-          for (let key in filters) {
-            console.log("filters[key]: ", filters[key])
-            if (filters[key].length <= 0) return true;
-            isValid =
-              isValid && // Tuve que meter tipo any en EL INDEX por el includes
-              (filters[key] as string[]).some((el) => card[key].includes(el)); // ! Cuando no tiene nada se limpia y no tira resultados - Arreglado 3 lineas arriba, dejo por las dudas
-            //card[key].toLowerCase().includes((filters[key] as string[])[0] || (filters[key] as string[])[1]) <-- funcion previa, filtra solo por el primer string del array
+          for (let key in cleanFilters) {
+            //                                                                        Tuve que meter tipo any en EL INDEX por el includes 
+            isValid = isValid && (cleanFilters[key] as string[]).some((el) => card[key].includes(el));
           }
           return isValid;
         });
-      //state.allData = filteredCards
       return {
         ...state,
         allData: filteredCards,
@@ -71,7 +67,7 @@ export const testSlice = createSlice({
           return a.price - b.price;
         }
         if (action.payload === "Rating") {
-          return b.ratingsAverage - a.ratingsAverage; // ! (a, b).ratingsAverage
+          return b.ratingsAverage - a.ratingsAverage;
         } else {
           return a.id - b.id; // ! ???? no _id
         }
