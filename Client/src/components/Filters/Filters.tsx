@@ -5,10 +5,14 @@ import s from "./Filters.module.css"
 import ClearIcon from '@mui/icons-material/Clear';
 import { filterElements, sortProducts } from '../../redux/slices/testSlice';
 import { useAppDispatch } from '../../assets/hooks';
+import ConditionalRendering from '../FilterPopup/ConditionalRendering';
 
 export type FilterTypedState = {
-
    category: [] | string[]
+   gender: [] | string[]
+   tallaCamiseta: [] | string[]
+   tallaPantalón: [] | string[]
+   marca: [] | string[]
    [index: string]: string | string[]
 }
 
@@ -24,16 +28,29 @@ const SortFilter = () => {
    const [sort, setSort] = useState<string>("default")
    const [filters, setFilters] = useState<FilterTypedState>({
       category: [],
+      gender: [],
+      tallaCamiseta: [],
+      tallaPantalón: [],
+      marca: []
    })
 
+   console.log("Filters state: ", filters)
+
    const filterTypes = [
-      { name: "category", options: ["jewelery", "electronics"] },
+      { nameToDisplay: "Genero", name: "gender", options: ["Mujer", "Hombre", "Unisex"]},
+      { nameToDisplay: "Categoria", name: "category", options: ["Camiseta", "Pantalones"]},
+      { nameToDisplay: "Marca", name: "marca", options: ["quechua", "x-warm", "forclaz", "adidas", "urb", "le coq"]}
+   ]
+
+   const conditionalSizes = [
+      { nameToDisplay: "Talle camiseta", name: "tallaCamiseta", nameValue: "Camiseta", options: ["XS", "S", "M", "L", "XL", "XXL"] },
+      { nameToDisplay: "Talle pantalon", name: "tallaPantalón", nameValue: "Pantalones", options: ["28", "30", "32", "34"] },
    ]
 
    const sortTypes = [
-      { name: "Price - low to high", value: "PriceDESC" },
-      { name: "Price - high to low", value: "PriceASC" },
-      { name: "Rating", value: "Rating" },
+      { name: "Precio descendente", value: "PriceDESC" },
+      { name: "Precio ascendente", value: "PriceASC" },
+      { name: "Mejor rating", value: "Rating" },
    ]
 
    const activeFilters = Object.values(filters).flat() // Utilizado para el display de filtros activos, cambiarlo a filters
@@ -48,7 +65,10 @@ const SortFilter = () => {
    const handleFiltersReset = (e: React.MouseEvent<HTMLSpanElement>) => {
       setFilters({
          category: [],
-         // Demas proximos filtros
+         gender: [],
+         tallaCamiseta: [],
+         tallaPantalón: [],
+         marca: []
       })
    }
 
@@ -59,7 +79,6 @@ const SortFilter = () => {
 
    const arr: arrConstTest[] = [] // Array a mapear para mostrar filtros activos
    for (let key in filters) {
-
       (filters[key] as string[]).map(opt =>
          arr.push({ key: key, value: opt })
       )
@@ -80,7 +99,10 @@ const SortFilter = () => {
                </Typography>
                <Box className={s.filtersContainer}>
                   {filterTypes.map(e => (
-                     <FilterPopup key={e.name} filterDetails={e} filters={filters} setFilters={setFilters} />
+                     <FilterPopup  key={e.name} filterDetails={e} filters={filters} setFilters={setFilters} />
+                  ))}
+                  {conditionalSizes.map(e => (
+                     <ConditionalRendering key={e.name} filterDetails={e} filters={filters} setFilters={setFilters} />
                   ))}
                </Box>
             </Box>
@@ -99,7 +121,7 @@ const SortFilter = () => {
                         horizontal: "right"
                      }, /* Para que aparezca desde arriba a la derecha en vez del centro :s */
                   }}>
-                     <MenuItem value="default">For you</MenuItem>
+                     <MenuItem value="default">Por defecto</MenuItem>
                      {sortTypes.map(e =>
                         <MenuItem key={e.value} value={e.value}>{e.name}</MenuItem>
                      )}
