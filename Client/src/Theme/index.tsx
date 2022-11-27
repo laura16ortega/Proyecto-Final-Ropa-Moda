@@ -19,7 +19,6 @@ const lightTheme = createTheme(
       primary: {
         light: "#757ce8",
         main: "#24262b",
-        dark: "#002884",
         contrastText: "#fff",
       },
       secondary: {
@@ -29,7 +28,7 @@ const lightTheme = createTheme(
         contrastText: "#F4F4F6",
       },
       error: {
-        main: "#24262b",
+        main: "#f44336",
       },
     },
   },

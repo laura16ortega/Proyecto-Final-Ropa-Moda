@@ -47,11 +47,11 @@ export const Navbar = () => {
               }}
               color="inherit"
             >
-              Home
+              Inicio
             </Button>
             <Button
               component={NavLink}
-              to="/categorias"
+              to="/create"
               sx={{
                 textTransform: "none",
                 "&.active": {
@@ -60,7 +60,7 @@ export const Navbar = () => {
               }}
               color="inherit"
             >
-              Categorias
+              Crea tu prenda
             </Button>
             {!localStorage.getItem("jwt") ? (
               /*                         <Button 

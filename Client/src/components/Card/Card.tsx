@@ -28,8 +28,8 @@ const Card = ({ product }: productProps) => {
   const dispatch = useAppDispatch();
   const { cartLoading, cart } = useAppSelector((state) => state.cart);
 
-  const cartProd: Product[] = JSON.parse(localStorage.getItem('cart') || "")
-  const foundOnCart = cartProd.find(e => e.title === product.title)
+  const cartProd: Product[] = JSON.parse(localStorage.getItem("cart") || "");
+  const foundOnCart = cartProd.find((e) => e.title === product.title);
 
   const handleCart = (productId: number) => {
     dispatch(addProductToCart(productId));
@@ -102,20 +102,54 @@ const Card = ({ product }: productProps) => {
             </Box>
             <Box sx={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
               {!foundOnCart ? (
-                <Button variant="contained" disableElevation size="small" className={s.addButton} onClick={() => handleCart(product.id)} disabled={cartLoading}>
+                <Button
+                  variant="contained"
+                  disableElevation
+                  size="small"
+                  className={s.addButton}
+                  onClick={() => handleCart(product.id)}
+                  disabled={cartLoading}
+                >
                   {cartLoading ? "Agregando..." : "Agregar al carro"}
                 </Button>
               ) : (
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", }}>
-                  <Button disableElevation className={s.counterButton} onClick={() => handleDecreaseCart(product.id)} >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    disableElevation
+                    className={s.counterButton}
+                    onClick={() => handleDecreaseCart(product.id)}
+                  >
                     <RemoveIcon
-                      sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px", }} />
+                      sx={{
+                        color: "rgb(17, 17, 17)",
+                        height: "100%",
+                        width: "100%",
+                        padding: "2px",
+                      }}
+                    />
                   </Button>
                   <h2 style={{ marginRight: "1rem", marginLeft: "1rem" }}>
                     {foundOnCart.quantity}
                   </h2>
-                  <Button disableElevation className={s.counterButton} onClick={() => handleIncreaseCart(product.id)} >
-                    <AddIcon sx={{ color: "rgb(17, 17, 17)", height: "100%", width: "100%", padding: "2px", }} />
+                  <Button
+                    disableElevation
+                    className={s.counterButton}
+                    onClick={() => handleIncreaseCart(product.id)}
+                  >
+                    <AddIcon
+                      sx={{
+                        color: "rgb(17, 17, 17)",
+                        height: "100%",
+                        width: "100%",
+                        padding: "2px",
+                      }}
+                    />
                   </Button>
                 </Box>
               )}

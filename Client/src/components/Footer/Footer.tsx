@@ -14,7 +14,7 @@ export default function Footer() {
               <h4>Ayuda</h4>
               <ul>
                 <li>
-                  <a>Contacto</a>
+                  <a href="/contact">Contacto</a>
                 </li>
                 <li>
                   <a>Soporte</a>
@@ -45,7 +45,7 @@ export default function Footer() {
                   <a>Historia</a>
                 </li>
                 <li>
-                  <a href="/">Lista</a>
+                  <a>Lista</a>
                 </li>
               </ul>
             </div>

@@ -10,20 +10,18 @@ import DetailCard from "./components/DetailCard/DetailCard";
 import Profile from "./components/Profile/Profile";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import Register from "./pages/Register/Register";
-import Contact from './pages/ContactUs/Contact';
-import { useEffect } from "react"
-
-
+import Contact from "./pages/ContactUs/Contact";
+import { useEffect } from "react";
+import CreateForm from "./pages/CreateForm/CreateForm";
 
 function App() {
-
   useEffect(() => {
-    const findCart = localStorage.getItem("cart")
+    const findCart = localStorage.getItem("cart");
     if (!findCart) {
-      localStorage.setItem('cart', JSON.stringify([]))
+      localStorage.setItem("cart", JSON.stringify([]));
     }
-  }, [])
-      
+  }, []);
+
   return (
     <div className="App">
       <Navbar />
@@ -37,8 +35,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/landingPage" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/contact" element={<Contact/>}/>
-
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/create" element={<CreateForm />} />
       </Routes>
 
       <Footer />
