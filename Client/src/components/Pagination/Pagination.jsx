@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
+import { useAppSelector } from "../../assets/hooks"
 import s from '../../components/Pagination/pagination.module.css';
 
 
 export default function Pagination({pagina, setPagina, maximo}) {
+  const { allData } = useAppSelector(state => state.data)
   const [input, setInput] = useState (1);
 
   const nextPage = () => {
@@ -30,6 +32,14 @@ export default function Pagination({pagina, setPagina, maximo}) {
       }
     }
   };
+
+  useEffect(() => {
+    if (allData === undefined || allData?.length < 8 || undefined) {
+      setPagina(1)
+      setInput(1)
+    }
+  }, [allData])
+  
 
   const onChange = e => {
     setInput (e.target.value);
