@@ -34,10 +34,8 @@ export default function Pagination({pagina, setPagina, maximo}) {
   };
 
   useEffect(() => {
-    if (allData === undefined || allData?.length < 8 || undefined) {
-      setPagina(1)
-      setInput(1)
-    }
+    setPagina(1)
+    setInput(1)
   }, [allData])
   
 
