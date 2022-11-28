@@ -1,4 +1,12 @@
-import { Grid, Paper, Box, Typography, Button, Link } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  Box,
+  Typography,
+  Button,
+  Link,
+  Rating,
+} from "@mui/material";
 import s from "./Card.module.css";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
@@ -7,52 +15,46 @@ import {
   increaseCartQuantity,
   decreaseCartQuantity,
 } from "../../redux/slices/cartSlice";
-import {
-  increaseGeneralQuantity,
-  decreaseGeneralQuantity,
-} from "../../redux/slices/testSlice";
-
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-
-type Product = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  quantity: number;
-};
+import type { mappedDbProductsType } from "../../redux/types/productTypes";
 
 type productProps = {
-  product: Product;
+  product: mappedDbProductsType;
+  margin?: string; // Slider
 };
 
-const Card = ({ product }: productProps) => {
+const Card = ({ product, margin }: productProps) => {
   const dispatch = useAppDispatch();
-  const { cartLoading } = useAppSelector((state) => state.cart);
+  const { cartLoading, cart } = useAppSelector((state) => state.cart);
 
-  //TODO Bunch of junk code, maybe using localStorage should fix this
+  const cartProd: mappedDbProductsType[] = JSON.parse(
+    localStorage.getItem("cart") || ""
+  );
+  const foundOnCart = cartProd.find((e) => e.name === product.name);
 
-  const handleCart = (productId: number) => {
+  const handleCart = (productId: string) => {
     dispatch(addProductToCart(productId));
-    dispatch(increaseGeneralQuantity(productId));
   };
 
-  const handleIncreaseCart = (productId: number) => {
+  const handleIncreaseCart = (productId: string) => {
     // ! if quantity > stock === error
     dispatch(increaseCartQuantity(productId));
-    dispatch(increaseGeneralQuantity(productId));
   };
 
-  const handleDecreaseCart = (productId: number) => {
-    dispatch(decreaseGeneralQuantity(productId));
+  const handleDecreaseCart = (productId: string) => {
     dispatch(decreaseCartQuantity(productId));
   };
 
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3}>
+    <Grid
+      item
+      xs={12}
+      sm={6}
+      md={4}
+      lg={3}
+      sx={{ margin: margin ? margin : "0px" }}
+    >
       <Paper elevation={3} sx={{ display: "flex", height: "100%" }}>
         <Box
           sx={{
@@ -64,104 +66,101 @@ const Card = ({ product }: productProps) => {
           }}
         >
           {/* Special tags: limited edition, best seller, low calories, etc */}
-          <Link href={`/home/${product.id}`}>
+          <Link href={`/products/${product._id}`}>
             <Box>
               <img
-                src={product.image}
-                alt={`${product.title} not found`}
+                src={product.images[0]}
+                alt={`${product.name} not found`}
                 className={s.image}
                 style={{ marginBottom: ".7rem" }}
               />
               <Typography variant="h3" component="p" className={s.title}>
-                {product.title}
+                {product.name}
               </Typography>
             </Box>
           </Link>
-          <Box sx={{ flex: "1 1 auto" }}>
-            <Typography
-              variant="subtitle1"
-              component="p"
-              sx={{ marginBottom: ".25rem" }}
-            >
-              Not. FIFA. Endorsed.
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              component="p"
+            <Box
               sx={{
-                marginBottom: ".25rem",
-                fontSize: "1rem",
-                color: "rgba(119,119,119, 1);",
+                flex: "1 1 auto",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginY: ".25rem",
               }}
             >
-              Lager ‧ 4.5% ‧ 12 x Can (330ml)
-            </Typography>
-          </Box>
-          <Box>
-            <Box>
+              <Rating value={product.ratingsAverage} readOnly precision={0.5} />
               <Typography
-                variant="h5"
-                component="p"
-                sx={{ fontWeight: 500, fontFamily: "system-ui" }}
+                variant="subtitle2"
+                sx={{ color: "gray", userSelect: "none", marginLeft: "3px" }}
               >
-                {`$${product.price}`}
+                {product.ratingsQuantity} review/s
               </Typography>
             </Box>
-            <Box sx={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
-              {product.quantity <= 0 ? (
-                <Button
-                  variant="contained"
-                  disableElevation
-                  size="small"
-                  className={s.addButton}
-                  onClick={() => handleCart(product.id)}
-                  disabled={cartLoading}
+            <Box>
+              <Box>
+                <Typography
+                  variant="h5"
+                  component="p"
+                  sx={{ fontWeight: 500, fontFamily: "system-ui" }}
                 >
-                  {cartLoading ? "Agregando... icon" : "Agregar al carro"}
-                </Button>
-              ) : (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+                  {`$${product.price}`}
+                </Typography>
+              </Box>
+              <Box sx={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
+                {!foundOnCart ? (
                   <Button
+                    variant="contained"
                     disableElevation
-                    className={s.counterButton}
-                    onClick={() => handleDecreaseCart(product.id)}
+                    size="small"
+                    className={s.addButton}
+                    onClick={() => handleCart(product._id)}
+                    disabled={cartLoading}
                   >
-                    <RemoveIcon
-                      sx={{
-                        color: "rgb(17, 17, 17)",
-                        height: "100%",
-                        width: "100%",
-                        padding: "2px",
-                      }}
-                    />
+                    {cartLoading ? "Agregando..." : "Agregar al carro"}
                   </Button>
-                  <h2 style={{ marginRight: "1rem", marginLeft: "1rem" }}>
-                    {product.quantity}
-                  </h2>
-                  <Button
-                    disableElevation
-                    className={s.counterButton}
-                    onClick={() => handleIncreaseCart(product.id)}
+                ) : (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    <AddIcon
-                      sx={{
-                        color: "rgb(17, 17, 17)",
-                        height: "100%",
-                        width: "100%",
-                        padding: "2px",
-                      }}
-                    />
-                  </Button>
-                </Box>
-              )}
+                    <Button
+                      disableElevation
+                      className={s.counterButton}
+                      onClick={() => handleDecreaseCart(product._id)}
+                    >
+                      <RemoveIcon
+                        sx={{
+                          color: "rgb(17, 17, 17)",
+                          height: "100%",
+                          width: "100%",
+                          padding: "2px",
+                        }}
+                      />
+                    </Button>
+                    <h2 style={{ marginRight: "1rem", marginLeft: "1rem" }}>
+                      {foundOnCart.quantity}
+                    </h2>
+                    <Button
+                      disableElevation
+                      className={s.counterButton}
+                      onClick={() => handleIncreaseCart(product._id)}
+                    >
+                      <AddIcon
+                        sx={{
+                          color: "rgb(17, 17, 17)",
+                          height: "100%",
+                          width: "100%",
+                          padding: "2px",
+                        }}
+                      />
+                    </Button>
+                  </Box>
+                )}
+              </Box>
             </Box>
-          </Box>
         </Box>
       </Paper>
     </Grid>

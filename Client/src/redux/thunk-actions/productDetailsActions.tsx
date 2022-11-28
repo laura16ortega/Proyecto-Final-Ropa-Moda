@@ -1,14 +1,14 @@
 import axios from "axios"
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import type { detailsApiCall } from "../types/productDetailTypes"
+import { detailsApiCall } from "../types/productDetailTypes"
 
-export const addProductToCart = createAsyncThunk(
-   "cart/fetch",
+export const getProductDetail = createAsyncThunk(
+   "productDetails/fetch",
    async (id: string, thunkApi) => {
       try {
          const { data } = await axios.get<detailsApiCall>(`http://localhost:3001/api/v1/products/${id}`)
-         const dataQuanity = ({...data.data.product, quantity: 1})
-         return dataQuanity
+         console.log("Details data: ", data.data.product)
+         return data.data.product
       } catch (error: any) {
          return thunkApi.rejectWithValue(error.message)
       }

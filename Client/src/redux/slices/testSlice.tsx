@@ -1,15 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  fetchingTest,
-  testApiCall,
-  mappedDataType,
-} from "../thunk-actions/testActions";
+import { getAllProducts } from "../thunk-actions/testActions";
+import { mappedDbProductsType } from "../types/productTypes"
 
 type InitialState = {
   loading: boolean;
   error: null | string;
-  allData: null | mappedDataType[];
-  dataBackup: null | mappedDataType[];
+  allData: null | mappedDbProductsType[];
+  dataBackup: null | mappedDbProductsType[];
 };
 
 const initialState = {
@@ -28,29 +25,11 @@ export const testSlice = createSlice({
   name: "test",
   initialState,
   reducers: {
-    increaseGeneralQuantity: (state, action: PayloadAction<number>) => {
-      const findProduct =
-        state.allData && state.allData.find((e) => e.id === action.payload);
-      if (findProduct) findProduct.quantity = findProduct.quantity + 1;
-    },
-    decreaseGeneralQuantity: (state, action: PayloadAction<number>) => {
-      const findProduct =
-        state.allData && state.allData.find((e) => e.id === action.payload);
-      if (findProduct) {
-        findProduct.quantity = findProduct.quantity - 1;
-        if (findProduct.quantity <= 0) findProduct.quantity = 0;
-      }
-    },
-    clearGeneralQuantity: (state, action: PayloadAction<number>) => {
-      const findProduct =
-        state.allData && state.allData.find((e) => e.id === action.payload);
-      if (findProduct) findProduct.quantity = 0;
-    },
     filterSearch: (state, action: PayloadAction<string>) => {
       const filteredCards =
         state.allData &&
         state.allData.filter((card) => {
-          return card.title
+          return card.name
             .toLowerCase()
             .includes(action.payload.toLowerCase());
         });
@@ -61,20 +40,17 @@ export const testSlice = createSlice({
     },
     filterElements: (state, action: PayloadAction<FilterTypedState>) => {
       const filters = action.payload;
+      const cleanFilters = Object.fromEntries(Object.entries(filters).filter(([_, val]) => val.length > 0)) // Elimina objetos del filtrado que esten vacios
       const filteredCards =
         state.dataBackup &&
         state.dataBackup.filter((card) => {
           let isValid = true;
-          for (let key in filters) {
-            if (filters[key].length <= 0) return true;
-            isValid =
-              isValid && // Tuve que meter tipo any en ratingApiCall por el includes <-- se arregla cuando se trae de la api ( ._.)b
-              (filters[key] as string[]).some((el) => card[key].includes(el)); // ! Cuando no tiene nada se limpia y no tira resultados - Arreglado en linea 48, dejo por las dudas
-            //card[key].toLowerCase().includes((filters[key] as string[])[0] || (filters[key] as string[])[1]) <-- funcion previa, filtra solo por el primer string del array
+          for (let key in cleanFilters) {
+            //                                                                        Tuve que meter tipo any en EL INDEX por el includes 
+            isValid = isValid && (cleanFilters[key] as string[]).some((el) => card[key].includes(el));
           }
           return isValid;
         });
-      //state.allData = filteredCards
       return {
         ...state,
         allData: filteredCards,
@@ -91,27 +67,27 @@ export const testSlice = createSlice({
           return a.price - b.price;
         }
         if (action.payload === "Rating") {
-          return b.rating.rate - a.rating.rate;
+          return b.ratingsAverage - a.ratingsAverage;
         } else {
-          return a.id - b.id;
+          return a.id - b.id; // ! ???? no _id
         }
       });
     },
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchingTest.pending, (state, action) => {
+      .addCase(getAllProducts.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(
-        fetchingTest.fulfilled,
-        (state, action: PayloadAction<mappedDataType[]>) => {
+        getAllProducts.fulfilled,
+        (state, action: PayloadAction<mappedDbProductsType[]>) => {
           state.loading = false;
           state.allData = action.payload;
           state.dataBackup = action.payload;
         }
       )
-      .addCase(fetchingTest.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(getAllProducts.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
       });
@@ -119,9 +95,6 @@ export const testSlice = createSlice({
 });
 
 export const {
-  increaseGeneralQuantity,
-  decreaseGeneralQuantity,
-  clearGeneralQuantity,
   filterElements,
   sortProducts,
   filterSearch,

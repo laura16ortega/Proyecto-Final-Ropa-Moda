@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { addProductToCart, ApiCall, mappedDataType } from "../thunk-actions/cartActions"
+import { addProductToCart } from "../thunk-actions/cartActions"
+import type { mappedDbProductsType } from "../types/productTypes"
 
 type InitialState = {
     cartLoading: boolean,
     cartError: null | string,
-    cart: null | mappedDataType[]
+    cart: null | mappedDbProductsType[]
 }
 
 const initialState = {
@@ -17,29 +18,33 @@ export const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        increaseCartQuantity: (state, action: PayloadAction<number>) => {
-            const findOnCart = state.cart && state.cart.find(e => e.id === action.payload)
+        increaseCartQuantity: (state, action: PayloadAction<string>) => {
+            const findOnCart = state.cart && state.cart.find(e => e._id === action.payload)
             if (findOnCart) {
                 const newqty = findOnCart.quantity = findOnCart.quantity + 1
                 findOnCart.quantity = newqty
+                localStorage.setItem('cart', JSON.stringify(state.cart));
             }
         },
-        decreaseCartQuantity: (state, action: PayloadAction<number>) => {
-            const findOnCart = state.cart && state.cart.find(e => e.id === action.payload)
+        decreaseCartQuantity: (state, action: PayloadAction<string>) => {
+            const findOnCart = state.cart && state.cart.find(e => e._id === action.payload)
 
             if (findOnCart) {
                 findOnCart.quantity = findOnCart.quantity - 1
+                localStorage.setItem('cart', JSON.stringify(state.cart));
                 if (findOnCart.quantity <= 0) {
                     // No optimo :ss
-                    const newState = state.cart && state.cart.filter(e => e.id !== action.payload)
+                    const newState = state.cart && state.cart.filter(e => e._id !== action.payload)
                     state.cart = newState
+                    localStorage.setItem('cart', JSON.stringify(state.cart));
                 }
             }
 
         },
-        removeCartItem: (state, action: PayloadAction<number>) => {
-            const newState = state.cart && state.cart.filter(e => e.id !== action.payload)
+        removeCartItem: (state, action: PayloadAction<string>) => {
+            const newState = state.cart && state.cart.filter(e => e._id !== action.payload)
             state.cart = newState
+            localStorage.setItem('cart', JSON.stringify(state.cart));
         },
     },
     extraReducers(builder) {
@@ -47,9 +52,10 @@ export const cartSlice = createSlice({
             .addCase(addProductToCart.pending, (state, action) => {
                 state.cartLoading = true
             })
-            .addCase(addProductToCart.fulfilled, (state, action: PayloadAction<mappedDataType>) => {
+            .addCase(addProductToCart.fulfilled, (state, action: PayloadAction<mappedDbProductsType>) => {
                 state.cartLoading = false
                 state.cart && state.cart.push(action.payload) // Immer deja alterar el estado con javascript puro
+                localStorage.setItem('cart', JSON.stringify(state.cart));
             })
             .addCase(addProductToCart.rejected, (state, action: PayloadAction<any>) => {
                 state.cartLoading = false
