@@ -32,13 +32,10 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<SignInSide />} />
-        <Route path="/products/:id" element={<DetailCard />} />
+        <Route path="/home/:id" element={<DetailCard />} />
+        <Route path='/landingPage' element={<LandingPage />} />
+        <Route path='/register' element={<Register />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/products" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/create" element={<CreateForm />} />
-        {/*<Route path="/confirmed" element={<BuyConfirmed />} />*/}
       </Routes>
 
       <Footer />

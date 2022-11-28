@@ -15,19 +15,16 @@ import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Search from "../Search/Search";
 import LoginIcon from "@mui/icons-material/Login";
+import { useAppDispatch } from "../../assets/hooks";
 import { useEffect } from "react";
-import { useAppSelector } from "../../assets/hooks";
-import type { mappedDbProductsType } from "../../redux/types/productTypes"
+import { logout } from "../../redux/slices/authSlice";
 
 export const Navbar = () => {
-
-  const { cart } = useAppSelector(state => state.cart) // Actualiza numeros del carro
-  const cartItems = JSON.parse(localStorage.getItem('cart') || "")
-  const itemRes = cartItems?.reduce((total: number, item: mappedDbProductsType ) => total + item.quantity, 0);
+  const dispatch = useAppDispatch();
 
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    window.localStorage.removeItem("jwt");
+    dispatch(logout());
     setTimeout(() => {
       window.location.href = "/";
     }, 500);
