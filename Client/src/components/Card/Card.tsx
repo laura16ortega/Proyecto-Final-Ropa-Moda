@@ -11,13 +11,8 @@ import s from "./Card.module.css";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import { addProductToCart } from "../../redux/thunk-actions/cartActions";
-import {
-  increaseCartQuantity,
-  decreaseCartQuantity,
-} from "../../redux/slices/cartSlice";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
 import type { mappedDbProductsType } from "../../redux/types/productTypes";
+import IncreaseCartButton from "../IncreaseCartButton/IncreaseCartButton";
 
 type productProps = {
   product: mappedDbProductsType;
@@ -35,15 +30,6 @@ const Card = ({ product, margin }: productProps) => {
 
   const handleCart = (productId: string) => {
     dispatch(addProductToCart(productId));
-  };
-
-  const handleIncreaseCart = (productId: string) => {
-    // ! if quantity > stock === error
-    dispatch(increaseCartQuantity(productId));
-  };
-
-  const handleDecreaseCart = (productId: string) => {
-    dispatch(decreaseCartQuantity(productId));
   };
 
   return (
@@ -119,45 +105,7 @@ const Card = ({ product, margin }: productProps) => {
                     {cartLoading ? "Agregando..." : "Agregar al carro"}
                   </Button>
                 ) : (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Button
-                      disableElevation
-                      className={s.counterButton}
-                      onClick={() => handleDecreaseCart(product._id)}
-                    >
-                      <RemoveIcon
-                        sx={{
-                          color: "rgb(17, 17, 17)",
-                          height: "100%",
-                          width: "100%",
-                          padding: "2px",
-                        }}
-                      />
-                    </Button>
-                    <h2 style={{ marginRight: "1rem", marginLeft: "1rem" }}>
-                      {foundOnCart.quantity}
-                    </h2>
-                    <Button
-                      disableElevation
-                      className={s.counterButton}
-                      onClick={() => handleIncreaseCart(product._id)}
-                    >
-                      <AddIcon
-                        sx={{
-                          color: "rgb(17, 17, 17)",
-                          height: "100%",
-                          width: "100%",
-                          padding: "2px",
-                        }}
-                      />
-                    </Button>
-                  </Box>
+                  <IncreaseCartButton id={product._id} quantity={foundOnCart.quantity}/>
                 )}
               </Box>
             </Box>
