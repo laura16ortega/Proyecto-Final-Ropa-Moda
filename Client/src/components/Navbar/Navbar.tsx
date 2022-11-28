@@ -14,12 +14,16 @@ import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Search from "../Search/Search";
 import LoginIcon from "@mui/icons-material/Login";
+import { useAppDispatch } from "../../assets/hooks";
 import { useEffect } from "react";
+import { logout } from "../../redux/slices/authSlice";
 
 export const Navbar = () => {
+  const dispatch = useAppDispatch();
+
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    window.localStorage.removeItem("jwt");
+    dispatch(logout());
     setTimeout(() => {
       window.location.href = "/";
     }, 500);

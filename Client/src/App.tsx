@@ -30,9 +30,9 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<SignInSide />} />
         <Route path="/home/:id" element={<DetailCard />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path='/landingPage' element={<LandingPage />} />
         <Route path='/register' element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
 
       <Footer />

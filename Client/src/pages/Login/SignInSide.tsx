@@ -16,6 +16,8 @@ import { useNotification } from "../../components/UseNotification/UseNotificatio
 import axios from "axios";
 
 import { useState } from "react";
+import { useAppDispatch } from "../../assets/hooks";
+import { setUser } from "../../redux/slices/authSlice";
 
 function Copyright(props: any) {
   return (
@@ -38,6 +40,7 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignInSide() {
+  const dispatch = useAppDispatch()
   /*   const [errors, setErrors] = useState({});
   const [login, setLogin] = useState({
     password:'',
@@ -55,11 +58,17 @@ export default function SignInSide() {
       if (response) {
         displayNotification({ message: "Bienvenido", type: "success" });
         window.localStorage.setItem("jwt", response.data.loginData.token);
-        console.log(window.localStorage.getItem("jwt"));
-
+        window.localStorage.setItem("User", JSON.stringify(response.data.loginData.user));
+        console.log(response.data.loginData.user)
+        dispatch(setUser({
+          token: response.data.loginData.token,
+          user: response.data.loginData.user
+          
+        }))
         setTimeout(() => {
           window.location.href = "/";
-        }, 500);
+        }, 800);
+        
       }
     } catch {
       displayNotification({

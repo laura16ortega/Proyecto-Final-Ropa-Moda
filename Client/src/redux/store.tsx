@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import testSlice from '../redux/slices/testSlice'
 import cartSlice from './slices/cartSlice'
+import authSlice from './slices/authSlice'
 import { NotificationReducer } from './slices/notificationSlice'
 
 const store = configureStore({
    reducer: {
+      auth: authSlice,
       data: testSlice,
       cart: cartSlice,
       notification: NotificationReducer
