@@ -5,6 +5,7 @@ import {
   Typography,
   Stack,
   Button,
+  Badge
 } from "@mui/material";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import { NavLink, UNSAFE_RouteContext } from "react-router-dom";
@@ -15,8 +16,15 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Search from "../Search/Search";
 import LoginIcon from "@mui/icons-material/Login";
 import { useEffect } from "react";
+import { useAppSelector } from "../../assets/hooks";
+import type { mappedDbProductsType } from "../../redux/types/productTypes"
 
 export const Navbar = () => {
+
+  const { cart } = useAppSelector(state => state.cart) // Actualiza numeros del carro
+  const cartItems = JSON.parse(localStorage.getItem('cart') || "")
+  const itemRes = cartItems?.reduce((total: number, item: mappedDbProductsType ) => total + item.quantity, 0);
+
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     window.localStorage.removeItem("jwt");
@@ -123,7 +131,9 @@ export const Navbar = () => {
               color="inherit"
               aria-label="logo"
             >
-              <ShoppingCartIcon />
+              <Badge badgeContent={itemRes} color="warning" max={99}>
+                <ShoppingCartIcon />
+              </Badge>
             </IconButton>
 
             {window.localStorage.getItem("jwt") ? (
