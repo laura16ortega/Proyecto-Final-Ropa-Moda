@@ -12,7 +12,7 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import { addProductToCart } from "../../redux/thunk-actions/cartActions";
 import type { mappedDbProductsType } from "../../redux/types/productTypes";
-import IncreaseCartButton from "../IncreaseCartButton/IncreaseCartButton";
+import IncreaseCartButton from "../IncreaseCartButton/IncreaseCartButton"
 
 type productProps = {
   product: mappedDbProductsType;
