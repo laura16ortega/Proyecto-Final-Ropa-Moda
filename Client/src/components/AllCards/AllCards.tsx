@@ -39,9 +39,9 @@ const AllCards = () => {
       <Grid container spacing={1.5}>
         <>
       {loading && !error ? (        
-         arr.map((item) => {
+         arr.map((item, index) => {
            return (
-             <Grid item xs={12} sm={6} md={4} lg={3}>
+             <Grid item xs={12} sm={6} md={4} lg={3} key={index + 1}>
                <Paper
                  elevation={3}
                  sx={{ display: "flex", marginTop: "20px" }}
