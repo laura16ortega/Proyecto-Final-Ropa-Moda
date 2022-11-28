@@ -28,14 +28,16 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/products" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<SignInSide />} />
-        <Route path="/home/:id" element={<DetailCard />} />
-        <Route path='/landingPage' element={<LandingPage />} />
+        <Route path="/products/:id" element={<DetailCard />} />
+        <Route path='/' element={<LandingPage />} />
         <Route path='/register' element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/contact" element={<Contact/>}/>
+        <Route path="/create" element={<CreateForm/>}/>
       </Routes>
 
       <Footer />
