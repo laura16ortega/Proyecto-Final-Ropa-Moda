@@ -29,7 +29,7 @@ const Cart = () => {
   );
   const { allData, loading } = useAppSelector((state) => state.data);
 
-  const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "") // ! mappedDataType
+  const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
 
   const subTotalPrice = cartProd?.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -43,15 +43,15 @@ const Cart = () => {
     { title: "Impuestos", price: 0 },
   ];
 
-  const handleIncreaseCart = (productId: string) => { // ! productId: string
+  const handleIncreaseCart = (productId: string) => {
     dispatch(increaseCartQuantity(productId));
   };
 
-  const handleDecreaseCart = (productId: string) => { // ! productId: string
+  const handleDecreaseCart = (productId: string) => {
     dispatch(decreaseCartQuantity(productId));
   };
 
-  const handleDelete = (productId: string) => { // ! productId: string
+  const handleDelete = (productId: string) => {
     dispatch(removeCartItem(productId));
   };
 
