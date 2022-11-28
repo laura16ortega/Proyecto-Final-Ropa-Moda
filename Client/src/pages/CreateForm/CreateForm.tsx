@@ -21,6 +21,7 @@ import { useNotification } from "../../components/UseNotification/UseNotificatio
 import styles from "./CreateForm.module.css";
 import { useCreateForm } from "../../assets/hooks/useCreateForm";
 import { tallasCamiseta, tallasPantalon } from "./create-form-types";
+import { createProduct } from "../../redux/thunk-actions/testActions";
 
 export default function CreateForm() {
   const { register, handleSubmit, watch, setValue, formState } =
@@ -71,7 +72,7 @@ export default function CreateForm() {
             <Box
               component="form"
               onSubmit={handleSubmit((data) => {
-                console.log(data);
+                createProduct(data);
               })}
             >
               <FormControl>
