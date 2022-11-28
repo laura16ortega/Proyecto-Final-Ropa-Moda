@@ -56,22 +56,3 @@ export const getAllProducts = createAsyncThunk<mappedDbProductsType[]>(
       }
    }
 )
-
-/*
-
-const { data } = await axios.get<testApiCall[]>("https://fakestoreapi.com/products")
-         const mappedData = data.map(d => d.data.products.map(e => {
-            return {
-               id: e.id,
-               title: e.title,
-               price: e.price,
-               description: e.description,
-               category: e.category,
-               image: e.image,
-               rating: e.rating,
-               quantity: 0
-            }
-            }))
-         return mappedData
-
-*/
