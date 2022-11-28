@@ -79,7 +79,6 @@ const Card = ({ product, margin }: productProps) => {
               </Typography>
             </Box>
           </Link>
-          <Box>
             <Box
               sx={{
                 flex: "1 1 auto",
@@ -162,7 +161,6 @@ const Card = ({ product, margin }: productProps) => {
                 )}
               </Box>
             </Box>
-          </Box>
         </Box>
       </Paper>
     </Grid>
