@@ -4,6 +4,7 @@ import { Container } from '@mui/system';
 import React from "react";
 // import Footer from '../../components/Footer/Footer';
 //import Navbar from '../../components/Navbar';
+import { Link } from 'react-router-dom';
 
 
 
@@ -55,7 +56,9 @@ const LandingPage = () => {
                     <img src={"https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dGllbmRhJTIwZGUlMjByb3BhfGVufDB8fDB8fA%3D%3D&w=1000&q=80"}alt="dan" style={{width:"100%", marginBottom: "2rem"}} />
                 </Box>
             </CustomBox>
+            <Link to="/products">
             <Button type='submit'  variant='contained' color='primary'>Ver Prendas</Button>
+            </Link>
         </Container>
         {/* <Footer /> */}
     </Box>

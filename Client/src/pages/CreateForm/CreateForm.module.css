@@ -1,0 +1,99 @@
+.contactHeader {
+  background-image: url("https://www.dondeempenos.com.mx/images/easyblog_articles/46/Recomendaciones-para-comprar-ropa-sin-despilfarrar.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: unset;
+  height: 500px;
+  font-family: "poppins";
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  text-shadow: 2px 2px black;
+  margin-bottom: 3rem;
+}
+
+.inputField label {
+  color: gray !important;
+  font-size: 1.7rem;
+  top: 17px;
+}
+
+.inputField:nth-child(n + 1) div {
+  margin-top: 2.6rem;
+}
+
+.inputField div::before {
+  border-bottom: 3px solid white;
+}
+
+.inputField div::after {
+  border-bottom: 3px solid white !important;
+}
+
+.inputField textarea {
+  font-size: 2rem;
+  color: white;
+}
+
+.inputField input {
+  font-size: 2rem;
+  padding: 2px;
+  height: 100%;
+  color: white;
+}
+
+.leftContainer:nth-child(n + 2) {
+  margin: 3rem;
+}
+
+.contactLeft {
+  text-align: right;
+  color: white;
+  padding-left: 10px !important;
+}
+
+.contactLeft h3 {
+  font-family: "poppins";
+  font-weight: 600;
+}
+
+.contactLeft h6 {
+  font-family: "poppins";
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.contactLeft svg {
+  margin-right: 5px;
+}
+
+.inputInfo:nth-child(n + 2) {
+  margin-top: 3rem;
+}
+
+.inputInfo p {
+  color: #f44336 !important;
+  font-size: 0.9rem;
+}
+
+.inputInfo {
+  border-color: white;
+}
+
+.inputInfo div::before {
+  border-bottom: 3px solid white;
+}
+
+.inputInfo div::after {
+  border-bottom: 3px solid white !important;
+}
+
+@media (max-width: 650px) {
+  .contactLeft {
+    width: 100%;
+  }
+}
