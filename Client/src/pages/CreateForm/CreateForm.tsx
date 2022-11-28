@@ -26,16 +26,6 @@ export default function CreateForm() {
   const { register, handleSubmit, watch, setValue, formState } =
     useCreateForm();
 
-  const [dataBody, setDataBody] = useState({
-    name: "",
-    price: 0,
-    description: "",
-    category: "",
-    image: "",
-    stock: 0,
-    talla: "",
-    marca: "",
-  });
   console.log(formState.errors);
   return (
     <Box sx={{ backgroundColor: "#3e3e3e" }}>
@@ -78,119 +68,126 @@ export default function CreateForm() {
             </Box>
           </Grid>
           <Grid item md={6}>
-            <FormControl onSubmit={handleSubmit()}>
-              <TextField
-                {...register("name")}
-                key={0}
-                label="Nombre"
-                className={styles.inputInfo}
-                name="name"
-                id="filled-basic"
-                variant="filled"
-                color="secondary"
-                focused
-              />
-              <TextField
-                {...register("price")}
-                key={1}
-                label="Precio"
-                className={styles.inputInfo}
-                name="price"
-                id="filled-basic"
-                variant="filled"
-                color="secondary"
-                focused
-              />
-              <TextField
-                {...register("description")}
-                key={2}
-                label="Descripcion"
-                className={styles.inputInfo}
-                name="description"
-                id="filled-basic"
-                variant="filled"
-                color="secondary"
-                focused
-              />
-              <Select
-                {...register("category")}
-                key={3}
-                label="Categoria"
-                name="category"
-                id="filled-basic"
-                variant="filled"
-                className={styles.inputInfo}
-                sx={{ border: "2px solid #ced4da", color: "white" }}
-              >
-                <InputLabel id="label">Categoria</InputLabel>
-                <MenuItem value="Camiseta">Camiseta</MenuItem>
-                <MenuItem value="Pantalon">Pantalon</MenuItem>
-              </Select>
-              <TextField
-                {...register("image")}
-                key={4}
-                label="Imagen"
-                className={styles.inputInfo}
-                name="image"
-                id="filled-basic"
-                variant="filled"
-                color="secondary"
-                focused
-              />
-              <TextField
-                {...register("stock")}
-                key={5}
-                label="Stock"
-                className={styles.inputInfo}
-                name="stock"
-                id="filled-basic"
-                variant="filled"
-                color="secondary"
-                focused
-              />
-              <Select
-                {...register("talla")}
-                key={6}
-                label="Talla"
-                className={styles.inputInfo}
-                id="filled-basic"
-                variant="filled"
-                color="secondary"
-                sx={{ border: "2px solid #ced4da", color: "white" }}
-              >
-                {watch("category") === "Camiseta" &&
-                  tallasCamiseta.map((e) => (
-                    <MenuItem value={e.value} key={e.value}>
-                      {e.name}
-                    </MenuItem>
-                  ))}
+            <Box
+              component="form"
+              onSubmit={handleSubmit((data) => {
+                console.log(data);
+              })}
+            >
+              <FormControl>
+                <TextField
+                  {...register("name")}
+                  key={0}
+                  label="Nombre"
+                  className={styles.inputInfo}
+                  name="name"
+                  id="filled-basic"
+                  variant="filled"
+                  color="secondary"
+                  focused
+                />
+                <TextField
+                  {...register("price")}
+                  key={1}
+                  label="Precio"
+                  className={styles.inputInfo}
+                  name="price"
+                  id="filled-basic"
+                  variant="filled"
+                  color="secondary"
+                  focused
+                />
+                <TextField
+                  {...register("description")}
+                  key={2}
+                  label="Descripcion"
+                  className={styles.inputInfo}
+                  name="description"
+                  id="filled-basic"
+                  variant="filled"
+                  color="secondary"
+                  focused
+                />
+                <Select
+                  {...register("category")}
+                  key={3}
+                  label="Categoria"
+                  name="category"
+                  id="filled-basic"
+                  variant="filled"
+                  className={styles.inputInfo}
+                  sx={{ border: "2px solid #ced4da", color: "white" }}
+                >
+                  <InputLabel id="label">Categoria</InputLabel>
+                  <MenuItem value="Camiseta">Camiseta</MenuItem>
+                  <MenuItem value="Pantalon">Pantalon</MenuItem>
+                </Select>
+                <TextField
+                  {...register("image")}
+                  key={4}
+                  label="Imagen"
+                  className={styles.inputInfo}
+                  name="image"
+                  id="filled-basic"
+                  variant="filled"
+                  color="secondary"
+                  focused
+                />
+                <TextField
+                  {...register("stock")}
+                  key={5}
+                  label="Stock"
+                  className={styles.inputInfo}
+                  name="stock"
+                  id="filled-basic"
+                  variant="filled"
+                  color="secondary"
+                  focused
+                />
+                <Select
+                  {...register("talla")}
+                  key={6}
+                  label="Talla"
+                  className={styles.inputInfo}
+                  id="filled-basic"
+                  variant="filled"
+                  color="secondary"
+                  sx={{ border: "2px solid #ced4da", color: "white" }}
+                >
+                  {watch("category") === "Camiseta" &&
+                    tallasCamiseta.map((e) => (
+                      <MenuItem value={e.value} key={e.value}>
+                        {e.name}
+                      </MenuItem>
+                    ))}
 
-                {watch("category") === "Pantalon" &&
-                  tallasPantalon.map((e) => (
-                    <MenuItem value={e.value} key={e.value}>
-                      {e.name}
-                    </MenuItem>
-                  ))}
-              </Select>
-              <TextField
-                {...register("marca")}
-                key={7}
-                className={styles.inputInfo}
-                name="marca"
-                label="Marca"
-                id="filled-basic"
-                variant="filled"
-                color="secondary"
-                focused
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ marginBottom: "2rem", marginTop: "2rem" }}
-              >
-                CREAR
-              </Button>
-            </FormControl>
+                  {watch("category") === "Pantalon" &&
+                    tallasPantalon.map((e) => (
+                      <MenuItem value={e.value} key={e.value}>
+                        {e.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+                <TextField
+                  {...register("marca")}
+                  key={7}
+                  className={styles.inputInfo}
+                  name="marca"
+                  label="Marca"
+                  id="filled-basic"
+                  variant="filled"
+                  color="secondary"
+                  focused
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ marginBottom: "2rem", marginTop: "2rem" }}
+                >
+                  CREAR
+                </Button>
+              </FormControl>
+            </Box>
           </Grid>
         </Grid>
       </Container>
