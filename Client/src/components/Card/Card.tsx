@@ -114,7 +114,7 @@ const Card = ({ product, margin }: productProps) => {
                     disableElevation
                     size="small"
                     className={s.addButton}
-                    onClick={() => handleCart(product.id)}
+                    onClick={() => handleCart(product._id)}
                     disabled={cartLoading}
                   >
                     {cartLoading ? "Agregando..." : "Agregar al carro"}
@@ -130,7 +130,7 @@ const Card = ({ product, margin }: productProps) => {
                     <Button
                       disableElevation
                       className={s.counterButton}
-                      onClick={() => handleDecreaseCart(product.id)}
+                      onClick={() => handleDecreaseCart(product._id)}
                     >
                       <RemoveIcon
                         sx={{
@@ -147,7 +147,7 @@ const Card = ({ product, margin }: productProps) => {
                     <Button
                       disableElevation
                       className={s.counterButton}
-                      onClick={() => handleIncreaseCart(product.id)}
+                      onClick={() => handleIncreaseCart(product._id)}
                     >
                       <AddIcon
                         sx={{
