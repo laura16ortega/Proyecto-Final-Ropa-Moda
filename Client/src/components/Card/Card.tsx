@@ -66,7 +66,7 @@ const Card = ({ product, margin }: productProps) => {
           }}
         >
           {/* Special tags: limited edition, best seller, low calories, etc */}
-          <Link href={`/${product._id}`}>
+          <Link href={`/products/${product._id}`}>
             <Box>
               <img
                 src={product.images[0]}
@@ -79,7 +79,6 @@ const Card = ({ product, margin }: productProps) => {
               </Typography>
             </Box>
           </Link>
-          <Box>
             <Box
               sx={{
                 flex: "1 1 auto",
@@ -162,7 +161,6 @@ const Card = ({ product, margin }: productProps) => {
                 )}
               </Box>
             </Box>
-          </Box>
         </Box>
       </Paper>
     </Grid>
