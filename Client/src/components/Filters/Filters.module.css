@@ -1,0 +1,27 @@
+.filtersContainer {
+    display: flex;
+}
+
+.selectSort {
+    border: none;
+}
+
+.selectSort div {
+    padding: 0.5px 0px;
+}
+
+.selectSort fieldset {
+    border: none;
+}
+
+.selectedFiltersContainer {
+    padding: 0.5rem 1rem;
+    background-color: rgb(245, 245, 245);
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+}
+
+.selectedFiltersContainer:nth-child(n+2) {
+    margin-left: 0.5rem;
+}
