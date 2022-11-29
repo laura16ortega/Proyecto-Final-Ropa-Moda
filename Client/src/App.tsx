@@ -14,6 +14,7 @@ import Register from "./pages/Register/Register";
 import Contact from "./pages/ContactUs/Contact";
 import { useEffect } from "react";
 import CreateForm from "./pages/CreateForm/CreateForm";
+import AllCards from "./components/AllCards/AllCards";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 
@@ -31,15 +32,18 @@ function App() {
 
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/products" element={<AllCards />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<SignInSide />} />
-        <Route path="/home/:id" element={<DetailCard />} />
-        <Route path='/landingPage' element={<LandingPage />} />
-        <Route path='/register' element={<Register />} />
-        <Route path="/forgot" element={<ForgotPassword/>}/>
-        <Route path="/resetpassword/:resetToken" element={<ResetPassword/>}/>
+        <Route path="/products/:id" element={<DetailCard />} />
+        <Route path="/landingPage" element={<LandingPage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot" element={<ForgotPassword />} />
+        <Route path="/resetpassword/:resetToken" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/create" element={<CreateForm />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
 
       <Footer />
