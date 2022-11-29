@@ -17,15 +17,14 @@ import Search from "../Search/Search";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAppDispatch } from "../../assets/hooks";
 import { useEffect } from "react";
-import { logout } from "../../redux/slices/authSlice";
 import { useAppSelector } from "../../assets/hooks";
 import type { mappedDbProductsType } from "../../redux/types/productTypes"
+import { logout } from "../../redux/slices/authSlice";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
-
   const { cart } = useAppSelector(state => state.cart) // Actualiza numeros del carro
-  const cartItems = JSON.parse(localStorage.getItem('cart') || "")
+  const cartItems = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')!) : [];
   const itemRes = cartItems?.reduce((total: number, item: mappedDbProductsType ) => total + item.quantity, 0);
 
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {

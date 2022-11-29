@@ -10,7 +10,7 @@ type User = {
 }
 
 function Profile(props: any) {
-    const {user} = useAppSelector((state) => state.auth);
+    const {user}:any = useAppSelector((state) => state.auth);
     return (
         <div className={styles.container}>
             <div className={styles.sidebar}>

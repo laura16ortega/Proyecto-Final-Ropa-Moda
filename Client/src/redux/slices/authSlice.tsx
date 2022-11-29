@@ -1,10 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { RootState } from '../store';
+import { loginUser, registerUser } from '../thunk-actions/authActions';
 
 type InitialState = {
-    user: null | []
+    user: null | {}
     userLoading: boolean
     token: null | string
+    userError: null | any
 }
 
 const initialState = {
@@ -31,7 +33,44 @@ export const authSlice = createSlice({
             state.user = null;
             state.token = null;
         }
-    }
+    },
+    extraReducers(builder) {
+        builder
+        //Register User
+        .addCase(registerUser.pending,(state,action)=>{
+            state.userLoading = true
+        })
+        .addCase(registerUser.fulfilled,(state,action:PayloadAction<any>)=>{
+            state.userLoading = false
+            const {userId, fullName, token,email} = action.payload
+            state.user = {
+                userId,
+                fullName,
+                email
+            }
+            state.token = token
+        })
+        .addCase(registerUser.rejected,(state,action:PayloadAction<any>)=>{
+            state.userLoading = false
+            state.userError = action.payload
+        })
+
+        //Login User
+        .addCase(loginUser.pending,(state,action)=>{
+            state.userLoading = true
+        })
+
+        .addCase(loginUser.fulfilled, (state,action:PayloadAction<any>)=>{
+            state.userLoading = false
+            const {token, user} = action.payload
+            state.user = user
+            state.token = token
+        })
+        .addCase(loginUser.rejected,(state,action:PayloadAction<any>)=>{
+            state.userLoading = false
+            state.userError = action.payload
+        })
+    },
 });
 
 export const selectAuth = (state:RootState) => state.auth;
