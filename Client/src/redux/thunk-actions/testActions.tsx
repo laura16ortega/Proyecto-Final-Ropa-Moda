@@ -52,27 +52,14 @@ export const getAllProducts = createAsyncThunk<mappedDbProductsType[]>(
           description: e.description,
           stock: e.stock,
           category: e.category,
+          marca: e.marca,
+          gender: e.gender,
           reviews: e.reviews,
           __v: e.__v,
           quantity: 1,
         };
       });
       return mappedData;
-    } catch (error: any) {
-      return thunkApi.rejectWithValue(error.message);
-    }
-  }
-);
-
-export const createProduct = createAsyncThunk(
-  "test/create",
-  async (bodyData: object, thunkApi) => {
-    try {
-      const data = await axios.post(
-        `https://localhost:3001/api/v1/products/`,
-        bodyData
-      );
-      return data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }

@@ -38,7 +38,7 @@ export const Navbar = () => {
           <Stack direction="row" spacing={2}>
             <Button
               component={NavLink}
-              to="/"
+              to="/products"
               sx={{
                 textTransform: "none",
                 "&.active": {
