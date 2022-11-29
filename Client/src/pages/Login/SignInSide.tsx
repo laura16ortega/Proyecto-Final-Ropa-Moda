@@ -18,6 +18,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useAppDispatch } from "../../assets/hooks";
 import { setUser } from "../../redux/slices/authSlice";
+import { loginUser } from "../../redux/thunk-actions/authActions";
 
 function Copyright(props: any) {
   return (
@@ -41,64 +42,25 @@ const theme = createTheme();
 
 export default function SignInSide() {
   const dispatch = useAppDispatch()
-  /*   const [errors, setErrors] = useState({});
-  const [login, setLogin] = useState({
-    password:'',
-    email:''
-  }) */
-
   const { displayNotification } = useNotification();
 
-  const LoginUser = async (user: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
-      const response = await axios.post(
-        `http://localhost:3001/api/auth/login`,
-        user
-      );
-      if (response) {
-        displayNotification({ message: "Bienvenido", type: "success" });
-        window.localStorage.setItem("jwt", response.data.loginData.token);
-        window.localStorage.setItem("User", JSON.stringify(response.data.loginData.user));
-        console.log(response.data.loginData.user)
-        dispatch(setUser({
-          token: response.data.loginData.token,
-          user: response.data.loginData.user
-          
-        }))
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 800);
-        
-      }
-    } catch {
-      displayNotification({
-        message: "E-mail o contraseña incorrectos",
-        type: "error",
-      });
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const user = {
+        email: data.get("email"),
+        password: data.get("password"),
+      };
+      dispatch(loginUser(user));
+      displayNotification({ message: "Bienvenido", type: "success" });
+      setTimeout(()=>{
+        window.location.href = "/";
+      },800)
+    } catch (error) {
+      alert(error)
     }
   };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const user = {
-      email: data.get("email"),
-      password: data.get("password"),
-    };
-    return LoginUser(user);
-  };
-
-  /*   const handleInputChange = (e: any) => {
-    e.preventDefault();
-    setLogin({
-      ...login,
-      [e.target.name]: e.target.value
-    })
-  }
-  const validations = () => {
-    let errores = {}
-    
-  } */
 
   return (
     <ThemeProvider theme={theme}>
@@ -175,7 +137,7 @@ export default function SignInSide() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="/forgot" variant="body2">
                     Te has olvidado de tu contraseña?
                   </Link>
                 </Grid>
