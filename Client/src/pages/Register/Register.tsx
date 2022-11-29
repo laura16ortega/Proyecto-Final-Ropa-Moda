@@ -14,12 +14,57 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, useFormik } from "formik";
 import { FormHelperText } from "@mui/material";
 import * as Yup from "yup";
 import { useNotification } from "../../components/UseNotification/UseNotification";
+import axios from 'axios'
+
+
+interface FormValues{
+  fullName: string;
+  email: string;
+  gender: string;
+  phone_number: number;
+  password: string;
+  confirmPassword: string;
+  termsAndConditions?: boolean;
+}
+const RegisterUser = async (user: any) => {
+  //const { displayNotification } = useNotification();
+  console.log(user)
+  try {
+    const response = await axios.post(
+      `http://localhost:3001/api/auth/register`,
+      user
+    );
+    if (response) {
+      console.log(response.data)
+      //displayNotification({ message: "Bienvenido", type: "success" });
+      //window.localStorage.setItem("jwt", response.data.loginData.token);
+      //window.localStorage.setItem("User", JSON.stringify(response.data.loginData.user));
+      //console.log(response.data.loginData.user)
+      /*dispatch(setUser({
+        token: response.data.loginData.token,
+        user: response.data.loginData.user
+        
+      }))*/
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 800);
+      
+    }
+  } catch(error) {
+    console.log(error)
+    /*displayNotification({
+      message: "E-mail o contraseña incorrectos",
+      type: "error",
+    });*/
+  }
+};
 
 const Register = () => {
+  const { displayNotification } = useNotification();
   const paperStyle = { padding: "30px 20px", width: 500, margin: "20px auto" };
   const headerStyle = { margin: 0 };
   const avatarStyle = { backgroundColor: "#1bbd7e" };
@@ -29,7 +74,7 @@ const Register = () => {
     fullName: "",
     email: "",
     gender: "",
-    phoneNumber: "",
+    phone_number: 0,
     password: "",
     confirmPassword: "",
     termsAndConditions: false,
@@ -56,15 +101,16 @@ const Register = () => {
     ),
   });
 
-  const { displayNotification } = useNotification();
-
-  const onSubmit = (values: any, props: any) => {
-    console.log(values);
-    console.log(props);
-    setTimeout(() => {
+ 
+  const onSubmit = async(values: FormValues) => {
+    //const datos = JSON.stringify(values)
+    const {fullName, password, email, phone_number} = values 
+    const a = await RegisterUser(values)
+    console.log(a)
+    /*setTimeout(() => {
       props.resetForm();
       props.setSubmitting(false);
-    }, 2000);
+    }, 2000);*/
     displayNotification({
       message: "Se registró satisfactoriamente ! ",
       type: "success",
@@ -74,7 +120,7 @@ const Register = () => {
   return (
     <Grid>
       <Paper elevation={20} style={paperStyle}>
-        <Grid align="center">
+        <Grid>
           <Avatar style={avatarStyle}>
             <AddCircleOutlineOutlinedIcon />
           </Avatar>

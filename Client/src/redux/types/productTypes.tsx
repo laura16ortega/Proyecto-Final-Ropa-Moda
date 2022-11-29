@@ -19,7 +19,6 @@ export type DbProductType = {
     name: string
     price: number
     summary: string
-    description: string
     stock: number
     category: string
     marca: string

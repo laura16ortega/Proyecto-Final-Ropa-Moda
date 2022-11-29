@@ -1,0 +1,33 @@
+.addButton {
+    border-radius: 1px !important; 
+    padding: 1.3rem !important;
+    background-color: rgba(17, 17, 17, 1) !important
+}
+
+.addButton:hover {
+    background-color: #333333 !important;
+}
+
+.addButton:disabled {
+    background-color: #E0E0E0 !important;
+    color: rgba(119, 119, 122, 1) !important;
+}
+
+.counterButton {
+    border-radius: 9999px !important;
+    width: 2rem;
+    height: 2rem;
+    min-width: 0px !important;
+    padding: 0 !important;
+
+    
+    transition-duration: .3s !important;
+}
+
+.counterButton svg {
+    color:rgb(17, 17, 17);
+}
+
+.counterButton:hover {
+    background-color: transparent  !important;
+}

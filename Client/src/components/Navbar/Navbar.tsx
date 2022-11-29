@@ -5,6 +5,7 @@ import {
   Typography,
   Stack,
   Button,
+  Badge
 } from "@mui/material";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import { NavLink, UNSAFE_RouteContext } from "react-router-dom";
@@ -14,12 +15,21 @@ import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Search from "../Search/Search";
 import LoginIcon from "@mui/icons-material/Login";
+import { useAppDispatch } from "../../assets/hooks";
 import { useEffect } from "react";
+import { useAppSelector } from "../../assets/hooks";
+import type { mappedDbProductsType } from "../../redux/types/productTypes"
+import { logout } from "../../redux/slices/authSlice";
 
 export const Navbar = () => {
+  const dispatch = useAppDispatch();
+  const { cart } = useAppSelector(state => state.cart) // Actualiza numeros del carro
+  const cartItems = JSON.parse(localStorage.getItem('cart') || "")
+  const itemRes = cartItems?.reduce((total: number, item: mappedDbProductsType ) => total + item.quantity, 0);
+
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    window.localStorage.removeItem("jwt");
+    dispatch(logout());
     setTimeout(() => {
       window.location.href = "/";
     }, 500);
@@ -123,7 +133,9 @@ export const Navbar = () => {
               color="inherit"
               aria-label="logo"
             >
-              <ShoppingCartIcon />
+              <Badge badgeContent={itemRes} color="warning" max={99}>
+                <ShoppingCartIcon />
+              </Badge>
             </IconButton>
 
             {window.localStorage.getItem("jwt") ? (

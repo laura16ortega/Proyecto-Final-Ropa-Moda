@@ -49,7 +49,6 @@ export const getAllProducts = createAsyncThunk<mappedDbProductsType[]>(
           name: e.name,
           price: e.price,
           summary: e.summary,
-          description: e.description,
           stock: e.stock,
           category: e.category,
           marca: e.marca,
