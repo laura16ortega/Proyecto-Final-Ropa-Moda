@@ -15,9 +15,9 @@ const registerCtrl = async(request,response)=>{
             isAdmin
         } = request.body;
 
-        if(!fullName || !password || !email || !phone_number){
-            return response.status(500).json({message:"Faltan Datos del Usuario"})
-        }
+        /*if(!fullName || !password || !email || !phone_number){
+            return response.status(500).json({message:"Faltan Datos del Usuario2"})
+        }*/
 
         try{
             const checkIs = await User.findOne({email});
@@ -53,7 +53,8 @@ const registerCtrl = async(request,response)=>{
                     fullName,
                     email,
                     isAdmin,
-                    token
+                    token,
+                    userId: user._id
                 }
             })
         } catch (error) {
