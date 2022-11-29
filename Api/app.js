@@ -23,17 +23,6 @@ app.use(auth(config));
 
 
 
-app.use("/api/auth", authRoutes);
-app.use("/api/v1/users", userRoutes);
-app.use("/", (req,res)=>{
-  if(req.oidc){
-    console.log(req.oidc.isAuthenticated())
-    console.log(req.oidc.user)
-    res.json(req.oidc.user)
-  }else{
-    res.send(" ")
-  }
-})
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -43,6 +32,15 @@ app.use((req, res, next) => {
 
 //ROUTES
 app.use("/api/v1/products", productRouter); //middleware
+app.use("/api/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
+app.use("/", (req,res)=>{
+  if(req.oidc){
+    res.json(req.oidc.user)
+  }else{
+    res.send(" ")
+  }
+})
 // app.use("/api/v1/users", userRouter); //middleware
 app.use(express.static(`${__dirname}/public`));
 module.exports = app;
