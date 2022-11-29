@@ -5,7 +5,7 @@ import {
   Typography,
   Stack,
   Button,
-  Badge
+  Badge,
 } from "@mui/material";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import { NavLink, UNSAFE_RouteContext } from "react-router-dom";
@@ -18,14 +18,21 @@ import LoginIcon from "@mui/icons-material/Login";
 import { useAppDispatch } from "../../assets/hooks";
 import { useEffect } from "react";
 import { useAppSelector } from "../../assets/hooks";
-import type { mappedDbProductsType } from "../../redux/types/productTypes"
+import type { mappedDbProductsType } from "../../redux/types/productTypes";
 import { logout } from "../../redux/slices/authSlice";
+import logo from "../../assets/images/logo.png";
+import styles from "./Navbar.module.css";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
-  const { cart } = useAppSelector(state => state.cart) // Actualiza numeros del carro
-  const cartItems = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')!) : [];
-  const itemRes = cartItems?.reduce((total: number, item: mappedDbProductsType ) => total + item.quantity, 0);
+  const { cart } = useAppSelector((state) => state.cart); // Actualiza numeros del carro
+  const cartItems = localStorage.getItem("cart")
+    ? JSON.parse(localStorage.getItem("cart")!)
+    : [];
+  const itemRes = cartItems?.reduce(
+    (total: number, item: mappedDbProductsType) => total + item.quantity,
+    0
+  );
 
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -43,7 +50,7 @@ export const Navbar = () => {
                         <CheckroomIcon />
                     </IconButton> */}
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Moda
+            <img src={logo} alt="logo" className={styles.logo} />
           </Typography>
           <Stack direction="row" spacing={2}>
             <Button
