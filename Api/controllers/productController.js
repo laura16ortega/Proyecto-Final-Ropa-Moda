@@ -33,7 +33,7 @@ exports.getProduct = async (req, res) => {
 
 exports.createProduct = async (req, res) => {
   try {
-    const newProduct = await Product.create(req.body);
+    const newProduct = await Product.create(req.body, { runValidators: true });
     res.status(201).json({
       status: "success",
       data: { product: newProduct },
