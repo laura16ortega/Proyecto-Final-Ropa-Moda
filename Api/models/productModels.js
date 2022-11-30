@@ -7,6 +7,7 @@ const reviewSchema = new mongoose.Schema({
   },{
   timestamps:true,
   versionKey: false
+  
 })
 
 const productSchema = new mongoose.Schema({
@@ -36,11 +37,11 @@ const productSchema = new mongoose.Schema({
   images: {
       public_id:{
         type:String,
-        required:true
+ 
       },
       url:{
         type:String,
-        required:true
+
       }
   }, //acá aclaro que para esta propiedad quiero un arreglo de strings
   createdAt: {

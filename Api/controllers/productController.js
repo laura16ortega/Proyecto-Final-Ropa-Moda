@@ -39,13 +39,13 @@ exports.createProduct = async (req, res) => {
       price,
       description,
       category,
-      image,
+      images,
       stock,
       tallaCamiseta,
       tallaPantalon,
       marca,
     } = req.body;
-    if (!name || !price || !image || !marca || !category) {
+    if (!name || !price || !images || !marca || !category) {
       return res.status(500).json({ message: "Please Provide all Parameters" });
     }
 
@@ -103,9 +103,9 @@ exports.deleteProduct = async (req, res) => {
 exports.addReveiw = async (req, res) => {
   const { userId, rating, comment } = req.body;
   const productId = req.params.id;
-  const product = await Product.findById(productId);
+  const product = await Product.findById(req.params.id);
 
-  if (!product || !userId || !rating || !comment) {
+  if (!userId || !rating || !comment) {
     return res.status(404).json({ message: "Please provide all parametrs" });
   }
 
@@ -118,6 +118,7 @@ exports.addReveiw = async (req, res) => {
     const review = {
       userId,
       rating: Number(rating),
+
       comment,
     };
     product.reviews.push(review);
@@ -135,6 +136,7 @@ exports.addReveiw = async (req, res) => {
       rating: product.ratingsAverage,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error });
   }
 
@@ -175,3 +177,5 @@ exports.addReveiw = async (req, res) => {
     res.status(500).json({message:error})
   }*/
 };
+
+exports.getReviews = async (req, res) => {};
