@@ -1,5 +1,5 @@
 const Product = require("./../models/productModels");
-const cloudinary = require("../services/cloudinaryServices")
+const cloudinary = require("../services/cloudinaryServices");
 
 //ROUTE HANDLERS
 
@@ -43,15 +43,15 @@ exports.createProduct = async (req, res) => {
       stock,
       tallaCamiseta,
       tallaPantalon,
-      marca
-     } = req.body
-     if(!name || !price || !images || !marca || !category){
-        return res.status(500).json({message:"Please Provide all Parameters"})
-     }
+      marca,
+    } = req.body;
+    if (!name || !price || !images || !marca || !category) {
+      return res.status(500).json({ message: "Please Provide all Parameters" });
+    }
 
-     const result = await cloudinary.uploader.upload(image,{
-        folder: "products"
-     });
+    const result = await cloudinary.uploader.upload(image, {
+      folder: "products",
+    });
 
     const newProduct = await Product.create({
       name,
@@ -61,10 +61,10 @@ exports.createProduct = async (req, res) => {
       stock,
       tallaCamiseta: tallaCamiseta ? tallaCamiseta : [],
       tallaPantalon: tallaPantalon ? tallaPantalon : [],
-      image:{
-        public_id:result.public_id,
-        url: result.secure_url
-      }
+      image: {
+        public_id: result.public_id,
+        url: result.secure_url,
+      },
     });
     res.status(201).json({
       status: "success",
@@ -73,7 +73,6 @@ exports.createProduct = async (req, res) => {
   } catch (err) {
     res.status(400).json({ status: "fail,", message: err });
   }
-
 };
 
 exports.updateProduct = async (req, res) => {
@@ -101,40 +100,44 @@ exports.deleteProduct = async (req, res) => {
 };
 
 //REVIEW SECTION
-exports.addReveiw = async(req,res)=>{
-  const {userId, rating, comment} = req.body;
+exports.addReveiw = async (req, res) => {
+  const { userId, rating, comment } = req.body;
   const productId = req.params.id;
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findById(req.params.id);
 
-  if( !userId || !rating || !comment){
-    return res.status(404).json({message:"Please provide all parametrs"})
+  if (!userId || !rating || !comment) {
+    return res.status(404).json({ message: "Please provide all parametrs" });
   }
 
   try {
-    if(product.reviews.find((review)=>review.userId === req.userId)){
-      return res.status(404).json({message:"You already submitted a review"})
+    if (product.reviews.find((review) => review.userId === req.userId)) {
+      return res
+        .status(404)
+        .json({ message: "You already submitted a review" });
     }
     const review = {
-        userId,
-        rating: Number(rating),
+      userId,
+      rating: Number(rating),
 
-        comment 
-    }
+      comment,
+    };
     product.reviews.push(review);
     product.ratingsQuantity = product.reviews.length;
-    product.ratingsAverage = product.reviews.reduce((acc,c)=>c.rating + acc,0) /product.reviews.length;
-    
+    product.ratingsAverage =
+      product.reviews.reduce((acc, c) => c.rating + acc, 0) /
+      product.reviews.length;
+
     const updatedProduct = await product.save();
 
     res.status(201).json({
-      message:"Review Created Succesfully",
-      review: updatedProduct.reviews[updatedProduct.reviews.length -1],
+      message: "Review Created Succesfully",
+      review: updatedProduct.reviews[updatedProduct.reviews.length - 1],
       ratingsQuantity: product.ratingsQuantity,
-      rating: product.ratingsAverage
+      rating: product.ratingsAverage,
     });
   } catch (error) {
-    console.log(error)
-      res.status(500).json({message:error})
+    console.log(error);
+    res.status(500).json({ message: error });
   }
 
   /*const {rating, description, userId} = req.body;
@@ -173,8 +176,6 @@ exports.addReveiw = async(req,res)=>{
     console.log(error)
     res.status(500).json({message:error})
   }*/
-}
+};
 
-exports.getReviews = async(req,res)=>{
-
-}
+exports.getReviews = async (req, res) => {};
