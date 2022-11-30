@@ -75,6 +75,7 @@ export const resetPassword = createAsyncThunk(
     "reset/password",
     async(userData, resetToken)=>{
         try {
+            console.log(resetToken)
             const {data}:any = await axios.put(
                 `${BACKEND_URL}/api/v1/users/resetPassword/${resetToken}`,
                 userData
@@ -117,6 +118,10 @@ export const updateUser = createAsyncThunk(
         }
     }
 )
+
+//add Review
+
+
 
 export const validateEmail = (email:string) => {
     return email.match(

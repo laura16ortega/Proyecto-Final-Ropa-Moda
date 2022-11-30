@@ -18,8 +18,7 @@ import { Formik, Field, Form, ErrorMessage, useFormik } from "formik";
 import { FormHelperText } from "@mui/material";
 import * as Yup from "yup";
 import { useNotification } from "../../components/UseNotification/UseNotification";
-import axios from 'axios'
-import { useAppDispatch, useAppSelector } from "../../assets/hooks";
+import { useAppDispatch } from "../../assets/hooks";
 import { registerUser } from "../../redux/thunk-actions/authActions";
 
 
