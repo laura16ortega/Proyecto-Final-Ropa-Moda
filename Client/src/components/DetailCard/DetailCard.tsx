@@ -222,6 +222,7 @@ export default function DetailCard() {
                                  {productDetails.reviews.length ? productDetails.reviews.map(e =>
                                     <Box key={e.createdAt} sx={{ borderBottom: "2px solid #DFDFDF" }} >
                                        <Review review={e} />
+
                                     </Box>)
                                     :
                                     <Box sx={{ marginY: "7rem" }}>
