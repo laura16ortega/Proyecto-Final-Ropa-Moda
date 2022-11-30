@@ -64,3 +64,15 @@ export const getAllProducts = createAsyncThunk<mappedDbProductsType[]>(
     }
   }
 );
+
+export const createProduct = createAsyncThunk(
+  "test/create",
+  async (bodyData: object, thunkApi) => {
+    try {
+      const data = await axios.post(`127.0.0.1:3001/api/v1/products`, bodyData);
+      return data;
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
