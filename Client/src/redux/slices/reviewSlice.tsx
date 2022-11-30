@@ -9,7 +9,7 @@ type InitialState = {
 
 const initialState = {
     postReviewLoading: false,
-    postReviewError: null,
+    postReviewError: "",
     postReviewSuccess: null
 } as InitialState
 
@@ -22,8 +22,7 @@ export const reviewSlice = createSlice({
         .addCase(postReview.pending, (state, action) => {
             state.postReviewLoading = true
         })
-        .addCase(postReview.fulfilled, (state, action: PayloadAction<any>) => {
-            console.log("review post action payload: ", action.payload)
+        .addCase(postReview.fulfilled, (state, action: PayloadAction<string>) => {
             state.postReviewSuccess = action.payload
         })
         .addCase(postReview.rejected, (state, action: PayloadAction<any>) => {

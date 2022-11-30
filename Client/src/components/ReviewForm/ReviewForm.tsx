@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
-import { Container, Box, Typography, Rating, TextField, Button, Avatar, FormHelperText  } from "@mui/material"
+import React from 'react'
+import { Container, Box, Typography, Rating, TextField, Button, Avatar, FormHelperText, Collapse, Alert } from "@mui/material"
 import { Formik, FormikHelpers, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup"
-import { useAppDispatch } from '../../assets/hooks';
+import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { postReview } from '../../redux/thunk-actions/reviewActions';
+
 
 /* Props: userId, comment, commentTitle, rating, isAuthenticated, localuser */
 type InitialValue = {
-   userImage: string
-   username: string
    rating: number
    comment: string
+   userId: string
+   token: string
+   productId: string
 }
 
 type FieldType = {
@@ -23,18 +25,23 @@ type FieldProps = {
    form: any
 }
 
-const ReviewForm = () => {
+type ReviewFormProps = {
+   productId: string
+}
+
+const ReviewForm = ({ productId }: ReviewFormProps) => {
    // userId, userImage, name, comment, rating 
    const dispatch = useAppDispatch()
 
+   const { user, userLoading, token } = useAppSelector(state => state.auth)
+   const { postReviewLoading, postReviewError, postReviewSuccess } = useAppSelector(state => state.review)
+
    const initialValue: InitialValue = {
-      userImage: "", // Solo para mostrar en el formulario, no se envia
-      username: "", // Solo para mostrar en el formulario, no se envia
       rating: 0,
-      comment: ""
-      // productId: "" // Props
-      // userId: string // localStorage.get ---- (reemplaza userImage y username)
-      // token: string // localStorage.get
+      comment: "",
+      userId: user ? user.userId : "",
+      token: token ? token : "",
+      productId
    }
 
    const validation = yup.object({
@@ -51,15 +58,22 @@ const ReviewForm = () => {
    const handleSubmit = (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
       console.log("Submit value: ", value)
 
-      //dispatch(postReview(value))
+      dispatch(postReview(value))
       actions.resetForm()
    }
 
    return (
       <Box sx={{ marginTop: "24px", paddingTop: "24px", borderTop: "1px solid rgba(0,0,0,0.1)", textAlign: "left" }}>
          <Container maxWidth="sm">
+            <Collapse in={postReviewError.length > 1}>
+               <Box>
+                  <Alert severity='error' sx={{ mb: 2, textAlign: "center" }}>
+                     {postReviewError}
+                  </Alert>
+               </Box>
+            </Collapse>
             <Typography variant="h6" sx={{ textAlign: "left", paddingBottom: ".7rem" }}>
-               Write a review
+               Cuentanos tu opinion
             </Typography>
             <Formik
                initialValues={initialValue}
@@ -67,14 +81,14 @@ const ReviewForm = () => {
                onSubmit={(value, actions) => handleSubmit(value, actions)}>
                {({ setFieldValue, values }) => (
                   <Form>
-                     <Box sx={{ marginBottom: ".9rem"}}>
-                        <Box sx={{display: "flex"}}>
+                     <Box sx={{ marginBottom: ".9rem" }}>
+                        <Box sx={{ display: "flex" }}>
                            <Box>
-                              <Avatar sx={{ height: "56px", width: "56px" }}>H</Avatar>
+                              <Avatar src={/*user.image*/user?.email} sx={{ height: "56px", width: "56px" }} />
                            </Box>
                            <Box sx={{ marginLeft: "1rem" }}>
                               <Typography variant="subtitle1" sx={{ marginLeft: ".25rem" }}>
-                                 User1
+                                 {user?.fullName}
                               </Typography>
                               <Rating name="rating" size="large" defaultValue={0} precision={0.5} value={values.rating} onChange={(e, newVal) => setFieldValue("rating", Number(newVal))} />
                            </Box>

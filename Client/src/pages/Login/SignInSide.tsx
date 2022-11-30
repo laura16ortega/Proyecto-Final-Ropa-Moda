@@ -17,7 +17,6 @@ import axios from "axios";
 
 import { useState } from "react";
 import { useAppDispatch } from "../../assets/hooks";
-import { setUser } from "../../redux/slices/authSlice";
 import { loginUser } from "../../redux/thunk-actions/authActions";
 
 function Copyright(props: any) {
