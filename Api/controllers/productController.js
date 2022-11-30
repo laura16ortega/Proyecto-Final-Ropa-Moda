@@ -175,3 +175,6 @@ exports.addReveiw = async(req,res)=>{
   }*/
 }
 
+exports.getReviews = async(req,res)=>{
+
+}

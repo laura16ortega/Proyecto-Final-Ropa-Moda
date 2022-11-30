@@ -17,6 +17,10 @@ router
   .delete(productController.deleteProduct);
 
 router
+  .route("/review")
+  .get(productController.getReviews)
+
+router
   .route("/review/:id")
   .post(verifyToken, productController.addReveiw)
 

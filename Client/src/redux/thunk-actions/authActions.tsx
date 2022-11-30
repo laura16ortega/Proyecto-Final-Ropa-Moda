@@ -8,6 +8,11 @@ type User = {
     password: FormDataEntryValue | null;
 }
 
+type ResetPass = {
+    password: string | undefined,
+    resetToken: string | undefined
+}
+
 interface FormValues { // Exportar de register
     fullName: string;
     email: string;
@@ -73,9 +78,10 @@ export const forgotPassword = createAsyncThunk(
 // Reset Password
 export const resetPassword = createAsyncThunk(
     "reset/password",
-    async(userData, resetToken)=>{
+    async(userData:ResetPass)=>{
         try {
-            console.log(resetToken)
+            console.log(userData)
+            const {resetToken} = userData
             const {data}:any = await axios.put(
                 `${BACKEND_URL}/api/v1/users/resetPassword/${resetToken}`,
                 userData

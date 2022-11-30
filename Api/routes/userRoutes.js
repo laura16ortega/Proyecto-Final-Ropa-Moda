@@ -10,7 +10,7 @@ router.post("/forgotPassword", forgotPassword)
 router.delete("/find/:id", verifyTokenAndAuthorization, deleteUser);
 router.patch("/updateUser", verifyTokenAndAuthorization, updatedUser);
 router.patch("/password/update", verifyTokenAndAuthorization, updatePassword)
-router.put("/resetPassword/:token", resetPassword)
+router.put("/resetPassword/:resetToken", resetPassword)
 
 
 

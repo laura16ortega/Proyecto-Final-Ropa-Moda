@@ -11,6 +11,10 @@ const initialState = {
   password: "",
   confirmPassword: ""
 }
+type userData = {
+  password: string;
+  resetToken: string | undefined;
+}
 
 const ForgotPassword = () => {
   const [formData, setFormData] = useState(initialState);
@@ -24,26 +28,29 @@ const ForgotPassword = () => {
   }
   const resetSubmit = async(e:any)=>{
     e.preventDefault();
-    console.log(formData)
-    console.log(resetToken)
+
     if(password.length < 6){
       return toast.error("Passwords must be up to 6 characters");
     }
     if(password !== confirmPassword){
       return toast.error("Passwords do not match")
     }
-    const userData = {password}
-
+    const userData = {password,resetToken}
+    //console.log(userData)
     try {
-      const data = await dispatch(resetPassword(userData, resetToken));
-      console.log(data)
+      const data = await dispatch(resetPassword(userData));
+      toast.success("Password Updated Succesfully")
+      setTimeout(()=>{
+        window.location.href = "/login";
+      },800)
     } catch (error) {
       console.log(error)
       toast.error("error")
     }
   }
+  
 
-  const a = async(e:any)=>{
+  /*const a = async(e:any)=>{
     e.preventDefault();
     const postData = {
       userId:"637f973969727709fc0af594",
@@ -59,13 +66,13 @@ const ForgotPassword = () => {
     )
 
     console.log(data)
-  }
+  }*/
  
   return (
     <Grid>
       <Paper  elevation={20} className={styles.paper}>
-        <h1>Forgot Password</h1>
-        <form onSubmit={a} className={styles.form}>
+        <h1>Create a new password</h1>
+        <form onSubmit={resetSubmit} className={styles.form}>
             <label htmlFor="password">
               <input
                  type="password" 

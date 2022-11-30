@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const Token = require("../models/TokenModel");
 const sendEmail = require("../services/sendMailServices");
+const CryptoJS = require("crypto-js");
 
 //Get All Users
 const getAllUsers = async(request,response)=>{
@@ -103,8 +104,16 @@ const forgotPassword = async(request,response)=>{
         }
 
         let resetToken = crypto.randomBytes(32).toString("hex") + user._id;
+        const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+   
+        console.log("hashedtoken1", hashedToken);
+        console.log("resetToken", resetToken)
 
-        const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex")
+        //const hashedToken = await encrypt(resetToken);
+        //const cryptoToken = CryptoJS.AES.encrypt(hashedToken, resetToken).toString()
+    
+
+
        
         await new Token({
             userId: user._id,
@@ -147,14 +156,18 @@ const resetPassword = async(request,response)=>{
   const {password} = request.body;
   const {resetToken} = request.params;
 
-  try {
-    const hashedToken = crypto.createHash("sha256").update(resetToken).digiset("hex");
 
+  try {
+    const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    const tokens = await Token.find()
+    console.log("tokens", tokens)
+    console.log("hashedToken", hashedToken)
+    //comaprar(token, resettoken)
     const userToken = await Token.findOne({
         token: hashedToken,
         expiresAt:{$gt: Date.now()}
     });
-
+    console.log(userToken)
     if(!userToken){
         response.status(404).json({message:"Invalid Token"});
     }
@@ -165,6 +178,7 @@ const resetPassword = async(request,response)=>{
     await user.save();
     response.status(201).json({message:"Password Reset Succesfully, Please Login"})
   } catch (error) {
+    console.log(error)
     response.status(500).json({message:error})
   }
 }
