@@ -23,6 +23,7 @@ export const reviewSlice = createSlice({
             state.postReviewLoading = true
         })
         .addCase(postReview.fulfilled, (state, action: PayloadAction<string>) => {
+            state.postReviewLoading = false
             state.postReviewSuccess = action.payload
         })
         .addCase(postReview.rejected, (state, action: PayloadAction<any>) => {

@@ -4,7 +4,7 @@ import { Formik, FormikHelpers, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup"
 import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { postReview } from '../../redux/thunk-actions/reviewActions';
-
+import { useNotification } from "../UseNotification/UseNotification";
 
 /* Props: userId, comment, commentTitle, rating, isAuthenticated, localuser */
 type InitialValue = {
@@ -27,9 +27,10 @@ type FieldProps = {
 
 type ReviewFormProps = {
    productId: string
+   setOpenReviewForm: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ReviewForm = ({ productId }: ReviewFormProps) => {
+const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
    // userId, userImage, name, comment, rating 
    const dispatch = useAppDispatch()
 
@@ -55,10 +56,15 @@ const ReviewForm = ({ productId }: ReviewFormProps) => {
          .min(1, "El rating valido es de 1 a 5")
    });
 
-   const handleSubmit = (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
-      console.log("Submit value: ", value)
+   const { displayNotification } = useNotification();
 
-      dispatch(postReview(value))
+   const handleSubmit = async (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
+      await dispatch(postReview(value))
+      displayNotification({
+         message: "Review enviada con exito!",
+         type: "success",
+      });
+      setOpenReviewForm(false)
       actions.resetForm()
    }
 
@@ -84,7 +90,9 @@ const ReviewForm = ({ productId }: ReviewFormProps) => {
                      <Box sx={{ marginBottom: ".9rem" }}>
                         <Box sx={{ display: "flex" }}>
                            <Box>
-                              <Avatar src={/*user.image*/user?.email} sx={{ height: "56px", width: "56px" }} />
+                              <Avatar src={/*user.image*/user?.fullName} sx={{ height: "56px", width: "56px" }}>
+                                 {user?.fullName.slice(0, 1).toUpperCase()}
+                              </Avatar>
                            </Box>
                            <Box sx={{ marginLeft: "1rem" }}>
                               <Typography variant="subtitle1" sx={{ marginLeft: ".25rem" }}>
@@ -117,6 +125,7 @@ const ReviewForm = ({ productId }: ReviewFormProps) => {
                         type="submit"
                         size="large"
                         variant="contained"
+                        disabled={postReviewLoading}
                      >
                         Publicar review
                      </Button>

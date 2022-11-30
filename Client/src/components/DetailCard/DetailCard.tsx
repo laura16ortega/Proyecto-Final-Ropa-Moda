@@ -25,18 +25,17 @@ type ParamTypes = {
 export default function DetailCard() {
    const { cartLoading, cart } = useAppSelector((state) => state.cart);
    const { productDetails, detailsError, detailsLoading } = useAppSelector((state) => state.productDetails);
+   const { postReviewLoading, postReviewError, postReviewSuccess } = useAppSelector(state => state.review)
    const { user } = useAppSelector(state => state.auth)
    const { id } = useParams<keyof ParamTypes>() as ParamTypes;
    const dispatch = useAppDispatch()
    // console.log("ID: ", id)
    const [openReviewForm, setOpenReviewForm] = useState<boolean>(false)
 
-   //TODO: Pasarlo en assets, presente tambien en card
    const handleCart = (productId: string) => {
       dispatch(addProductToCart(productId));
    }
 
-   //TODO: Pasarlo en assets, presente tambien en IncreaseCartButton
    const handleIncreaseCart = (productId: string) => {
       // ! if quantity > stock === error
       dispatch(increaseCartQuantity(productId));
@@ -58,7 +57,7 @@ export default function DetailCard() {
       return () => {
          clearState()
       }
-   }, [])
+   }, [postReviewSuccess])
 
    const reviewPlaceholder = [
       {
@@ -216,12 +215,12 @@ export default function DetailCard() {
                               </Box>
                            </Box>
                            <Collapse in={openReviewForm}>
-                              <ReviewForm productId={id} />
+                              <ReviewForm productId={id} setOpenReviewForm={setOpenReviewForm}/>
                            </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
-                                 {reviewPlaceholder.length ? reviewPlaceholder.map(e =>
-                                    <Box key={e.username} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                 {productDetails.reviews.length ? productDetails.reviews.map(e =>
+                                    <Box key={e.createdAt} sx={{ borderBottom: "2px solid #DFDFDF" }} >
                                        <Review review={e} />
                                     </Box>)
                                     :
