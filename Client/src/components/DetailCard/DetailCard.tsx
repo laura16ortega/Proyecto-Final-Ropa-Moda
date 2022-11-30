@@ -1,5 +1,5 @@
-import React, { useEffect } from "react"
-import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button } from "@mui/material";
+import React, { useEffect, useState } from "react"
+import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../assets/hooks";
 import { useParams } from "react-router-dom";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -15,13 +15,20 @@ import {
    increaseCartQuantity,
    decreaseCartQuantity,
 } from "../../redux/slices/cartSlice";
+import ReviewForm from "../ReviewForm/ReviewForm";
+import Review from "../Review/Review";
+
+type ParamTypes = {
+   id: string
+}
 
 export default function DetailCard() {
    const { cartLoading, cart } = useAppSelector((state) => state.cart);
    const { productDetails, detailsError, detailsLoading } = useAppSelector((state) => state.productDetails);
-   const { id } = useParams();
+   const { id } = useParams<keyof ParamTypes>() as ParamTypes; 
    const dispatch = useAppDispatch()
-   console.log("ID: ", id)
+   // console.log("ID: ", id)
+   const [openReviewForm, setOpenReviewForm] = useState<boolean>(false)
 
    //TODO: Pasarlo en assets, presente tambien en card
    const handleCart = (productId: string) => {
@@ -52,7 +59,32 @@ export default function DetailCard() {
       }
    }, [])
 
-
+   const reviewPlaceholder = [
+      {
+         username: "CurtisAlfeld",
+         image: "https://yt3.ggpht.com/5BV78-tDZi0Oki9Z_VMriNoDbidVUa7ik1dltGKXa47IHhucJgI4m8t6j0b2JCRSAiuhrWZQJ7M=s48-c-k-c0x00ffffff-no-rj",
+         comment: "This truly is a bygone era in gaming. You never hear crazy urban legends about games, anymore, just because as soon as someone suggests something, data miners are there to debunk it. And then there's the hundreds of let's plays that would have found it in a day.",
+         rating: 3
+      },
+      {
+         username: "JLjl1910",
+         image: "https://yt3.ggpht.com/WA0tNSmI_cB8La35wJOaVx0sVeeYK7XWkuc8lXMIU6wJ0tJ7_0CFM3Q0TTR42UTTG7iHfsJN=s48-c-k-c0x00ffffff-no-rj",
+         comment: "The guy who made the Bigfoot and aliens mod for San Andreas is an Italian youtuber, and when you installed the mod, it contained a virus that basically disables Adblock for his channel. True story.",
+         rating: 4
+      },
+      {
+         username: "GhostSilk",
+         image: "https://yt3.ggpht.com/ytc/AMLnZu-pH2XQrWBQSHWK9C_JOscoGqa4t2k-JulBb62LEw=s48-c-k-c0x00ffffff-no-rj",
+         comment: "Honestly, Joel should do more of these video game easter egg/urban legend hunting streams. This one was an absolute blast.",
+         rating: 5
+      },
+      {
+         username: "vanacutt1110",
+         image: "https://yt3.ggpht.com/ytc/AMLnZu99fZxiQl4eB8JMyvX-MXBrYFvh1b9AYdi0f6CqrA=s48-c-k-c0x00ffffff-no-rj",
+         comment: `The only almost "spooky" thing that happened to me while playing San Andreas on PS2, was when I was spending some time on the southeast side of Flint County near RS Haul, I find this pedestrian photographer taking pictures of the ocean, and then suddenly he just started walking towards the water and died.`,
+         rating: 2.5
+      },
+   ]
 
 
    return (
@@ -66,7 +98,7 @@ export default function DetailCard() {
                : detailsError ? <h1>Error: {detailsError}</h1>
                   : Object.keys(productDetails).length &&
                   <Box sx={{ marginTop: "3rem" }}>
-                     <Grid container spacing={6}>
+                     <Grid container spacing={6} >
                         <Grid item md={6} sm={12}>
                            <Box>
                               <Box>
@@ -93,12 +125,7 @@ export default function DetailCard() {
                                  <Typography variant="h4" sx={{ fontFamily: "poppins", fontWeight: "800" }}>
                                     {`$${productDetails?.price}`}
                                  </Typography>
-                                 <Box sx={{ marginLeft: "10px", display: "flex", alignItems: "center" }}>
-                                    <Rating size="large" value={productDetails?.ratingsAverage} readOnly precision={0.5} />
-                                    <Typography variant="subtitle2" sx={{ marginLeft: "5px" }}>
-                                       {`${productDetails?.ratingsQuantity} ${productDetails?.ratingsQuantity === 1 ? "review" : "reviews"}`}
-                                    </Typography>
-                                 </Box>
+
                               </Box>
                            </Box>
                            <Box>
@@ -154,10 +181,46 @@ export default function DetailCard() {
                            </Box>
                         </Grid>
                      </Grid>
-                     <Box sx={{ marginTop: "64px" }}>
-                        <Typography variant="h2" sx={{fontFamily: "poppins", fontWeight: "600", textAlign: "left"}}>
-                           Reviews
-                        </Typography>
+                     <Box sx={{ paddingTop: "64px", borderTop: "dotted 3px #e1e2e2" }}>
+                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                           <Box>
+                              <Typography variant="h4" sx={{ fontFamily: "poppins", fontWeight: "600" }}>
+                                 reviews
+                              </Typography>
+                           </Box>
+                           <Box sx={{ paddingX: "1rem", display: "flex", alignItems: "center" }}>
+                              <Rating value={productDetails?.ratingsAverage} readOnly precision={0.5} />
+                              <Typography variant="subtitle2" sx={{ marginLeft: "5px" }}>
+                                 {`(${productDetails?.ratingsQuantity})`}
+                              </Typography>
+                           </Box>
+                        </Box>
+                        <Box>
+                           <Box sx={{ paddingTop: "2rem", paddingBottom: "3rem", alignItems: "center", justifyContent: "center" }}>
+                              <Typography variant="h5">
+                                 Cuentanos que opinas sobre el producto
+                              </Typography>
+                              <Button variant="contained" disableElevation onClick={() => setOpenReviewForm(!openReviewForm)} sx={{marginTop: "1.5rem", padding: "15px 22px"}}>
+                                 Escribir una review
+                              </Button>
+                           </Box>
+                           <Collapse in={openReviewForm}>
+                              <ReviewForm />
+                           </Collapse>
+                           <Box sx={{ marginY: "1rem" }}>
+                              <Container maxWidth="lg">
+                                 {reviewPlaceholder.length ? reviewPlaceholder.map(e =>
+                                    <Box key={e.username} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                       <Review review={e} />
+                                    </Box>)
+                                    : 
+                                    <Box sx={{marginY: "7rem"}}>
+                                       <Typography variant="h3" sx={{fontFamily: "poppins", fontWeight: "700"}}>Sin reviews</Typography>
+                                    </Box>
+                                 }
+                              </Container>
+                           </Box>
+                        </Box>
                      </Box>
                   </Box>
             }

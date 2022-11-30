@@ -3,10 +3,25 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 
 export const BACKEND_URL = 'http://localhost:3001'
 
+type User = {
+    email: FormDataEntryValue | null;
+    password: FormDataEntryValue | null;
+}
+
+interface FormValues { // Exportar de register
+    fullName: string;
+    email: string;
+    // gender: string; // No pasado
+    phone_number: number;
+    password: string;
+    // confirmPassword: string; // No pasado
+    termsAndConditions?: boolean;
+  }
+
 //Register User
 export const registerUser = createAsyncThunk(
     "register/user",
-    async(userData, thunkApi)=>{
+    async(userData: FormValues, thunkApi)=>{
         try {
             const {data}:any = await axios.post(
                 `${BACKEND_URL}/api/auth/register`,
@@ -24,7 +39,7 @@ export const registerUser = createAsyncThunk(
 //Login User
 export const loginUser = createAsyncThunk(
     "login/user",
-    async(userData, thunkApi)=>{
+    async(userData: User, thunkApi)=>{
         try {
             const {data}:any = await axios.post(
                 `${BACKEND_URL}/api/auth/login`,
@@ -42,7 +57,7 @@ export const loginUser = createAsyncThunk(
 //Forgot Password
 export const forgotPassword = createAsyncThunk(
     "forgot/password",
-    async(userData, thunkApi)=>{
+    async(userData: {email: string}, thunkApi)=>{
         try {
             const {data}:any = await axios.post(
                 `${BACKEND_URL}/api/v1/users/forgotPassword`,
