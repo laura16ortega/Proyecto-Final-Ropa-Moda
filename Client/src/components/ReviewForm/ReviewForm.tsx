@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container, Box, Typography, Rating, TextField, Button, Avatar } from "@mui/material"
+import { Container, Box, Typography, Rating, TextField, Button, Avatar, FormHelperText  } from "@mui/material"
 import { Formik, FormikHelpers, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup"
 import { useAppDispatch } from '../../assets/hooks';
@@ -67,32 +67,34 @@ const ReviewForm = () => {
                onSubmit={(value, actions) => handleSubmit(value, actions)}>
                {({ setFieldValue, values }) => (
                   <Form>
-                     <Box sx={{ marginBottom: ".9rem", display: "flex" }}>
-                        <Box>
-                           <Avatar sx={{ height: "56px", width: "56px" }}>H</Avatar>
+                     <Box sx={{ marginBottom: ".9rem"}}>
+                        <Box sx={{display: "flex"}}>
+                           <Box>
+                              <Avatar sx={{ height: "56px", width: "56px" }}>H</Avatar>
+                           </Box>
+                           <Box sx={{ marginLeft: "1rem" }}>
+                              <Typography variant="subtitle1" sx={{ marginLeft: ".25rem" }}>
+                                 User1
+                              </Typography>
+                              <Rating name="rating" size="large" defaultValue={0} precision={0.5} value={values.rating} onChange={(e, newVal) => setFieldValue("rating", Number(newVal))} />
+                           </Box>
                         </Box>
-                        <Box sx={{ marginLeft: "1rem" }}>
-                           <Typography variant="subtitle1" sx={{ marginLeft: ".25rem" }}>
-                              User1
-                           </Typography>
-                           <Rating name="rating" size="large" defaultValue={0} precision={0.5} value={values.rating} onChange={(e, newVal) => setFieldValue("rating", Number(newVal))} />
-                        </Box>
+                        <ErrorMessage name="rating" render={msg => <FormHelperText error={msg ? true : false}>{msg}</FormHelperText>} />
                      </Box>
-                     <ErrorMessage name="rating"/>
                      <Box sx={{ marginBottom: ".9rem" }}>
                         <Typography variant="subtitle2" sx={{ color: "#818689" }}>
                            Comentario
                         </Typography>
                         <Field name="comment" label="comment">
                            {({ field, form }: FieldProps) =>
-                              <TextField 
-                              {...field} 
-                              variant="outlined" 
-                              fullWidth 
-                              multiline 
-                              rows={5} 
-                              error={Boolean(form.errors.comment)}
-                              helperText={form.errors.comment && String(form.errors.comment)}
+                              <TextField
+                                 {...field}
+                                 variant="outlined"
+                                 fullWidth
+                                 multiline
+                                 rows={5}
+                                 error={Boolean(form.errors.comment)}
+                                 helperText={form.errors.comment && String(form.errors.comment)}
                               />
                            }
                         </Field>
@@ -103,7 +105,7 @@ const ReviewForm = () => {
                         variant="contained"
                      >
                         Publicar review
-                        </Button>
+                     </Button>
                   </Form>
                )}
 

@@ -18,10 +18,14 @@ import {
 import ReviewForm from "../ReviewForm/ReviewForm";
 import Review from "../Review/Review";
 
+type ParamTypes = {
+   id: string
+}
+
 export default function DetailCard() {
    const { cartLoading, cart } = useAppSelector((state) => state.cart);
    const { productDetails, detailsError, detailsLoading } = useAppSelector((state) => state.productDetails);
-   const { id } = useParams();
+   const { id } = useParams<keyof ParamTypes>() as ParamTypes; 
    const dispatch = useAppDispatch()
    // console.log("ID: ", id)
    const [openReviewForm, setOpenReviewForm] = useState<boolean>(false)
