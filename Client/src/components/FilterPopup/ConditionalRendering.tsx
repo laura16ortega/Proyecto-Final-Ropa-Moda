@@ -81,7 +81,6 @@ const ConditionalRendering = ({ filterDetails, filters, setFilters }: Filter) =>
     } else {
         return (
             <Box>
-
             </Box>
         )
     }
