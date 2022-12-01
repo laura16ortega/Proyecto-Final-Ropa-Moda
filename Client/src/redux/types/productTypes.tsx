@@ -8,11 +8,20 @@ type DbReviewsType = {
     updatedAt: string
 }
 
+type ImagesType = {
+    public_id: string
+    url: string
+}
+
 // Producto en general
 export type DbProductType = {
+<<<<<<< HEAD
     map(arg0: (e: any) => JSX.Element): import("react").ReactNode
     length: number
     images: string[] | []
+=======
+    images: any // Pasar a string[] | [] | ImagesType cuando se arregle
+>>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
     ratingsAverage: number
     ratingsQuantity: number
     tallaCamiseta: string[] | []
@@ -25,7 +34,7 @@ export type DbProductType = {
     category: string
     marca: string
     gender: string
-    reviews: DbReviewsType[]
+    reviews: string[]
     __v: number
 }
 

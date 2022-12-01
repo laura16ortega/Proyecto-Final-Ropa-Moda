@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse } from "@mui/material";
+import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse, Link } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../assets/hooks";
 import { useParams } from "react-router-dom";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -17,7 +17,11 @@ import {
 } from "../../redux/slices/cartSlice";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import Review from "../Review/Review";
+<<<<<<< HEAD
 import { toast } from 'react-toastify';
+=======
+import { getReview } from "../../redux/thunk-actions/reviewActions";
+>>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
 
 type ParamTypes = {
    id: string
@@ -26,17 +30,17 @@ type ParamTypes = {
 export default function DetailCard() {
    const { cartLoading, cart } = useAppSelector((state) => state.cart);
    const { productDetails, detailsError, detailsLoading } = useAppSelector((state) => state.productDetails);
-   const { id } = useParams<keyof ParamTypes>() as ParamTypes; 
+   const { postReviewLoading, postReviewError, postReviewSuccess, getReviewLoading, reviewsArr } = useAppSelector(state => state.review)
+   const { user } = useAppSelector(state => state.auth)
+   const { id } = useParams<keyof ParamTypes>() as ParamTypes;
    const dispatch = useAppDispatch()
    // console.log("ID: ", id)
    const [openReviewForm, setOpenReviewForm] = useState<boolean>(false)
 
-   //TODO: Pasarlo en assets, presente tambien en card
    const handleCart = (productId: string) => {
       dispatch(addProductToCart(productId));
    }
 
-   //TODO: Pasarlo en assets, presente tambien en IncreaseCartButton
    const handleIncreaseCart = (productId: string) => {
       // ! if quantity > stock === error
       dispatch(increaseCartQuantity(productId));
@@ -59,6 +63,16 @@ export default function DetailCard() {
          clearState()
       }
    }, [])
+
+   // TODO: Mappea doble o triple en caso de reiniciar el componente, pasarlo a request de array
+   useEffect(() => {
+      if (Object.keys(productDetails).length) {
+      productDetails.reviews.forEach(e => 
+         dispatch(getReview(e))
+      )}
+   }, [postReviewSuccess, productDetails.reviews])
+   
+   console.log("reviewsArr:", reviewsArr)
 
    const reviewPlaceholder = [
       {
@@ -101,7 +115,7 @@ export default function DetailCard() {
                         <Grid item md={6} sm={12}>
                            <Box>
                               <Box>
-                                 <img src={productDetails?.images[0] ? productDetails.images[0] : ""} alt={`${productDetails?.name} not found`} style={{ width: "100%" }} />
+                                 <img src={!productDetails.images? "" : productDetails.images.url? productDetails.images.url : productDetails.images[0]} alt={`${productDetails?.name} not found`} style={{ width: "100%" }} />
                               </Box>
                            </Box>
                         </Grid>
@@ -112,7 +126,7 @@ export default function DetailCard() {
                                     <CircleIcon sx={{ fontSize: 18, color: "green" }}></CircleIcon> Disponible
                                  </Typography>
                               </Box>
-                              <Typography variant="h1" sx={{ fontFamily: "poppins", fontWeight: "800", width: "100%", }}>
+                              <Typography variant="h1" sx={{ fontFamily: "poppins", fontWeight: "800", width: "100%", fontSize: "5rem"}}>
                                  {productDetails?.name}
                               </Typography>
                               <Typography variant="h5">
@@ -199,23 +213,40 @@ export default function DetailCard() {
                               <Typography variant="h5">
                                  Cuentanos que opinas sobre el producto
                               </Typography>
-                              <Button variant="contained" disableElevation onClick={() => setOpenReviewForm(!openReviewForm)} sx={{marginTop: "1.5rem", padding: "15px 22px"}}>
-                                 Escribir una review
-                              </Button>
+                              <Box sx={{ marginTop: "1.5rem" }}>
+                                 {user ?
+                                    <Button variant="contained" disableElevation onClick={() => setOpenReviewForm(!openReviewForm)} sx={{ padding: "15px 22px" }}>
+                                       Escribir una review
+                                    </Button>
+                                    :
+                                    <Link href="/login">
+                                       <Typography variant="h6">
+                                          Debes tener una cuenta para poder comentar
+                                       </Typography>
+                                    </Link>
+                                 }
+                              </Box>
                            </Box>
                            <Collapse in={openReviewForm}>
-                              <ReviewForm />
+                              <ReviewForm productId={id} setOpenReviewForm={setOpenReviewForm}/>
                            </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
+<<<<<<< HEAD
                                  {/* PASAR LOS ID QUE ESTAN EN EL ARRAY REVIEWS DE PRODUCTS AL COMPONENTE Review */}
                                  {productDetails.reviews.length>0 ? productDetails.reviews.map(e =>
                                     <Box key={e} sx={{ borderBottom: "2px solid #DFDFDF" }} >
                                        <Review id={e} />
+=======
+                                 {getReviewLoading? <h1>Load reviews</h1>
+                                 : reviewsArr.length ? reviewsArr.map((e, i) =>
+                                    <Box key={i + 1} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                       <Review review={e} />
+>>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
                                     </Box>)
-                                    : 
-                                    <Box sx={{marginY: "7rem"}}>
-                                       <Typography variant="h3" sx={{fontFamily: "poppins", fontWeight: "700"}}>Sin reviews</Typography>
+                                    :
+                                    <Box sx={{ marginY: "7rem" }}>
+                                       <Typography variant="h3" sx={{ fontFamily: "poppins", fontWeight: "700" }}>Sin reviews</Typography>
                                     </Box>
                                  }
                               </Container>
