@@ -30,9 +30,11 @@ export const PRODUCT_FORM_VALIDATOR_SCHEMA = yup.object({
   price: yup.number().required("El precio es obligatorio"),
   description: yup.string(),
   category: yup.string().required("La categoria es requerida"),
-  image: yup.string().required("La imagen es requirida"),
+  gender: yup.string().required("La categoria es requerida"),
+  images: yup.string().required("La imagen es requirida"),
   stock: yup.number().required("La cantidad de productos es requerida"),
-  talla: yup.string().required("La talla es requerida"),
+  tallaPantalon: yup.array(),
+  tallaCamiseta: yup.array(),
   marca: yup.string().required("La marca es obligatoria"),
 });
 
@@ -42,7 +44,7 @@ export function useCreateForm() {
   const data = useForm<FormType>({
     resolver: yupResolver(PRODUCT_FORM_VALIDATOR_SCHEMA, {}),
     defaultValues: {
-      image:
+      images:
         "https://offcorss.vteximg.com.br/arquivos/ids/595219-1000-1180/51530081-Mostaza-16-0940.jpg?v=637106484369070000",
     },
   });
