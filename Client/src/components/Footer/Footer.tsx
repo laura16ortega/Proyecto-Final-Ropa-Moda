@@ -42,7 +42,7 @@ export default function Footer() {
                   <a href='https://www.facebook.com/people/Ropa-Y-Moda/100088461934792/' target="blank">Siganos</a>
                 </li>
                 <li>
-                  <a>Historia</a>
+                  <a href='https://laurajulianaortega.wixsite.com/ropa-y-moda'>Historia</a>
                 </li>
                 <li>
                   <a>Lista</a>
