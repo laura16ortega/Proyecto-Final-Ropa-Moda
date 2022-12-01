@@ -5,6 +5,8 @@ import * as yup from "yup"
 import { useAppDispatch } from '../../assets/hooks';
 import { postReview } from '../../redux/thunk-actions/reviewActions';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 /* Props: userId, comment, commentTitle, rating, isAuthenticated, localuser */
 type InitialValue = {
@@ -55,6 +57,7 @@ const ReviewForm = () => {
    const handleSubmit = async(value: InitialValue, actions: FormikHelpers<InitialValue>) => {
       try {
          dispatch(await postReview(value))
+         toast.success("Review Created Successfully")
          actions.resetForm()
       } catch (error) {
          console.log(error)

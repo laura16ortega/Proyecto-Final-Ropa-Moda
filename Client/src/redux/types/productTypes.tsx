@@ -10,6 +10,8 @@ type DbReviewsType = {
 
 // Producto en general
 export type DbProductType = {
+    map(arg0: (e: any) => JSX.Element): import("react").ReactNode
+    length: number
     images: string[] | []
     ratingsAverage: number
     ratingsQuantity: number

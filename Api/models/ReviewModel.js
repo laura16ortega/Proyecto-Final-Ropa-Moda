@@ -7,6 +7,10 @@ const reviewSchema = new mongoose.Schema({
   },
   comment:{type:String},
   rating:{type:Number},
+  productId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:"Product"
+  }
   },{
   timestamps:true,
   versionKey: false

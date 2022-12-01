@@ -17,6 +17,7 @@ import {
 } from "../../redux/slices/cartSlice";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import Review from "../Review/Review";
+import { toast } from 'react-toastify';
 
 type ParamTypes = {
    id: string
@@ -85,8 +86,6 @@ export default function DetailCard() {
          rating: 2.5
       },
    ]
-
-
    return (
       <Box sx={{ minHeight: "80vh", display: "flex", justifyContent: "center" }}>
          <Container maxWidth="xl">
@@ -209,9 +208,10 @@ export default function DetailCard() {
                            </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
-                                 {reviewPlaceholder.length ? reviewPlaceholder.map(e =>
-                                    <Box key={e.username} sx={{ borderBottom: "2px solid #DFDFDF" }} >
-                                       <Review review={e} />
+                                 {/* PASAR LOS ID QUE ESTAN EN EL ARRAY REVIEWS DE PRODUCTS AL COMPONENTE Review */}
+                                 {productDetails.reviews.length>0 ? productDetails.reviews.map(e =>
+                                    <Box key={e} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                       <Review id={e} />
                                     </Box>)
                                     : 
                                     <Box sx={{marginY: "7rem"}}>
