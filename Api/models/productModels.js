@@ -1,20 +1,16 @@
 const mongoose = require("mongoose");
 
-const reviewSchema = new mongoose.Schema({
-  userId:{type:String, required:[true,"a reveiw must have a name"]},
-  comment:{type:String, required:[true,"a reveiw must have a name"]},
-  rating:{type:Number, required:[true,"a reveiw must have a name"]}
-  },{
-  timestamps:true,
-  versionKey: false
-})
-
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "A product must have a name"], //valor requerido y error
     unique: true,
     trim: true, //solo funciona para strings y remueve todos los espacios en blanco al inicio y al final del string
+    maxlength: [
+      40,
+      "A product name must have less or equal than 40 characters",
+    ],
+    minlength: [8, "A product name must have more or equal than 10 characters"],
   },
 
   ratingsAverage: { type: Number, default: 4.5 },
@@ -28,21 +24,14 @@ const productSchema = new mongoose.Schema({
     type: String,
     trim: true, //solo funciona para strings y remueve todos los espacios en blanco al inicio y al final del string
     required: [true, "A product must have a description"],
+    minlength: [4, "A summary must have more or equal than 4 characters"],
   },
   description: {
     type: String,
     trim: true,
   },
-  images: {
-      public_id:{
-        type:String,
-        required:true
-      },
-      url:{
-        type:String,
-        required:true
-      }
-  }, //acá aclaro que para esta propiedad quiero un arreglo de strings
+
+  images: [String], //acá aclaro que para esta propiedad quiero un arreglo de strings
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -55,17 +44,22 @@ const productSchema = new mongoose.Schema({
   gender: {
     type: String,
     required: [true, "A product must have a gender"],
-    enum: ["Mujer", "Hombre", "Unisex"],
+    enum: {
+      values: ["Mujer", "Hombre", "Unisex"],
+      message: "Gender is either: Mujer, Hombre or Unisex",
+    },
   },
   category: {
     type: String,
     required: [true, "A product must have a category"],
-    enum: ["Camiseta", "Pantalones", "Mujer", "Hombre"],
+    enum: {
+      values: ["Camiseta", "Pantalones"],
+      message: "Category is either: Camiseta or Pantalones",
+    },
   },
   tallaCamiseta: [String],
   tallaPantalón: [String],
   marca: String,
-  reviews:[reviewSchema],
 });
 const Product = mongoose.model("Product", productSchema);
 
