@@ -18,6 +18,7 @@ export const postReview = createAsyncThunk(
    }
 )
 
+
 // createAsyncThunk only accepts a single argument for your thunks / payload creation callbacks.
 // You're currently declaring that it takes two arguments: (userId, userDiveLogList).
 // You would need to put both of these together into a single object.

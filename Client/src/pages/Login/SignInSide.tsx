@@ -57,7 +57,7 @@ export default function SignInSide() {
         window.location.href = "/";
       },800)
     } catch (error) {
-      alert(error)
+      console.log(error)
     }
   };
 
