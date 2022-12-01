@@ -17,10 +17,7 @@ export default function Footer() {
                   <a href="/contact">Contacto</a>
                 </li>
                 <li>
-                  <a>Soporte</a>
-                </li>
-                <li>
-                  <a>Privacidad</a>
+                  <a href="https://laurajulianaortega.wixsite.com/pol-tica-de-privacid">Política de privacidad</a>
                 </li>
               </ul>
             </div>
@@ -45,7 +42,7 @@ export default function Footer() {
                   <a href='https://laurajulianaortega.wixsite.com/ropa-y-moda'>Historia</a>
                 </li>
                 <li>
-                  <a>Lista</a>
+                  <a href="/products">Lista</a>
                 </li>
               </ul>
             </div>
