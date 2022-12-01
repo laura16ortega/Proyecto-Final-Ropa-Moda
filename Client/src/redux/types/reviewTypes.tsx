@@ -13,6 +13,11 @@ type DbReviewType = {
     comment: string
     createdAt: string
     updatedAt: string
+    // SOLO: 
+    //
+    // "rating": 5,
+    // "name": "test-admin2",
+    // "comment": "comentario test postman"
 }
 
 export type PostReviewResponse = {
@@ -20,4 +25,10 @@ export type PostReviewResponse = {
     review: DbReviewType
     ratingsQuantity: number
     rating: number
+}
+
+export type ReviewType = {
+    rating: number
+    name: string
+    comment: string
 }
