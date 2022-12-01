@@ -17,7 +17,11 @@ import {
 } from "../../redux/slices/cartSlice";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import Review from "../Review/Review";
+<<<<<<< HEAD
+import { toast } from 'react-toastify';
+=======
 import { getReview } from "../../redux/thunk-actions/reviewActions";
+>>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
 
 type ParamTypes = {
    id: string
@@ -96,8 +100,6 @@ export default function DetailCard() {
          rating: 2.5
       },
    ]
-
-
    return (
       <Box sx={{ minHeight: "80vh", display: "flex", justifyContent: "center" }}>
          <Container maxWidth="xl">
@@ -230,10 +232,17 @@ export default function DetailCard() {
                            </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
+<<<<<<< HEAD
+                                 {/* PASAR LOS ID QUE ESTAN EN EL ARRAY REVIEWS DE PRODUCTS AL COMPONENTE Review */}
+                                 {productDetails.reviews.length>0 ? productDetails.reviews.map(e =>
+                                    <Box key={e} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                       <Review id={e} />
+=======
                                  {getReviewLoading? <h1>Load reviews</h1>
                                  : reviewsArr.length ? reviewsArr.map((e, i) =>
                                     <Box key={i + 1} sx={{ borderBottom: "2px solid #DFDFDF" }} >
                                        <Review review={e} />
+>>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
                                     </Box>)
                                     :
                                     <Box sx={{ marginY: "7rem" }}>

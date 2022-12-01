@@ -6,12 +6,20 @@ export const postReview = createAsyncThunk(
    "reviews/post",
    async (postData: DataProps, thunkApi) => {
       try {
+<<<<<<< HEAD
+         const { data } = await axios.post(
+=======
          console.log("Sent values: ", postData)
          const { data } = await axios.post<PostReviewResponse>(
+>>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
             `http://localhost:3001/api/v1/products/review/${postData.productId}`,
             postData, // Toda la data, se destructura desde el back
             { headers: { Authorization: `Bearer ${postData.token}` } }
          )
+<<<<<<< HEAD
+         return data.message
+      } catch (error: any) {
+=======
          console.log("post response", data)
          return data.message
       } catch (error: any) {
@@ -27,8 +35,25 @@ export const getReview = createAsyncThunk(
          const { data } = await axios.get<ReviewType>(`http://localhost:3001/api/v1/products/review/${reviewId}`)
          return data
       } catch (error: any) {
+>>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
          return thunkApi.rejectWithValue(error.message)
       }
+   }
+);
+
+//Get Review info by id
+export const getReview = createAsyncThunk(
+   "get/review",
+   async(id:string, thunkApi)=>{
+         try {
+            const {data} = await axios.get(
+               `http://localhost:3001/api/v1/products/review/${id}`
+            )
+
+            return data
+         } catch (error) {
+            return thunkApi.rejectWithValue(error)
+         }
    }
 )
 

@@ -107,6 +107,8 @@ exports.deleteProduct = async (req, res) => {
 
 //REVIEW SECTION
 exports.addReveiw = async(req,res)=>{
+<<<<<<< HEAD
+=======
   /*const {userId, rating, comment} = req.body;
   const productId = req.params.id;
   const product = await Product.findById(req.params.id);
@@ -146,9 +148,11 @@ exports.addReveiw = async(req,res)=>{
       res.status(500).json({message:error})
   }*/
 
+>>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
   const {rating, comment, userId} = req.body;
   //if(!rating || !description)return res.status(500).json({message:"Please Provide all Parameters"});
   
+  try {
   const product = await Product.findById(req.params.id);
   //if(!product) return res.stauts(400).json({message:"Product not found"});
     
@@ -166,30 +170,24 @@ exports.addReveiw = async(req,res)=>{
       productId: req.params.id
     }
     //console.log(product.reviews.reduce((a,c)=>c.ratingsAverage + a,0)/product.reviews.length)
-  try {
     const createdReview = await Review.create(review);
-    //console.log("createdreview", createdReview)
-    product.reviews.push(createdReview._id);
+    product.reviews = [...product.reviews, createdReview._id]
     product.ratingsQuantity = product.reviews.length;
-    await product.save(function(err){
-      if(err){
-        console.log(err)
-      }
-    });
-    console.log("producto final",product)
-    //Calcular promedio de rating del producto y de las reveiw y devolverlas
-    res.status(201).json({
-      message:"Review created successfully",
-      product
-    })
+    await product.save();
+    return res.send({message:"Review Created Succesfully"})
   } catch (error) {
     console.log(error)
+<<<<<<< HEAD
+=======
     res.status(500).json(error)
+>>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
   }
 }
 
 
-exports.getReviews = async(req,res)=>{
+exports.getReview = async(req,res)=>{
+  //debo encontrar review por id de parametro
+  //modificar data para devolver solo el rating, name, comment y la imagen
     try {
       const {id} = req.params;
       const reviews = await Review.findById(id).populate("userId")
@@ -199,10 +197,11 @@ exports.getReviews = async(req,res)=>{
       const review = {
         rating: reviews.rating,
         name: reviews.userId.fullName,
-        comment: reviews.comment
+        comment: reviews.comment,
+        picture:"",
+        date: reviews.createdAt
 
       }
-      
       res.status(200).json(review)
     } catch (error) {
       console.log(error)
