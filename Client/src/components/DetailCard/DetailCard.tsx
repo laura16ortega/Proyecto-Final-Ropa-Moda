@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse } from "@mui/material";
+import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse, Link } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../assets/hooks";
 import { useParams } from "react-router-dom";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -25,17 +25,17 @@ type ParamTypes = {
 export default function DetailCard() {
    const { cartLoading, cart } = useAppSelector((state) => state.cart);
    const { productDetails, detailsError, detailsLoading } = useAppSelector((state) => state.productDetails);
-   const { id } = useParams<keyof ParamTypes>() as ParamTypes; 
+   const { postReviewLoading, postReviewError, postReviewSuccess } = useAppSelector(state => state.review)
+   const { user } = useAppSelector(state => state.auth)
+   const { id } = useParams<keyof ParamTypes>() as ParamTypes;
    const dispatch = useAppDispatch()
    // console.log("ID: ", id)
    const [openReviewForm, setOpenReviewForm] = useState<boolean>(false)
 
-   //TODO: Pasarlo en assets, presente tambien en card
    const handleCart = (productId: string) => {
       dispatch(addProductToCart(productId));
    }
 
-   //TODO: Pasarlo en assets, presente tambien en IncreaseCartButton
    const handleIncreaseCart = (productId: string) => {
       // ! if quantity > stock === error
       dispatch(increaseCartQuantity(productId));
@@ -57,7 +57,7 @@ export default function DetailCard() {
       return () => {
          clearState()
       }
-   }, [])
+   }, [postReviewSuccess])
 
    const reviewPlaceholder = [
       {
@@ -113,7 +113,7 @@ export default function DetailCard() {
                                     <CircleIcon sx={{ fontSize: 18, color: "green" }}></CircleIcon> Disponible
                                  </Typography>
                               </Box>
-                              <Typography variant="h1" sx={{ fontFamily: "poppins", fontWeight: "800", width: "100%", }}>
+                              <Typography variant="h1" sx={{ fontFamily: "poppins", fontWeight: "800", width: "100%", fontSize: "5rem"}}>
                                  {productDetails?.name}
                               </Typography>
                               <Typography variant="h5">
@@ -200,22 +200,33 @@ export default function DetailCard() {
                               <Typography variant="h5">
                                  Cuentanos que opinas sobre el producto
                               </Typography>
-                              <Button variant="contained" disableElevation onClick={() => setOpenReviewForm(!openReviewForm)} sx={{marginTop: "1.5rem", padding: "15px 22px"}}>
-                                 Escribir una review
-                              </Button>
+                              <Box sx={{ marginTop: "1.5rem" }}>
+                                 {user ?
+                                    <Button variant="contained" disableElevation onClick={() => setOpenReviewForm(!openReviewForm)} sx={{ padding: "15px 22px" }}>
+                                       Escribir una review
+                                    </Button>
+                                    :
+                                    <Link href="/login">
+                                       <Typography variant="h6">
+                                          Debes tener una cuenta para poder comentar
+                                       </Typography>
+                                    </Link>
+                                 }
+                              </Box>
                            </Box>
                            <Collapse in={openReviewForm}>
-                              <ReviewForm />
+                              <ReviewForm productId={id} setOpenReviewForm={setOpenReviewForm}/>
                            </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
-                                 {reviewPlaceholder.length ? reviewPlaceholder.map(e =>
-                                    <Box key={e.username} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                 {productDetails.reviews.length ? productDetails.reviews.map(e =>
+                                    <Box key={e.createdAt} sx={{ borderBottom: "2px solid #DFDFDF" }} >
                                        <Review review={e} />
+
                                     </Box>)
-                                    : 
-                                    <Box sx={{marginY: "7rem"}}>
-                                       <Typography variant="h3" sx={{fontFamily: "poppins", fontWeight: "700"}}>Sin reviews</Typography>
+                                    :
+                                    <Box sx={{ marginY: "7rem" }}>
+                                       <Typography variant="h3" sx={{ fontFamily: "poppins", fontWeight: "700" }}>Sin reviews</Typography>
                                     </Box>
                                  }
                               </Container>
