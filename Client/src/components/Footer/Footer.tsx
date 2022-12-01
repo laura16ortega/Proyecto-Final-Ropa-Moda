@@ -39,7 +39,7 @@ export default function Footer() {
               <h4>Mensajes</h4>
               <ul>
                 <li>
-                  <a>Respaldo</a>
+                  <a href='https://www.facebook.com/people/Ropa-Y-Moda/100088461934792/' target="blank">Siganos</a>
                 </li>
                 <li>
                   <a>Historia</a>
