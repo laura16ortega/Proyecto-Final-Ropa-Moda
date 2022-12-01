@@ -113,7 +113,7 @@ export default function DetailCard() {
                         <Grid item md={6} sm={12}>
                            <Box>
                               <Box>
-                                 <img src={productDetails?.images[0] ? productDetails.images[0] : ""} alt={`${productDetails?.name} not found`} style={{ width: "100%" }} />
+                                 <img src={!productDetails.images? "" : productDetails.images.url? productDetails.images.url : productDetails.images[0]} alt={`${productDetails?.name} not found`} style={{ width: "100%" }} />
                               </Box>
                            </Box>
                         </Grid>
