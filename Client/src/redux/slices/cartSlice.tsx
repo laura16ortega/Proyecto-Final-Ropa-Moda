@@ -1,17 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { addProductToCart } from "../thunk-actions/cartActions"
+import { addProductToCart, stripeCheckout } from "../thunk-actions/cartActions"
 import type { mappedDbProductsType } from "../types/productTypes"
 
 type InitialState = {
     cartLoading: boolean,
     cartError: null | string,
     cart: null | mappedDbProductsType[]
+    checkoutLoad: boolean
 }
 
 const initialState = {
     cartLoading: false,
     cartError: null,
     cart: [],
+    checkoutLoad: false
 } as InitialState
 
 export const cartSlice = createSlice({
@@ -60,6 +62,12 @@ export const cartSlice = createSlice({
             .addCase(addProductToCart.rejected, (state, action: PayloadAction<any>) => {
                 state.cartLoading = false
                 state.cartError = action.payload
+            })
+            .addCase(stripeCheckout.pending, (state, action) => {
+                state.checkoutLoad = true
+            })
+            .addCase(stripeCheckout.fulfilled, (state, action) => {
+                state.checkoutLoad = false
             })
     },
 })
