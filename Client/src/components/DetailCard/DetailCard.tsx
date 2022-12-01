@@ -17,6 +17,7 @@ import {
 } from "../../redux/slices/cartSlice";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import Review from "../Review/Review";
+import { getReview } from "../../redux/thunk-actions/reviewActions";
 
 type ParamTypes = {
    id: string
@@ -25,7 +26,7 @@ type ParamTypes = {
 export default function DetailCard() {
    const { cartLoading, cart } = useAppSelector((state) => state.cart);
    const { productDetails, detailsError, detailsLoading } = useAppSelector((state) => state.productDetails);
-   const { postReviewLoading, postReviewError, postReviewSuccess } = useAppSelector(state => state.review)
+   const { postReviewLoading, postReviewError, postReviewSuccess, getReviewLoading, reviewsArr } = useAppSelector(state => state.review)
    const { user } = useAppSelector(state => state.auth)
    const { id } = useParams<keyof ParamTypes>() as ParamTypes;
    const dispatch = useAppDispatch()
@@ -57,7 +58,17 @@ export default function DetailCard() {
       return () => {
          clearState()
       }
-   }, [postReviewSuccess])
+   }, [])
+
+   // TODO: Mappea doble o triple en caso de reiniciar el componente, pasarlo a request de array
+   useEffect(() => {
+      if (Object.keys(productDetails).length) {
+      productDetails.reviews.forEach(e => 
+         dispatch(getReview(e))
+      )}
+   }, [postReviewSuccess, productDetails.reviews])
+   
+   console.log("reviewsArr:", reviewsArr)
 
    const reviewPlaceholder = [
       {
@@ -219,10 +230,10 @@ export default function DetailCard() {
                            </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
-                                 {productDetails.reviews.length ? productDetails.reviews.map(e =>
-                                    <Box key={e.createdAt} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                 {getReviewLoading? <h1>Load reviews</h1>
+                                 : reviewsArr.length ? reviewsArr.map((e, i) =>
+                                    <Box key={i + 1} sx={{ borderBottom: "2px solid #DFDFDF" }} >
                                        <Review review={e} />
-
                                     </Box>)
                                     :
                                     <Box sx={{ marginY: "7rem" }}>

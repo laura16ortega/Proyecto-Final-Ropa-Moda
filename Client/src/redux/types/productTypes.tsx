@@ -23,7 +23,7 @@ export type DbProductType = {
     category: string
     marca: string
     gender: string
-    reviews: DbReviewsType[]
+    reviews: string[]
     __v: number
 }
 
