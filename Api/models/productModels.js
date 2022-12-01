@@ -1,14 +1,5 @@
 const mongoose = require("mongoose");
-
-const reviewSchema = new mongoose.Schema({
-  userId:{type:String, required:[true,"a reveiw must have a name"]},
-  comment:{type:String, required:[true,"a reveiw must have a name"]},
-  rating:{type:Number, required:[true,"a reveiw must have a name"]},
-  },{
-  timestamps:true,
-  versionKey: false
-  
-})
+const Review = require("./ReviewModel");
 
 const productSchema = new mongoose.Schema({
   name: {
@@ -66,7 +57,10 @@ const productSchema = new mongoose.Schema({
   tallaCamiseta: [String],
   tallaPantalón: [String],
   marca: String,
-  reviews:[reviewSchema],
+  reviews:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Review"
+  }],
 });
 const Product = mongoose.model("Product", productSchema);
 

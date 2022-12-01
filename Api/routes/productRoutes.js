@@ -16,12 +16,10 @@ router
   .patch(productController.updateProduct)
   .delete(productController.deleteProduct);
 
-router
-  .route("/review")
-  .get(productController.getReviews)
-
-router
+  
+  router
   .route("/review/:id")
+  .get(productController.getReviews)
   .post(verifyToken, productController.addReveiw)
-
+  
 module.exports = router;

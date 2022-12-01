@@ -4,13 +4,15 @@ import { Formik, FormikHelpers, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup"
 import { useAppDispatch } from '../../assets/hooks';
 import { postReview } from '../../redux/thunk-actions/reviewActions';
+import { useParams } from 'react-router-dom';
 
 /* Props: userId, comment, commentTitle, rating, isAuthenticated, localuser */
 type InitialValue = {
-   userImage: string
-   username: string
+   userId: string
    rating: number
    comment: string
+   productId: string | undefined
+   token: string | null
 }
 
 type FieldType = {
@@ -25,16 +27,18 @@ type FieldProps = {
 
 const ReviewForm = () => {
    // userId, userImage, name, comment, rating 
-   const dispatch = useAppDispatch()
+   const {id:productId} = useParams();
+   const dispatch = useAppDispatch();
+   const {userId} = localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User")!) : "";
+   //const token = localStorage.getItem("jwt") ? localStorage.getItem("jwt") : ""
+
 
    const initialValue: InitialValue = {
-      userImage: "", // Solo para mostrar en el formulario, no se envia
-      username: "", // Solo para mostrar en el formulario, no se envia
+      userId: userId, // Solo para mostrar en el formulario, no se envia
       rating: 0,
-      comment: ""
-      // productId: "" // Props
-      // userId: string // localStorage.get ---- (reemplaza userImage y username)
-      // token: string // localStorage.get
+      comment: "",
+      productId: productId, // Props
+      token: localStorage.getItem("jwt") ? localStorage.getItem("jwt") : ""// localStorage.get
    }
 
    const validation = yup.object({
@@ -48,11 +52,13 @@ const ReviewForm = () => {
          .min(1, "El rating valido es de 1 a 5")
    });
 
-   const handleSubmit = (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
-      console.log("Submit value: ", value)
-
-      //dispatch(postReview(value))
-      actions.resetForm()
+   const handleSubmit = async(value: InitialValue, actions: FormikHelpers<InitialValue>) => {
+      try {
+         dispatch(await postReview(value))
+         actions.resetForm()
+      } catch (error) {
+         console.log(error)
+      }
    }
 
    return (

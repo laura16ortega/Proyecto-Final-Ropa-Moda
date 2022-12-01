@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema({
-  userId:{type:String, required:[true,"a reveiw must have a name"]},
-  comment:{type:String, required:[true,"a reveiw must have a name"]},
-  rating:{type:Number, required:[true,"a reveiw must have a name"]},
+  userId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:"User"
+  },
+  comment:{type:String},
+  rating:{type:Number},
   },{
   timestamps:true,
   versionKey: false

@@ -1,7 +1,7 @@
 export type DataProps = {
-    productId: string
     userId: string
     rating: number
     comment: string
-    token: string
+    productId: string | undefined
+    token: string | null
 }
