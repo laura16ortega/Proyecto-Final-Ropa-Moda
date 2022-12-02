@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useReducer, useState } from "react"
 import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse, Link } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../assets/hooks";
 import { useParams } from "react-router-dom";
@@ -17,7 +17,11 @@ import {
 } from "../../redux/slices/cartSlice";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import Review from "../Review/Review";
+<<<<<<< HEAD
 import { toast } from 'react-toastify';
+=======
+import { getReview } from "../../redux/thunk-actions/reviewActions";
+>>>>>>> 7a381a9d5c4021ef81171078c57610c368c1d912
 
 type ParamTypes = {
    id: string
@@ -27,10 +31,12 @@ export default function DetailCard() {
    const { cartLoading, cart } = useAppSelector((state) => state.cart);
    const { productDetails, detailsError, detailsLoading } = useAppSelector((state) => state.productDetails);
    const { postReviewLoading, postReviewError, postReviewSuccess, getReviewLoading, reviewsArr } = useAppSelector(state => state.review)
+   const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0)
+   console.log("Reducer value: ", reducerValue)
    const { user } = useAppSelector(state => state.auth)
    const { id } = useParams<keyof ParamTypes>() as ParamTypes;
    const dispatch = useAppDispatch()
-   // console.log("ID: ", id)
+   // console.log("ID: ", productDetails)
    const [openReviewForm, setOpenReviewForm] = useState<boolean>(false)
 
    const handleCart = (productId: string) => {
@@ -58,17 +64,8 @@ export default function DetailCard() {
       return () => {
          clearState()
       }
-   }, [])
+   }, [reducerValue])
 
-   // TODO: Mappea doble o triple en caso de reiniciar el componente, pasarlo a request de array
-   useEffect(() => {
-      if (Object.keys(productDetails).length) {
-      productDetails.reviews.forEach(e => 
-         dispatch(getReview(e))
-      )}
-   }, [postReviewSuccess, productDetails.reviews])
-   
-   console.log("reviewsArr:", reviewsArr)
 
    const reviewPlaceholder = [
       {
@@ -111,7 +108,7 @@ export default function DetailCard() {
                         <Grid item md={6} sm={12}>
                            <Box>
                               <Box>
-                                 <img src={!productDetails.images? "" : productDetails.images.url? productDetails.images.url : productDetails.images[0]} alt={`${productDetails?.name} not found`} style={{ width: "100%" }} />
+                                 <img src={!productDetails.images ? "" : productDetails.images.url ? productDetails.images.url : productDetails.images[0]} alt={`${productDetails?.name} not found`} style={{ width: "100%" }} />
                               </Box>
                            </Box>
                         </Grid>
@@ -122,7 +119,7 @@ export default function DetailCard() {
                                     <CircleIcon sx={{ fontSize: 18, color: "green" }}></CircleIcon> Disponible
                                  </Typography>
                               </Box>
-                              <Typography variant="h1" sx={{ fontFamily: "poppins", fontWeight: "800", width: "100%", fontSize: "5rem"}}>
+                              <Typography variant="h1" sx={{ fontFamily: "poppins", fontWeight: "800", width: "100%", fontSize: "5rem" }}>
                                  {productDetails?.name}
                               </Typography>
                               <Typography variant="h5">
@@ -224,19 +221,31 @@ export default function DetailCard() {
                               </Box>
                            </Box>
                            <Collapse in={openReviewForm}>
-                              <ReviewForm productId={id} setOpenReviewForm={setOpenReviewForm}/>
+                              <ReviewForm productId={id} setOpenReviewForm={setOpenReviewForm} forceUpdate={forceUpdate}/>
                            </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
+<<<<<<< HEAD
                                  {/* PASAR LOS ID QUE ESTAN EN EL ARRAY REVIEWS DE PRODUCTS AL COMPONENTE Review */}
                                  {productDetails.reviews.length>0 ? productDetails.reviews.map(e =>
                                     <Box key={e} sx={{ borderBottom: "2px solid #DFDFDF" }} >
                                        <Review id={e} />
                                     </Box>)
                                     :
+=======
+                                 {productDetails.reviews.length <= 0 ?
+>>>>>>> 7a381a9d5c4021ef81171078c57610c368c1d912
                                     <Box sx={{ marginY: "7rem" }}>
                                        <Typography variant="h3" sx={{ fontFamily: "poppins", fontWeight: "700" }}>Sin reviews</Typography>
                                     </Box>
+                                    : productDetails ? productDetails?.reviews.map((e, i) =>
+                                       <Box key={i + 1} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                          <Review id={e}/>
+                                       </Box>)
+                                       :
+                                       <Box sx={{ marginY: "7rem" }}>
+                                          <Typography variant="h3" sx={{ fontFamily: "poppins", fontWeight: "700" }}>Sin reviews</Typography>
+                                       </Box>
                                  }
                               </Container>
                            </Box>

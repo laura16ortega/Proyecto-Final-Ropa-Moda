@@ -19,7 +19,11 @@
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
+<<<<<<< HEAD
     "sharp": "^0.31.2"
+=======
+    "stripe": "^11.1.0"
+>>>>>>> 7a381a9d5c4021ef81171078c57610c368c1d912
   },
   "scripts": {
     "start": "nodemon server.js"

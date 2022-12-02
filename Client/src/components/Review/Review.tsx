@@ -1,49 +1,42 @@
 import React,{useEffect, useState} from 'react'
 import { Box, Typography, Rating, Button, Avatar } from "@mui/material"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useAppDispatch } from '../../assets/hooks/index';
-import { getReview } from '../../redux/thunk-actions/reviewActions';
+import { ReviewType } from "../../redux/types/reviewTypes"
+import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { useParams } from 'react-router-dom';
-
 
 /* { username, userImage, comment, rating } <<-- placeholder */
 /* { userId(getUser), comment, rating} <<-- api */
-
-type ReviewDbType = {
-   comment: string
-   createdAt: string
-   rating: number
-   updatedAt: string
-   userId: string
-   _id: string
-}
 
 type ReviewProps = {
    id: string
 }
 
 const Review = ({ id }: ReviewProps) => {
+
    const dispatch = useAppDispatch();
    const {productId} = useParams()
-   const [fetchReview, setFechReview] = useState({
-      username: "",
-      image: "",
+   const [fetchReview, setFechReview] = useState<ReviewType>({
+      name: "",
+      picture: "",
       comment: "",
-      rating: 0
+      rating: 0,
+      date: ""
    })
 
    useEffect(()=>{
       const fetchReview = async()=>{
          try {
-            const {payload} = await dispatch(getReview(id));
+            const { payload } : any = await dispatch(getReview(id));
             setFechReview({
-               username: payload.name,
-               image:payload.image,
-               comment:payload.comment,
-               rating:payload.rating
+               name: payload.name,
+               picture: payload.picture,
+               comment: payload.comment,
+               rating: payload.rating,
+               date: payload.date
             })
          } catch (error) {
-            console.log(error)
+            console.log("Fetch review error: ",error)
          }
       }
       fetchReview()
@@ -52,9 +45,9 @@ const Review = ({ id }: ReviewProps) => {
       <Box sx={{ textAlign: "left", borderTop: "2px solid #DFDFDF", borderLeft: "2px solid #DFDFDF", borderRight: "2px solid #DFDFDF", padding: "2.625rem 2.5rem" }}>
          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-               <Avatar src={fetchReview.image} alt={fetchReview.username} sx={{ height: "56px", width: "56px" }}>S</Avatar>
+               <Avatar src={fetchReview.picture} alt={fetchReview.name} sx={{ height: "56px", width: "56px" }}>S</Avatar>
                <Typography variant="h6" sx={{ marginLeft: "1rem" }}>
-                  {fetchReview.username}
+                  {fetchReview.name}
                </Typography>
             </Box>
             <Box>
@@ -66,7 +59,7 @@ const Review = ({ id }: ReviewProps) => {
          <Box sx={{ display: "flex", alignItems: "center", marginY: "1rem" }}>
             <Rating value={fetchReview.rating} size="large" readOnly precision={0.5} />
             <Typography variant="subtitle2" sx={{ marginLeft: "1rem" }}>
-               {/*`Fecha de createdAt(nonexistent)`*/}
+               {fetchReview.date.split("T")[0].split("-").reverse().join("/")}
             </Typography>
          </Box>
          <Box>

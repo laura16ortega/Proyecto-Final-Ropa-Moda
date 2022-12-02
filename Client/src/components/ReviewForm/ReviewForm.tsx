@@ -4,9 +4,14 @@ import { Formik, FormikHelpers, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup"
 import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { postReview } from '../../redux/thunk-actions/reviewActions';
+<<<<<<< HEAD
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+=======
+import { useNotification } from "../UseNotification/UseNotification";
+import { unwrapResult } from '@reduxjs/toolkit'
+>>>>>>> 7a381a9d5c4021ef81171078c57610c368c1d912
 
 /* Props: userId, comment, commentTitle, rating, isAuthenticated, localuser */
 type InitialValue = {
@@ -30,9 +35,10 @@ type FieldProps = {
 type ReviewFormProps = {
    productId: string
    setOpenReviewForm: React.Dispatch<React.SetStateAction<boolean>>
+   forceUpdate: React.DispatchWithoutAction
 }
 
-const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
+const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormProps) => {
    // userId, userImage, name, comment, rating 
    const dispatch = useAppDispatch()
    const [errors, setErrors] = useState<boolean>(false)
@@ -56,15 +62,26 @@ const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
       rating: yup
          .number()
          .required("Este campo es requerido")
-         .min(1, "El rating valido es de 1 a 5")
+         .min(0.5, "El rating valido es de 0.5 a 5")
    });
 
    // { displayNotification } = useNotification();
 
    const handleSubmit = async (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
       try {
+<<<<<<< HEAD
          dispatch(await postReview(value))
          toast.success("Review Created Successfully")
+=======
+         const resultAction = await dispatch(postReview(value))
+         const originalPromiseResult = unwrapResult(resultAction)
+         displayNotification({
+            message: "Review enviada con exito!",
+            type: "success",
+         });
+         setOpenReviewForm(false)
+         forceUpdate()
+>>>>>>> 7a381a9d5c4021ef81171078c57610c368c1d912
          actions.resetForm()
       } catch (error) {
        setErrors(true)

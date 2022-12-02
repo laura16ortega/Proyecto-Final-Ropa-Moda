@@ -28,7 +28,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 export const PRODUCT_FORM_VALIDATOR_SCHEMA = yup.object({
   name: yup.string().required("El nombre es obligatorio"),
   price: yup.number().required("El precio es obligatorio"),
-  description: yup.string(),
+  summary: yup.string(),
   category: yup.string().required("La categoria es requerida"),
   gender: yup.string().required("La categoria es requerida"),
   images: yup.string().required("La imagen es requirida"),
@@ -43,7 +43,10 @@ export type FormType = typeof PRODUCT_FORM_VALIDATOR_SCHEMA["__outputType"];
 export function useCreateForm() {
   const data = useForm<FormType>({
     resolver: yupResolver(PRODUCT_FORM_VALIDATOR_SCHEMA, {}),
+<<<<<<< HEAD
     defaultValues: {},
+=======
+>>>>>>> 7a381a9d5c4021ef81171078c57610c368c1d912
   });
 
   return data;

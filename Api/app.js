@@ -10,6 +10,7 @@ const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser");
 const fileUpload = require('express-fileupload');
 require('./services/googleAuthServices');
+const paymentRoutes = require("./routes/paymentRoutes")
 
 
 const app = express();
@@ -42,6 +43,7 @@ app.use((req, res, next) => {
 app.use("/api/v1/products", productRouter); //middleware
 app.use("/api/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/payment", paymentRoutes)
 app.use("/", (req,res)=>{
   if(req.oidc){
     res.json(req.oidc.user)
