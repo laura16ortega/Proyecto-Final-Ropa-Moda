@@ -17,7 +17,7 @@ interface FormValues { // Exportar de register
     fullName: string;
     email: string;
     // gender: string; // No pasado
-    phone_number: number;
+    phone_number: string;
     password: string;
     // confirmPassword: string; // No pasado
     termsAndConditions?: boolean;
@@ -35,8 +35,8 @@ export const registerUser = createAsyncThunk(
             window.localStorage.setItem("jwt", data.registerNewUser.token);
             window.localStorage.setItem("User", JSON.stringify(data.registerNewUser)); 
             return data.registerNewUser
-        } catch (error) {
-            return thunkApi.rejectWithValue(error)
+        } catch (error: any) {
+            return thunkApi.rejectWithValue(error.response.data.message)
         }
     }
 );
@@ -53,8 +53,8 @@ export const loginUser = createAsyncThunk(
             window.localStorage.setItem("jwt", data.loginData.token);
             window.localStorage.setItem("User", JSON.stringify(data.loginData.user));
             return data.loginData
-        } catch (error) {
-            return thunkApi.rejectWithValue(error)
+        } catch (error: any) {
+            return thunkApi.rejectWithValue(error.response.data.message)
         }
     }
 );

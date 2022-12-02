@@ -29,15 +29,18 @@ type FieldProps = {
 type ReviewFormProps = {
    productId: string
    setOpenReviewForm: React.Dispatch<React.SetStateAction<boolean>>
+   forceUpdate: React.DispatchWithoutAction
 }
 
-const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
+const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormProps) => {
    // userId, userImage, name, comment, rating 
    const dispatch = useAppDispatch()
    const [errors, setErrors] = useState<boolean>(false)
 
    const { user, userLoading, token } = useAppSelector(state => state.auth)
    const { postReviewLoading, postReviewError, postReviewSuccess } = useAppSelector(state => state.review)
+
+   const loggedUser = Object.keys(user).length
 
    const initialValue: InitialValue = {
       rating: 0,
@@ -55,7 +58,7 @@ const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
       rating: yup
          .number()
          .required("Este campo es requerido")
-         .min(1, "El rating valido es de 1 a 5")
+         .min(0.5, "El rating valido es de 0.5 a 5")
    });
 
    const { displayNotification } = useNotification();
@@ -69,6 +72,7 @@ const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
             type: "success",
          });
          setOpenReviewForm(false)
+         forceUpdate()
          actions.resetForm()
       } catch (error) {
        setErrors(true)
@@ -98,12 +102,12 @@ const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
                         <Box sx={{ display: "flex" }}>
                            <Box>
                               <Avatar src={/*user.image*/user?.fullName} sx={{ height: "56px", width: "56px" }}>
-                                 {user?.fullName.slice(0, 1).toUpperCase()}
+                                 {loggedUser > 0 ? user.fullName.slice(0, 1).toUpperCase() : ""}
                               </Avatar>
                            </Box>
                            <Box sx={{ marginLeft: "1rem" }}>
                               <Typography variant="subtitle1" sx={{ marginLeft: ".25rem" }}>
-                                 {user?.fullName}
+                                 {loggedUser > 0 ? user.fullName : ""}
                               </Typography>
                               <Rating name="rating" size="large" defaultValue={0} precision={0.5} value={values.rating} onChange={(e, newVal) => setFieldValue("rating", Number(newVal))} />
                            </Box>
