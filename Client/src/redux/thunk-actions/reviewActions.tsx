@@ -32,21 +32,6 @@ export const getReview = createAsyncThunk(
    }
 );
 
-//Get Review info by id
-// export const getReview = createAsyncThunk(
-//    "get/review",
-//    async(id:string, thunkApi)=>{
-//          try {
-//             const {data} = await axios.get(
-//                `http://localhost:3001/api/v1/products/review/${id}`
-//             )
-// 
-//             return data
-//          } catch (error) {
-//             return thunkApi.rejectWithValue(error)
-//          }
-//    }
-// )
 
 // /review/:id
 // reviews: ['6388d82432839c23d8df7781']

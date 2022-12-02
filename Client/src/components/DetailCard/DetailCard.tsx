@@ -30,7 +30,7 @@ export default function DetailCard() {
    const { user } = useAppSelector(state => state.auth)
    const { id } = useParams<keyof ParamTypes>() as ParamTypes;
    const dispatch = useAppDispatch()
-   // console.log("ID: ", id)
+   // console.log("ID: ", productDetails)
    const [openReviewForm, setOpenReviewForm] = useState<boolean>(false)
 
    const handleCart = (productId: string) => {
@@ -59,16 +59,7 @@ export default function DetailCard() {
          clearState()
       }
    }, [])
-
-   // TODO: Mappea doble o triple en caso de reiniciar el componente, pasarlo a request de array
-   useEffect(() => {
-      if (Object.keys(productDetails).length) {
-      productDetails.reviews.forEach(e => 
-         dispatch(getReview(e))
-      )}
-   }, [postReviewSuccess, productDetails.reviews])
    
-   console.log("reviewsArr:", reviewsArr)
 
    const reviewPlaceholder = [
       {
@@ -228,10 +219,12 @@ export default function DetailCard() {
                            </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
-                                 {getReviewLoading? <h1>Load reviews</h1>
-                                 : reviewsArr.length ? reviewsArr.map((e, i) =>
+                                 {productDetails.reviews.length <= 0 ?                                     <Box sx={{ marginY: "7rem" }}>
+                                       <Typography variant="h3" sx={{ fontFamily: "poppins", fontWeight: "700" }}>Sin reviews</Typography>
+                                    </Box>
+                                 : productDetails ? productDetails?.reviews.map((e, i) =>
                                     <Box key={i + 1} sx={{ borderBottom: "2px solid #DFDFDF" }} >
-                                       <Review review={e} />
+                                       <Review id={e} />
                                     </Box>)
                                     :
                                     <Box sx={{ marginY: "7rem" }}>
