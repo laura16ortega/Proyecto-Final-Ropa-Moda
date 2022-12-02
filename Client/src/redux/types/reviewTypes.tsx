@@ -31,4 +31,6 @@ export type ReviewType = {
     rating: number
     name: string
     comment: string
+    date: string
+    picture: string
 }

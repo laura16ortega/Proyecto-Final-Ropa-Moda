@@ -55,7 +55,7 @@ const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
       rating: yup
          .number()
          .required("Este campo es requerido")
-         .min(1, "El rating valido es de 1 a 5")
+         .min(0.5, "El rating valido es de 0.5 a 5")
    });
 
    const { displayNotification } = useNotification();
