@@ -33,10 +33,22 @@ export default function CreateForm() {
 
   const dispatch = useAppDispatch();
   const [sizeArr, setSizeArr] = useState<Array<string>>([]);
+  const [image, setImage] = useState<string | null | ArrayBuffer>('');
 
   const onChange = (e: any) => {
     setSizeArr([...sizeArr, e.target.name]);
   };
+
+  const imageChange = (e:any) =>{
+      console.log(e.target.files[0])
+      setImage(e.target.files[0])
+      /*const files = e.currentTarget.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(files);
+      reader.onloadend = ()=>{
+        setImage(reader.result)
+      }*/
+  }
 
   return (
     <Box sx={{ backgroundColor: "#3e3e3e" }}>
@@ -90,9 +102,10 @@ export default function CreateForm() {
                 } else {
                   data.tallaCamiseta = sizeArr;
                 }
-                let allData = { ...data, images: [data.images] };
-                console.log(allData);
-                dispatch(createProduct(allData));
+                data.images = image
+                //let allData = { ...data, images: [data.images] };
+                //console.log(allData);
+                dispatch(createProduct(data));
               })}
             >
               <FormControl>
@@ -140,12 +153,12 @@ export default function CreateForm() {
                   sx={{ border: "2px solid #ced4da", color: "white" }}
                 >
                   <InputLabel id="label">Genero</InputLabel>
-                  <MenuItem value="Camiseta">Hombre</MenuItem>
-                  <MenuItem value="Pantalon">Mujer</MenuItem>
+                  <MenuItem value="Hombre">Hombre</MenuItem>
+                  <MenuItem value="Mujer">Mujer</MenuItem>
                 </Select>
                 <Select
                   {...register("category")}
-                  key={3}
+                  key={4}
                   label="Categoria"
                   name="category"
                   id="filled-basic"
@@ -155,22 +168,24 @@ export default function CreateForm() {
                 >
                   <InputLabel id="label">Categoria</InputLabel>
                   <MenuItem value="Camiseta">Camiseta</MenuItem>
-                  <MenuItem value="Pantalon">Pantalon</MenuItem>
+                  <MenuItem value="Pantalones">Pantalon</MenuItem>
                 </Select>
                 <TextField
                   {...register("images")}
-                  key={4}
+                  key={5}
                   label="Imagen"
                   className={styles.inputInfo}
-                  name="image"
+                  name="images"
                   id="filled-basic"
                   variant="filled"
+                  type="file"
                   color="secondary"
+                  onChange={(e)=>imageChange(e)}
                   focused
                 />
                 <TextField
                   {...register("stock")}
-                  key={5}
+                  key={6}
                   label="Stock"
                   className={styles.inputInfo}
                   name="stock"

@@ -1,6 +1,7 @@
 const Product = require("./../models/productModels");
-const cloudinary = require("../services/cloudinaryServices")
-const Review = require("../models/ReviewModel")
+const {cloudinaryUploadImg} = require("../services/cloudinaryServices")
+const Review = require("../models/ReviewModel");
+const fs = require("fs-extra");
 
 //ROUTE HANDLERS
 
@@ -48,15 +49,11 @@ exports.createProduct = async (req, res) => {
       gender,
       summary
     } = req.body;
-    if (!name || !price || !images || !marca || !category) {
+    /*if (!name || !price || !images || !marca || !category) {
       return res.status(500).json({ message: "Please Provide all Parameters" });
-    }
+    }*/
 
-    const result = await cloudinary.uploader.upload(images[0], {
-      folder: "products",
-    });
-    console.log("CLOUDINARY RESULT", result)
-
+    
     const newProduct = await Product.create({
       name,
       description,
@@ -65,18 +62,28 @@ exports.createProduct = async (req, res) => {
       stock,
       tallaCamiseta: tallaCamiseta ? tallaCamiseta : [],
       tallaPantalon: tallaPantalon ? tallaPantalon : [],
-      images: {
-        public_id: result.public_id,
-        url: result.secure_url,
-      },
       gender,
       summary
     });
+
+    console.log(req.files)
+    if(req.files?.images){
+      const result = await cloudinaryUploadImg(req.files.images.tempFilePath)
+      newProduct.images = {
+        public_id: result.public_id,
+        secure_url: result.secure_url
+      }
+      await fs.unlink(req.files.images.tempFilePath)
+    }
+
+    await newProduct.save()
+    
     res.status(201).json({
       status: "success",
       data: { product: newProduct },
     });
   } catch (err) {
+    console.log(err)
     res.status(400).json({ status: "fail,", message: err });
   }
 };
@@ -107,48 +114,6 @@ exports.deleteProduct = async (req, res) => {
 
 //REVIEW SECTION
 exports.addReveiw = async(req,res)=>{
-<<<<<<< HEAD
-=======
-  /*const {userId, rating, comment} = req.body;
-  const productId = req.params.id;
-  const product = await Product.findById(req.params.id);
-
-  if (!userId || !rating || !comment) {
-    return res.status(404).json({ message: "Please provide all parametrs" });
-  }
-
-  try {
-    if (product.reviews.find((review) => review.userId === req.userId)) {
-      return res
-        .status(404)
-        .json({ message: "You already submitted a review" });
-    }
-    const review = {
-      userId,
-      rating: Number(rating),
-
-      comment,
-    };
-    product.reviews.push(review);
-    product.ratingsQuantity = product.reviews.length;
-    product.ratingsAverage =
-      product.reviews.reduce((acc, c) => c.rating + acc, 0) /
-      product.reviews.length;
-
-    const updatedProduct = await product.save();
-
-    res.status(201).json({
-      message: "Review Created Succesfully",
-      review: updatedProduct.reviews[updatedProduct.reviews.length - 1],
-      ratingsQuantity: product.ratingsQuantity,
-      rating: product.ratingsAverage,
-    });
-  } catch (error) {
-    console.log(error)
-      res.status(500).json({message:error})
-  }*/
-
->>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
   const {rating, comment, userId} = req.body;
   //if(!rating || !description)return res.status(500).json({message:"Please Provide all Parameters"});
   
@@ -177,10 +142,7 @@ exports.addReveiw = async(req,res)=>{
     return res.send({message:"Review Created Succesfully"})
   } catch (error) {
     console.log(error)
-<<<<<<< HEAD
-=======
-    res.status(500).json(error)
->>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
+    res.status(500).json({message:error})
   }
 }
 

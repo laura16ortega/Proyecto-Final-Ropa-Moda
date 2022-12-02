@@ -6,4 +6,19 @@ cloudinary.config({
     api_secret: process.env.CLOUD_KEY_SECRET
 });
 
-module.exports = cloudinary;
+const cloudinaryUploadImg = async(fileToUploads) => {
+    try {
+        return await cloudinary.uploader.upload(fileToUploads,{
+            folder:"products"
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const cloudinaryDeleteImg = async(filePath)=>{
+    return await cloudinary.uploader.destroy(filePath,{
+        folder:"products"
+    })
+}
+module.exports = {cloudinaryUploadImg, cloudinaryDeleteImg};

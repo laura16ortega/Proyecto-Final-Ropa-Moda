@@ -43,10 +43,7 @@ export type FormType = typeof PRODUCT_FORM_VALIDATOR_SCHEMA["__outputType"];
 export function useCreateForm() {
   const data = useForm<FormType>({
     resolver: yupResolver(PRODUCT_FORM_VALIDATOR_SCHEMA, {}),
-    defaultValues: {
-      images:
-        "https://offcorss.vteximg.com.br/arquivos/ids/595219-1000-1180/51530081-Mostaza-16-0940.jpg?v=637106484369070000",
-    },
+    defaultValues: {},
   });
 
   return data;
