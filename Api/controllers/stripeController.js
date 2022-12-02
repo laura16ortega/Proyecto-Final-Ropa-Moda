@@ -27,6 +27,7 @@ exports.stripeCheckout = async(req, res) => {
         })
         res.json({ url: session.url })
     } catch (error) {
+        console.log("stripe error: ", error)
         res.status(500).json(error)
     }
 }
