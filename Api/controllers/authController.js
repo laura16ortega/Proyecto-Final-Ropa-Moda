@@ -21,7 +21,7 @@ const registerCtrl = async(request,response)=>{
 
         try{
             const checkIs = await User.findOne({email});
-            if(checkIs) return response.status(500).json({message:"Email Already exist"})    
+            if(checkIs) return response.status(500).json({message:"El email ya esta en uso!"})    
             
             const passHash = await encrypt(password);
             const newPhoneNumber = Number(phone_number.replace(/\s/g, ''))
@@ -81,11 +81,11 @@ const loginCtrl = async(request,response)=>{
     const {email, password} = request.body;
     try {
         const checkIs = await User.findOne({email});
-        if(!checkIs) return response.status(404).json({message:"User Not Found"})
+        if(!checkIs) return response.status(404).json({message:"Usuario no encontrado"})
 
         const passwordHash = checkIs.password;
         const isCorrect = await verified(password, passwordHash);
-        if(!isCorrect)return response.status(404).json({message:"User Not Found"})
+        if(!isCorrect)return response.status(404).json({message:"Usuario no encontrado"})
         
         if(checkIs && isCorrect){
             const token = generateToken(checkIs);
