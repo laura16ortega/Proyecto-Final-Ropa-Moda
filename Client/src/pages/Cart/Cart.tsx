@@ -76,6 +76,14 @@ const Cart = () => {
     }
   }
 
+  const handlePaypalButton = () => {
+    if (!userToken) {
+      displayNotification({ message: "Debes estar registrado para poder comprar", type: "info", timeout: 10000 });
+    } else {
+      setOpenPaypal(!openPaypal);
+    }
+  }
+
   useEffect(() => {
     if (!allData?.length) {
       dispatch(getAllProducts());
@@ -339,7 +347,7 @@ const Cart = () => {
                           className={s.paypalButton}
                           disabled={checkoutLoad}
                           onClick={() => {
-                            setOpenPaypal(!openPaypal);
+                            handlePaypalButton();
                           }}
                         >
                           <span
