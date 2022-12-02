@@ -29,9 +29,10 @@ type FieldProps = {
 type ReviewFormProps = {
    productId: string
    setOpenReviewForm: React.Dispatch<React.SetStateAction<boolean>>
+   forceUpdate: React.DispatchWithoutAction
 }
 
-const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
+const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormProps) => {
    // userId, userImage, name, comment, rating 
    const dispatch = useAppDispatch()
    const [errors, setErrors] = useState<boolean>(false)
@@ -69,6 +70,7 @@ const ReviewForm = ({ productId, setOpenReviewForm }: ReviewFormProps) => {
             type: "success",
          });
          setOpenReviewForm(false)
+         forceUpdate()
          actions.resetForm()
       } catch (error) {
        setErrors(true)
