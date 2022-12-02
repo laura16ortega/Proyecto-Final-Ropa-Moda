@@ -60,13 +60,17 @@ const Cart = () => {
 
   const handleStripeCheckout = async (cartData: mappedDbProductsType[]) => {
     try {
-      const checkoutData = {
-        token: userToken,
-        cartData
+      if (!userToken) {
+        displayNotification({ message: "Debes estar registrado para poder comprar", type: "info", timeout: 10000 });
+      } else {
+        const checkoutData = {
+          token: userToken,
+          cartData
+        }
+        const dispatchCheckout = await dispatch(stripeCheckout(checkoutData))
+        const payloadUrl = unwrapResult(dispatchCheckout)
+        window.location.href = payloadUrl
       }
-      const dispatchCheckout = await dispatch(stripeCheckout(checkoutData))
-      const payloadUrl = unwrapResult(dispatchCheckout)
-      window.location.href = payloadUrl
     } catch (e) {
       setCheckoutError(true)
     }
@@ -86,7 +90,6 @@ const Cart = () => {
         <h1>CartError: {cartError}</h1>
       ) : !cartProd?.length ? (
         <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
-          {/* Container MUI */}
           <Box sx={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
               TU CARRO ESTA VACIO
@@ -140,10 +143,7 @@ const Cart = () => {
                       sx={{ marginLeft: "1rem", color: "gray" }}
                     >
                       {`${itemRes} ${itemRes === 1 ? "item" : "items"}`}
-                      {/* cart?.reduce((total, item)=>total+(item.quantity + cart.length),0) */}
                     </Typography>
-                    {/*<h2>Carro</h2>
-                                                <p style={{ marginLeft: "1rem" }}>{`${cart.length} items`}</p>*/}
                   </Box>
                   <Box sx={{ marginTop: "2.5rem" }}>
                     {cartProd?.map((e, i) => (
@@ -151,8 +151,7 @@ const Cart = () => {
                         <Box
                           sx={{
                             display: "flex",
-                            /*justifyContent: "space-between",*/ alignItems:
-                              "center",
+                            alignItems: "center",
                           }}
                         >
                           <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
@@ -180,7 +179,6 @@ const Cart = () => {
                               </Typography>
                               <Typography variant="subtitle1">
                                 {`$${e.price}`}
-                                {/*<span>{`$${e.price}`}</span>*/}
                               </Typography>
                             </Box>
                             <Box
@@ -259,7 +257,6 @@ const Cart = () => {
                       <Typography variant="h4" className={s.orderSummary}>
                         Resumen de compra
                       </Typography>
-                      {/*<h2 style={{ letterSpacing: "0.2em", lineHeight: "1.2", marginBottom: "2rem" }}>ORDER SUMMARY</h2>*/}
                     </Box>
                     <Box>
                       <Box sx={{ marginBottom: "1.25rem" }}>
@@ -285,8 +282,6 @@ const Cart = () => {
                             >
                               {e.price && e.price <= 0 ? "-" : `$${e.price}`}
                             </Typography>
-                            {/*<p style={{ letterSpacing: "0.2em", lineHeight: 1.6 }}>{e.title}</p>
-                                                                <p style={{ letterSpacing: "0.2em", lineHeight: 1.6 }}>{e.price <= 0 ? "-" : e.price}</p>*/}
                           </Box>
                         ))}
                       </Box>
@@ -322,8 +317,6 @@ const Cart = () => {
                             0
                           )}`}
                         </Typography>
-                        {/*<p style={{ letterSpacing: "0.1em", lineHeight: 1.6 }}>Total</p>
-                                                        <p style={{ letterSpacing: "0.1em", lineHeight: 1.6 }}>125.45</p>*/}
                       </Box>
                       <Box sx={{ marginTop: "1.5rem", marginBottom: "2.5rem" }}>
                         <Collapse in={checkoutError}>
@@ -352,7 +345,7 @@ const Cart = () => {
                           <span
                             style={{ display: "flex", alignItems: "center" }}
                           >
-                            <span>Checkout with</span>
+                            <span>Checkout con</span>
                             <img
                               src={paypalImg}
                               alt=""
@@ -406,9 +399,6 @@ const Cart = () => {
                       </Box>
                     </Box>
                   </Box>
-                  {/*<div>
-                                                Accepted cards
-                                            </div>*/}
                 </Grid>
               </Grid>
             </Box>
