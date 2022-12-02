@@ -92,6 +92,32 @@
   border-bottom: 3px solid white !important;
 }
 
+.text {
+  text-align: center;
+  color: white;
+  cursor: pointer;
+}
+
+.custom_input_file {
+  position: relative;
+  margin-top: 57px;
+  padding: 10px;
+  width: 150px;
+  border: solid 2px white;
+  border-radius: 3px;
+}
+
+.custom_input_file .input_file {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  width: 100%;
+  opacity: 0;
+  cursor: auto;
+}
+
 @media (max-width: 650px) {
   .contactLeft {
     width: 100%;

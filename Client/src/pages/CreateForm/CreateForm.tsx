@@ -13,6 +13,7 @@ import {
   FormControlLabel,
   Checkbox,
   FormGroup,
+  Input,
 } from "@mui/material";
 import { Formik, FormikHelpers, Form, Field } from "formik";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -105,6 +106,8 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  helperText={formState.errors?.name?.message}
+                  error={Boolean(formState.errors?.name?.message)}
                   focused
                 />
                 <TextField
@@ -113,13 +116,18 @@ export default function CreateForm() {
                   label="Precio"
                   className={styles.inputInfo}
                   name="price"
-                  id="filled-basic"
+                  id="outlined-number"
                   variant="filled"
                   color="secondary"
+                  type="number"
+                  error={Boolean(formState.errors?.price?.message)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   focused
                 />
                 <TextField
-                  {...register("description")}
+                  {...register("summary")}
                   key={2}
                   label="Descripcion"
                   className={styles.inputInfo}
@@ -127,6 +135,8 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  helperText={formState.errors?.summary?.message}
+                  error={Boolean(formState.errors?.summary?.message)}
                   focused
                 />
                 <Select
@@ -137,6 +147,7 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   className={styles.inputInfo}
+                  error={Boolean(formState.errors?.gender?.message)}
                   sx={{ border: "2px solid #ced4da", color: "white" }}
                 >
                   <InputLabel id="label">Genero</InputLabel>
@@ -151,32 +162,40 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   className={styles.inputInfo}
+                  error={Boolean(formState.errors?.category?.message)}
                   sx={{ border: "2px solid #ced4da", color: "white" }}
                 >
                   <InputLabel id="label">Categoria</InputLabel>
                   <MenuItem value="Camiseta">Camiseta</MenuItem>
                   <MenuItem value="Pantalon">Pantalon</MenuItem>
                 </Select>
-                <TextField
-                  {...register("images")}
-                  key={4}
-                  label="Imagen"
-                  className={styles.inputInfo}
-                  name="image"
-                  id="filled-basic"
-                  variant="filled"
-                  color="secondary"
-                  focused
-                />
+                <Box className={styles.custom_input_file}>
+                  <Input
+                    {...register("images")}
+                    key={4}
+                    className={styles.input_file}
+                    name="image"
+                    color="secondary"
+                    error={Boolean(formState.errors?.images?.message)}
+                    type="file"
+                  />
+
+                  <p className={styles.text}>Subir Imagen...</p>
+                </Box>
                 <TextField
                   {...register("stock")}
                   key={5}
                   label="Stock"
                   className={styles.inputInfo}
                   name="stock"
-                  id="filled-basic"
+                  id="outlined-number"
                   variant="filled"
                   color="secondary"
+                  type="number"
+                  error={Boolean(formState.errors?.stock?.message)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   focused
                 />
                 <TextField
@@ -188,9 +207,10 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  helperText={formState.errors?.marca?.message}
+                  error={Boolean(formState.errors?.marca?.message)}
                   focused
                 />
-
                 {watch("category") === "Camiseta" ? (
                   <FormGroup className={styles.inputInfo}>
                     <FormControlLabel
@@ -226,7 +246,6 @@ export default function CreateForm() {
                     />
                   </FormGroup>
                 )}
-
                 <Button
                   type="submit"
                   variant="contained"
