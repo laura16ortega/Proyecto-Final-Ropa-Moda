@@ -40,6 +40,8 @@ const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormPro
    const { user, userLoading, token } = useAppSelector(state => state.auth)
    const { postReviewLoading, postReviewError, postReviewSuccess } = useAppSelector(state => state.review)
 
+   const loggedUser = Object.keys(user).length
+
    const initialValue: InitialValue = {
       rating: 0,
       comment: "",
@@ -100,12 +102,12 @@ const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormPro
                         <Box sx={{ display: "flex" }}>
                            <Box>
                               <Avatar src={/*user.image*/user?.fullName} sx={{ height: "56px", width: "56px" }}>
-                                 {user?.fullName.slice(0, 1).toUpperCase()}
+                                 {loggedUser > 0 ? user.fullName.slice(0, 1).toUpperCase() : ""}
                               </Avatar>
                            </Box>
                            <Box sx={{ marginLeft: "1rem" }}>
                               <Typography variant="subtitle1" sx={{ marginLeft: ".25rem" }}>
-                                 {user?.fullName}
+                                 {loggedUser > 0 ? user.fullName : ""}
                               </Typography>
                               <Rating name="rating" size="large" defaultValue={0} precision={0.5} value={values.rating} onChange={(e, newVal) => setFieldValue("rating", Number(newVal))} />
                            </Box>

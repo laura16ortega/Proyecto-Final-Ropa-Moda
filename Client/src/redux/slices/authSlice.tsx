@@ -4,9 +4,9 @@ import { loginUser, registerUser } from '../thunk-actions/authActions';
 import type { UserType } from "../types/userTypes"
 
 type InitialState = {
-    user: null | UserType
+    user: UserType
     userLoading: boolean
-    token: null | string
+    token: string
     userError: null | any
 }
 
@@ -23,9 +23,9 @@ export const authSlice = createSlice({
         logout: (
             state
         ) =>{
-            localStorage.clear();
-            state.user = null;
-            state.token = null;
+            localStorage.removeItem("jwt");
+            localStorage.removeItem("User")
+            state.token = ""
         }
     },
     extraReducers(builder) {
