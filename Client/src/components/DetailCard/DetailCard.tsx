@@ -32,7 +32,6 @@ export default function DetailCard() {
    const { productDetails, detailsError, detailsLoading } = useAppSelector((state) => state.productDetails);
    const { postReviewLoading, postReviewError, postReviewSuccess, getReviewLoading, reviewsArr } = useAppSelector(state => state.review)
    const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0)
-   console.log("Reducer value: ", reducerValue)
    const { user } = useAppSelector(state => state.auth)
    const { id } = useParams<keyof ParamTypes>() as ParamTypes;
    const dispatch = useAppDispatch()
@@ -207,10 +206,15 @@ export default function DetailCard() {
                                  Cuentanos que opinas sobre el producto
                               </Typography>
                               <Box sx={{ marginTop: "1.5rem" }}>
-                                 {user ?
-                                    <Button variant="contained" disableElevation onClick={() => setOpenReviewForm(!openReviewForm)} sx={{ padding: "15px 22px" }}>
-                                       Escribir una review
-                                    </Button>
+                                 {Object.keys(user).length ?
+                                    <Box>
+                                       <Button variant="contained" disableElevation onClick={() => setOpenReviewForm(!openReviewForm)} sx={{ padding: "15px 22px" }}>
+                                          Escribir una review
+                                       </Button>
+                                       <Collapse in={openReviewForm}>
+                                          <ReviewForm productId={id} setOpenReviewForm={setOpenReviewForm} forceUpdate={forceUpdate} />
+                                       </Collapse>
+                                    </Box>
                                     :
                                     <Link href="/login">
                                        <Typography variant="h6">
@@ -220,9 +224,6 @@ export default function DetailCard() {
                                  }
                               </Box>
                            </Box>
-                           <Collapse in={openReviewForm}>
-                              <ReviewForm productId={id} setOpenReviewForm={setOpenReviewForm} forceUpdate={forceUpdate}/>
-                           </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
 <<<<<<< HEAD
@@ -240,7 +241,7 @@ export default function DetailCard() {
                                     </Box>
                                     : productDetails ? productDetails?.reviews.map((e, i) =>
                                        <Box key={i + 1} sx={{ borderBottom: "2px solid #DFDFDF" }} >
-                                          <Review id={e}/>
+                                          <Review id={e} />
                                        </Box>)
                                        :
                                        <Box sx={{ marginY: "7rem" }}>

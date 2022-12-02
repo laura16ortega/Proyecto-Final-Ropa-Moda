@@ -16,8 +16,11 @@ import { useNotification } from "../../components/UseNotification/UseNotificatio
 import axios from "axios";
 
 import { useState } from "react";
-import { useAppDispatch } from "../../assets/hooks";
+import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import { loginUser } from "../../redux/thunk-actions/authActions";
+import { unwrapResult } from '@reduxjs/toolkit'
+import Alert from "@mui/material/Alert"
+import Collapse from "@mui/material/Collapse"
 
 function Copyright(props: any) {
   return (
@@ -42,6 +45,9 @@ const theme = createTheme();
 export default function SignInSide() {
   const dispatch = useAppDispatch()
   const { displayNotification } = useNotification();
+  const [loginErrors, setLoginErrors] = useState<boolean>(false)
+
+  const { userError } = useAppSelector(state => state.auth)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -51,13 +57,14 @@ export default function SignInSide() {
         email: data.get("email"),
         password: data.get("password"),
       };
-      dispatch(loginUser(user));
+      const dispatchLogin = await dispatch(loginUser(user));
+      unwrapResult(dispatchLogin)
       displayNotification({ message: "Bienvenido", type: "success" });
       setTimeout(()=>{
         window.location.href = "/";
       },800)
     } catch (error) {
-      console.log(error)
+      setLoginErrors(true)
     }
   };
 
@@ -134,6 +141,11 @@ export default function SignInSide() {
               >
                 Ingresar
               </Button>
+              <Collapse in={loginErrors}>
+                <Alert severity='error' sx={{ mb: 2, textAlign: "center" }} onClose={() => setLoginErrors(false)}>
+                  {userError}
+                </Alert>
+              </Collapse>
               <Grid container>
                 <Grid item xs>
                   <Link href="/forgot" variant="body2">
