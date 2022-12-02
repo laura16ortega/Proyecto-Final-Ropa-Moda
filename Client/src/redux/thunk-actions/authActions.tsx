@@ -53,8 +53,8 @@ export const loginUser = createAsyncThunk(
             window.localStorage.setItem("jwt", data.loginData.token);
             window.localStorage.setItem("User", JSON.stringify(data.loginData.user));
             return data.loginData
-        } catch (error) {
-            return thunkApi.rejectWithValue(error)
+        } catch (error: any) {
+            return thunkApi.rejectWithValue(error.response.data.message)
         }
     }
 );
