@@ -107,48 +107,6 @@ exports.deleteProduct = async (req, res) => {
 
 //REVIEW SECTION
 exports.addReveiw = async(req,res)=>{
-<<<<<<< HEAD
-=======
-  /*const {userId, rating, comment} = req.body;
-  const productId = req.params.id;
-  const product = await Product.findById(req.params.id);
-
-  if (!userId || !rating || !comment) {
-    return res.status(404).json({ message: "Please provide all parametrs" });
-  }
-
-  try {
-    if (product.reviews.find((review) => review.userId === req.userId)) {
-      return res
-        .status(404)
-        .json({ message: "You already submitted a review" });
-    }
-    const review = {
-      userId,
-      rating: Number(rating),
-
-      comment,
-    };
-    product.reviews.push(review);
-    product.ratingsQuantity = product.reviews.length;
-    product.ratingsAverage =
-      product.reviews.reduce((acc, c) => c.rating + acc, 0) /
-      product.reviews.length;
-
-    const updatedProduct = await product.save();
-
-    res.status(201).json({
-      message: "Review Created Succesfully",
-      review: updatedProduct.reviews[updatedProduct.reviews.length - 1],
-      ratingsQuantity: product.ratingsQuantity,
-      rating: product.ratingsAverage,
-    });
-  } catch (error) {
-    console.log(error)
-      res.status(500).json({message:error})
-  }*/
-
->>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
   const {rating, comment, userId} = req.body;
   //if(!rating || !description)return res.status(500).json({message:"Please Provide all Parameters"});
   
@@ -177,10 +135,6 @@ exports.addReveiw = async(req,res)=>{
     return res.send({message:"Review Created Succesfully"})
   } catch (error) {
     console.log(error)
-<<<<<<< HEAD
-=======
-    res.status(500).json(error)
->>>>>>> 3239a8e745ca7d03481583dfc93fe9bcd616d639
   }
 }
 
