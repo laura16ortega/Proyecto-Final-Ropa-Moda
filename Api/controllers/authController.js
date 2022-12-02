@@ -24,13 +24,14 @@ const registerCtrl = async(request,response)=>{
             if(checkIs) return response.status(500).json({message:"Email Already exist"})    
             
             const passHash = await encrypt(password);
+            const newPhoneNumber = Number(phone_number.replace(/\s/g, ''))
             
             //Create new User
             const user = await User.create({
                 fullName,
                 password:passHash,
                 email,
-                phone_number,
+                phone_number: newPhoneNumber,
                 isAdmin
             });
 
