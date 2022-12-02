@@ -18,7 +18,8 @@ import { Formik, Field, Form, ErrorMessage, useFormik } from "formik";
 import { FormHelperText } from "@mui/material";
 import * as Yup from "yup";
 import { useNotification } from "../../components/UseNotification/UseNotification";
-import axios from 'axios'
+import { useAppDispatch } from "../../assets/hooks";
+import { registerUser } from "../../redux/thunk-actions/authActions";
 
 
 interface FormValues{
@@ -30,41 +31,10 @@ interface FormValues{
   confirmPassword: string;
   termsAndConditions?: boolean;
 }
-const RegisterUser = async (user: any) => {
-  //const { displayNotification } = useNotification();
-  console.log(user)
-  try {
-    const response = await axios.post(
-      `http://localhost:3001/api/auth/register`,
-      user
-    );
-    if (response) {
-      console.log(response.data)
-      //displayNotification({ message: "Bienvenido", type: "success" });
-      //window.localStorage.setItem("jwt", response.data.loginData.token);
-      //window.localStorage.setItem("User", JSON.stringify(response.data.loginData.user));
-      //console.log(response.data.loginData.user)
-      /*dispatch(setUser({
-        token: response.data.loginData.token,
-        user: response.data.loginData.user
-        
-      }))*/
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 800);
-      
-    }
-  } catch(error) {
-    console.log(error)
-    /*displayNotification({
-      message: "E-mail o contraseña incorrectos",
-      type: "error",
-    });*/
-  }
-};
 
 const Register = () => {
   const { displayNotification } = useNotification();
+  const dispatch = useAppDispatch();
   const paperStyle = { padding: "30px 20px", width: 500, margin: "20px auto" };
   const headerStyle = { margin: 0 };
   const avatarStyle = { backgroundColor: "#1bbd7e" };
@@ -103,18 +73,20 @@ const Register = () => {
 
  
   const onSubmit = async(values: FormValues) => {
-    //const datos = JSON.stringify(values)
-    const {fullName, password, email, phone_number} = values 
-    const a = await RegisterUser(values)
-    console.log(a)
-    /*setTimeout(() => {
-      props.resetForm();
-      props.setSubmitting(false);
-    }, 2000);*/
-    displayNotification({
-      message: "Se registró satisfactoriamente ! ",
-      type: "success",
-    });
+    try {
+      const {fullName, password, email, phone_number} = values 
+      dispatch(registerUser({fullName, password, email, phone_number}));
+
+      displayNotification({
+        message: "Se registró satisfactoriamente ! ",
+        type: "success",
+      });
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 800);
+    } catch (error) {
+      alert(error)
+    }
   };
 
   return (

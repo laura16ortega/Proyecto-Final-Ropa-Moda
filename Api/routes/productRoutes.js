@@ -1,5 +1,5 @@
 const express = require("express");
-const { verifyTokenAndAuthorization } = require("../services/JwtServices");
+const { verifyTokenAndAuthorization, verifyToken } = require("../services/JwtServices");
 const productController = require("./../controllers/productController");
 const router = express.Router();
 
@@ -16,8 +16,10 @@ router
   .patch(productController.updateProduct)
   .delete(productController.deleteProduct);
 
-router
+  
+  router
   .route("/review/:id")
-  .post(verifyTokenAndAuthorization, productController.addReveiw)
-
+  .post(verifyToken, productController.addReveiw)
+  .get(productController.getReview)
+  
 module.exports = router;

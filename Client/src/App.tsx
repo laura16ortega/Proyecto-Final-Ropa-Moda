@@ -15,6 +15,8 @@ import Contact from "./pages/ContactUs/Contact";
 import { useEffect } from "react";
 import CreateForm from "./pages/CreateForm/CreateForm";
 import AllCards from "./components/AllCards/AllCards";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 
 function App() {
   useEffect(() => {
@@ -37,6 +39,8 @@ function App() {
         <Route path="/products/:id" element={<DetailCard />} />
         <Route path="/landingPage" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot" element={<ForgotPassword />} />
+        <Route path="/resetpassword/:resetToken" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/create" element={<CreateForm />} />
         <Route path="/contact" element={<Contact />} />

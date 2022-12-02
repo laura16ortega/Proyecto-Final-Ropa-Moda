@@ -10,6 +10,10 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  FormControlLabel,
+  Checkbox,
+  FormGroup,
+  Input,
 } from "@mui/material";
 import { Formik, FormikHelpers, Form, Field } from "formik";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -21,12 +25,20 @@ import { useNotification } from "../../components/UseNotification/UseNotificatio
 import styles from "./CreateForm.module.css";
 import { useCreateForm } from "../../assets/hooks/useCreateForm";
 import { tallasCamiseta, tallasPantalon } from "./create-form-types";
+import { useAppDispatch } from "../../assets/hooks";
+import { createProduct } from "../../redux/thunk-actions/testActions";
 
 export default function CreateForm() {
   const { register, handleSubmit, watch, setValue, formState } =
     useCreateForm();
 
-  console.log(formState.errors);
+  const dispatch = useAppDispatch();
+  const [sizeArr, setSizeArr] = useState<Array<string>>([]);
+
+  const onChange = (e: any) => {
+    setSizeArr([...sizeArr, e.target.name]);
+  };
+
   return (
     <Box sx={{ backgroundColor: "#3e3e3e" }}>
       <Box className={styles.contactHeader}>
@@ -52,6 +64,9 @@ export default function CreateForm() {
               <Typography variant="h3">Descripcion</Typography>
             </Box>
             <Box className={styles.leftContainer}>
+              <Typography variant="h3">Genero</Typography>
+            </Box>
+            <Box className={styles.leftContainer}>
               <Typography variant="h3">Categoria</Typography>
             </Box>
             <Box className={styles.leftContainer}>
@@ -61,17 +76,24 @@ export default function CreateForm() {
               <Typography variant="h3">Stock</Typography>
             </Box>
             <Box className={styles.leftContainer}>
-              <Typography variant="h3">Talla</Typography>
+              <Typography variant="h3">Marca</Typography>
             </Box>
             <Box className={styles.leftContainer}>
-              <Typography variant="h3">Marca</Typography>
+              <Typography variant="h3">Talla</Typography>
             </Box>
           </Grid>
           <Grid item md={6}>
             <Box
               component="form"
               onSubmit={handleSubmit((data) => {
-                console.log(data);
+                if (data.category === "Pantalon") {
+                  data.tallaPantalon = sizeArr;
+                } else {
+                  data.tallaCamiseta = sizeArr;
+                }
+                let allData = { ...data, images: [data.images] };
+                console.log(allData);
+                dispatch(createProduct(allData));
               })}
             >
               <FormControl>
@@ -84,6 +106,8 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  helperText={formState.errors?.name?.message}
+                  error={Boolean(formState.errors?.name?.message)}
                   focused
                 />
                 <TextField
@@ -92,13 +116,18 @@ export default function CreateForm() {
                   label="Precio"
                   className={styles.inputInfo}
                   name="price"
-                  id="filled-basic"
+                  id="outlined-number"
                   variant="filled"
                   color="secondary"
+                  type="number"
+                  error={Boolean(formState.errors?.price?.message)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   focused
                 />
                 <TextField
-                  {...register("description")}
+                  {...register("summary")}
                   key={2}
                   label="Descripcion"
                   className={styles.inputInfo}
@@ -106,8 +135,25 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  helperText={formState.errors?.summary?.message}
+                  error={Boolean(formState.errors?.summary?.message)}
                   focused
                 />
+                <Select
+                  {...register("gender")}
+                  key={3}
+                  label="Ganero"
+                  name="gender"
+                  id="filled-basic"
+                  variant="filled"
+                  className={styles.inputInfo}
+                  error={Boolean(formState.errors?.gender?.message)}
+                  sx={{ border: "2px solid #ced4da", color: "white" }}
+                >
+                  <InputLabel id="label">Genero</InputLabel>
+                  <MenuItem value="Camiseta">Hombre</MenuItem>
+                  <MenuItem value="Pantalon">Mujer</MenuItem>
+                </Select>
                 <Select
                   {...register("category")}
                   key={3}
@@ -116,58 +162,42 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   className={styles.inputInfo}
+                  error={Boolean(formState.errors?.category?.message)}
                   sx={{ border: "2px solid #ced4da", color: "white" }}
                 >
                   <InputLabel id="label">Categoria</InputLabel>
                   <MenuItem value="Camiseta">Camiseta</MenuItem>
                   <MenuItem value="Pantalon">Pantalon</MenuItem>
                 </Select>
-                <TextField
-                  {...register("image")}
-                  key={4}
-                  label="Imagen"
-                  className={styles.inputInfo}
-                  name="image"
-                  id="filled-basic"
-                  variant="filled"
-                  color="secondary"
-                  focused
-                />
+                <Box className={styles.custom_input_file}>
+                  <Input
+                    {...register("images")}
+                    key={4}
+                    className={styles.input_file}
+                    name="image"
+                    color="secondary"
+                    error={Boolean(formState.errors?.images?.message)}
+                    type="file"
+                  />
+
+                  <p className={styles.text}>Subir Imagen...</p>
+                </Box>
                 <TextField
                   {...register("stock")}
                   key={5}
                   label="Stock"
                   className={styles.inputInfo}
                   name="stock"
-                  id="filled-basic"
+                  id="outlined-number"
                   variant="filled"
                   color="secondary"
+                  type="number"
+                  error={Boolean(formState.errors?.stock?.message)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   focused
                 />
-                <Select
-                  {...register("talla")}
-                  key={6}
-                  label="Talla"
-                  className={styles.inputInfo}
-                  id="filled-basic"
-                  variant="filled"
-                  color="secondary"
-                  sx={{ border: "2px solid #ced4da", color: "white" }}
-                >
-                  {watch("category") === "Camiseta" &&
-                    tallasCamiseta.map((e) => (
-                      <MenuItem value={e.value} key={e.value}>
-                        {e.name}
-                      </MenuItem>
-                    ))}
-
-                  {watch("category") === "Pantalon" &&
-                    tallasPantalon.map((e) => (
-                      <MenuItem value={e.value} key={e.value}>
-                        {e.name}
-                      </MenuItem>
-                    ))}
-                </Select>
                 <TextField
                   {...register("marca")}
                   key={7}
@@ -177,8 +207,45 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  helperText={formState.errors?.marca?.message}
+                  error={Boolean(formState.errors?.marca?.message)}
                   focused
                 />
+                {watch("category") === "Camiseta" ? (
+                  <FormGroup className={styles.inputInfo}>
+                    <FormControlLabel
+                      control={<Checkbox name="S" onChange={onChange} />}
+                      label="S"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox name="M" onChange={onChange} />}
+                      label="M"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox name="L" onChange={onChange} />}
+                      label="L"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox name="XL" onChange={onChange} />}
+                      label="XL"
+                    />
+                  </FormGroup>
+                ) : (
+                  <FormGroup className={styles.inputInfo}>
+                    <FormControlLabel
+                      control={<Checkbox name="28" onChange={onChange} />}
+                      label="28"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox name="30" onChange={onChange} />}
+                      label="30"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox name="32" onChange={onChange} />}
+                      label="32"
+                    />
+                  </FormGroup>
+                )}
                 <Button
                   type="submit"
                   variant="contained"

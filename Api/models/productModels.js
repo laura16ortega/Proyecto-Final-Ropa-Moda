@@ -1,13 +1,5 @@
 const mongoose = require("mongoose");
-
-const reviewSchema = new mongoose.Schema({
-  userId:{type:String, required:[true,"a reveiw must have a name"]},
-  comment:{type:String, required:[true,"a reveiw must have a name"]},
-  rating:{type:Number, required:[true,"a reveiw must have a name"]}
-  },{
-  timestamps:true,
-  versionKey: false
-})
+const Review = require("./ReviewModel");
 
 const productSchema = new mongoose.Schema({
   name: {
@@ -36,11 +28,11 @@ const productSchema = new mongoose.Schema({
   images: {
       public_id:{
         type:String,
-        required:true
+ 
       },
       url:{
         type:String,
-        required:true
+
       }
   }, //acá aclaro que para esta propiedad quiero un arreglo de strings
   createdAt: {
@@ -65,7 +57,10 @@ const productSchema = new mongoose.Schema({
   tallaCamiseta: [String],
   tallaPantalón: [String],
   marca: String,
-  reviews:[reviewSchema],
+  reviews:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Review"
+  }],
 });
 const Product = mongoose.model("Product", productSchema);
 

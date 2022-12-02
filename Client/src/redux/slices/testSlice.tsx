@@ -5,8 +5,8 @@ import { mappedDbProductsType } from "../types/productTypes"
 type InitialState = {
   loading: boolean;
   error: null | string;
-  allData: null | mappedDbProductsType[];
-  dataBackup: null | mappedDbProductsType[];
+  allData: mappedDbProductsType[];
+  dataBackup: mappedDbProductsType[];
 };
 
 const initialState = {
