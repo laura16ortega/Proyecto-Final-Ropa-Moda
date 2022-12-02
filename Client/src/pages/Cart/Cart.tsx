@@ -363,21 +363,19 @@ const Cart = () => {
                               purchase_units: [
                                 {
                                   amount: {
-                                    value: subTotalPrice,
+                                    value: `${subTotalPrice}`,
                                   },
                                 },
                               ],
                             });
                           }}
                             onApprove={async (data, actions) => {
-                              const details = await actions.order.capture();
+                              const details = await actions.order?.capture()
 
-                              const name = details.payer.name.given_name;
+                              const name = details?.payer.name?.given_name 
                               console.log(details);
                               displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type: "success" })
-                              setTimeout(() => {
-                                window.location.href = '/confirmed'
-                              }, 500)
+
 
                             }}
                           />
