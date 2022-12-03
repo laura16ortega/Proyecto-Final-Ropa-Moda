@@ -34,6 +34,55 @@ export default function CreateForm() {
 
   const dispatch = useAppDispatch();
   const [sizeArr, setSizeArr] = useState<Array<string>>([]);
+  const [fileValue, setFileValue] = useState({
+    image: ""
+  })
+
+  const widgetConfig = {
+    cloudName: 'dayt0wtlk',
+    uploadPreset: 'gmykq3nv',
+    sources: [
+      "local",
+      "camera",
+      "url",
+      "facebook",
+      "instagram",
+      "google_drive",
+      "image_search",
+      "dropbox"
+    ],
+    showAdvancedOptions: false,
+    cropping: true,
+    multiple: false,
+  }
+
+  const widgetDisplay = (e) => {
+    e.preventDefault()
+    let myWidget = window.cloudinary.createUploadWidget(
+      widgetConfig,
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          console.log(result)
+          setFileValue({
+            image: result.info.url
+          })
+        }
+      }
+    )
+    myWidget.open()
+  }
+
+  const handleInputSelector = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    //setFileValue(e.currentTarget.value)
+    setTimeout(() => {
+      console.log(typeof e.target.value)
+    }, 5005);
+
+    setTimeout(() => {
+      console.log("filevalue state: ", fileValue)
+    }, 5000);
+
+  }
 
   const onChange = (e: any) => {
     setSizeArr([...sizeArr, e.target.name]);
@@ -91,7 +140,7 @@ export default function CreateForm() {
                 } else {
                   data.tallaCamiseta = sizeArr;
                 }
-                let allData = { ...data, images: [data.images] };
+                let allData = { ...data, images: [fileValue.image] };
                 console.log(allData);
                 dispatch(createProduct(allData));
               })}
@@ -131,7 +180,7 @@ export default function CreateForm() {
                   key={2}
                   label="Descripcion"
                   className={styles.inputInfo}
-                  name="description"
+                  name="summary"
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
@@ -151,8 +200,9 @@ export default function CreateForm() {
                   sx={{ border: "2px solid #ced4da", color: "white" }}
                 >
                   <InputLabel id="label">Genero</InputLabel>
-                  <MenuItem value="Camiseta">Hombre</MenuItem>
-                  <MenuItem value="Pantalon">Mujer</MenuItem>
+                  <MenuItem value="Hombre">Hombre</MenuItem>
+                  <MenuItem value="Mujer">Mujer</MenuItem>
+                  <MenuItem value="Unisex">Unisex</MenuItem>
                 </Select>
                 <Select
                   {...register("category")}
@@ -167,7 +217,7 @@ export default function CreateForm() {
                 >
                   <InputLabel id="label">Categoria</InputLabel>
                   <MenuItem value="Camiseta">Camiseta</MenuItem>
-                  <MenuItem value="Pantalon">Pantalon</MenuItem>
+                  <MenuItem value="Pantalones">Pantalon</MenuItem>
                 </Select>
                 <Box className={styles.custom_input_file}>
                   <Input
@@ -182,6 +232,7 @@ export default function CreateForm() {
 
                   <p className={styles.text}>Subir Imagen...</p>
                 </Box>
+                <Button sx={{marginTop: "1rem"}} onClick={(e) => widgetDisplay(e)} className={styles.input_file}>subir imagashedgasuy</Button>
                 <TextField
                   {...register("stock")}
                   key={5}
