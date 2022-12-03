@@ -35,12 +35,12 @@ export default function CreateForm() {
   const dispatch = useAppDispatch();
   const [sizeArr, setSizeArr] = useState<Array<string>>([]);
   const [fileValue, setFileValue] = useState({
-    image: ""
-  })
+    image: "",
+  });
 
   const widgetConfig = {
-    cloudName: 'dayt0wtlk',
-    uploadPreset: 'gmykq3nv',
+    cloudName: "dayt0wtlk",
+    uploadPreset: "gmykq3nv",
     sources: [
       "local",
       "camera",
@@ -49,40 +49,41 @@ export default function CreateForm() {
       "instagram",
       "google_drive",
       "image_search",
-      "dropbox"
+      "dropbox",
     ],
     showAdvancedOptions: false,
     cropping: true,
     multiple: false,
-  }
+  };
 
   const widgetDisplay = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let myWidget = window.cloudinary.createUploadWidget(
       widgetConfig,
       (error, result) => {
         if (!error && result && result.event === "success") {
-          console.log(result)
+          console.log(result);
           setFileValue({
-            image: result.info.url
-          })
+            image: result.info.url,
+          });
         }
       }
-    )
-    myWidget.open()
-  }
+    );
+    myWidget.open();
+  };
 
-  const handleInputSelector = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputSelector = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     //setFileValue(e.currentTarget.value)
     setTimeout(() => {
-      console.log(typeof e.target.value)
+      console.log(typeof e.target.value);
     }, 5005);
 
     setTimeout(() => {
-      console.log("filevalue state: ", fileValue)
+      console.log("filevalue state: ", fileValue);
     }, 5000);
-
-  }
+  };
 
   const onChange = (e: any) => {
     setSizeArr([...sizeArr, e.target.name]);
@@ -219,20 +220,16 @@ export default function CreateForm() {
                   <MenuItem value="Camiseta">Camiseta</MenuItem>
                   <MenuItem value="Pantalones">Pantalon</MenuItem>
                 </Select>
-                <Box className={styles.custom_input_file}>
-                  <Input
-                    {...register("images")}
-                    key={4}
-                    className={styles.input_file}
-                    name="image"
-                    color="secondary"
-                    error={Boolean(formState.errors?.images?.message)}
-                    type="file"
-                  />
-
-                  <p className={styles.text}>Subir Imagen...</p>
-                </Box>
-                <Button sx={{marginTop: "1rem"}} onClick={(e) => widgetDisplay(e)} className={styles.input_file}>subir imagashedgasuy</Button>
+                <Button
+                  sx={{
+                    marginTop: "3rem",
+                    border: "solid 2px #ced4da",
+                    color: "#ced4da",
+                  }}
+                  onClick={(e) => widgetDisplay(e)}
+                >
+                  Subir Imagen...
+                </Button>
                 <TextField
                   {...register("stock")}
                   key={5}
