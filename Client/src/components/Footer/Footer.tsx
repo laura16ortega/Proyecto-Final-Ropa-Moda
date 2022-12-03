@@ -17,7 +17,7 @@ export default function Footer() {
                   <a href="/contact">Contacto</a>
                 </li>
                 <li>
-                  <a href="https://laurajulianaortega.wixsite.com/pol-tica-de-privacid">
+                  <a href= "https://laurajulianaortega.wixsite.com/pol-tica-de-privacid">
                     Política de privacidad
                   </a>
                 </li>
