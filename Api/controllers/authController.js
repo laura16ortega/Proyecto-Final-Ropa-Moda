@@ -2,6 +2,7 @@ const {encrypt, verified} = require("../services/authServices");
 const User = require("../models/UserModel");
 const { generateToken } = require("../services/JwtServices");
 const passport = require("passport");
+const sendEmail = require("../services/sendMailServices")
 
 
 
@@ -47,6 +48,25 @@ const registerCtrl = async(request,response)=>{
                 sameSite:"none",
                 secure:true
             })
+
+            const subject = "Usuario registrado con exito"
+            const send_to = email
+            const sent_from = process.env.EMAIL_USER
+            const message = `
+            <h1><strong>Hola ${fullName}!</strong></h1>
+
+            <h2>El equipo del Proyecto final - <strong>FM</strong> te da la bienvenida</h2>
+
+            <h3>Tus nuevos datos de usuario son</h3>
+            <ul>
+                <li><strong>Nombre de usuario:</strong> ${fullName}</li>
+                <li><strong>Contraseña:</strong> ${password}</li>
+                <li><strong>Numero de telefono:</strong> ${phone_number}</li>
+            </ul>
+            
+            <p>- Fashion Cloth Mode</p>`
+
+            await sendEmail(subject, message, send_to, sent_from);
 
             return response.status(200).json({
                 message:"User Create Successfully",

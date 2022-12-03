@@ -34,6 +34,9 @@ const Cart = () => {
   const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
   const userToken: string = localStorage.getItem("jwt") || ""
 
+  // console.log("Cart state:", cart) --- []
+  // console.log("Cart localstorage: ", cartProd) --- [{...}]
+
   const subTotalPrice = cartProd?.reduce(
     (total, item) => total + item.price * item.quantity,
     0
