@@ -1,10 +1,7 @@
 const Product = require("./../models/productModels");
-<<<<<<< HEAD
 const cloudinary = require("../services/cloudinaryServices")
 const Review = require("../models/ReviewModel")
-=======
-const cloudinary = require("../services/cloudinaryServices");
->>>>>>> 4d9c931bf4b50c1df001b512901e970848daab0d
+
 
 //ROUTE HANDLERS
 
@@ -105,13 +102,10 @@ exports.deleteProduct = async (req, res) => {
 };
 
 //REVIEW SECTION
-<<<<<<< HEAD
 exports.addReveiw = async(req,res)=>{
   /*const {userId, rating, comment} = req.body;
-=======
 exports.addReveiw = async (req, res) => {
   const { userId, rating, comment } = req.body;
->>>>>>> 4d9c931bf4b50c1df001b512901e970848daab0d
   const productId = req.params.id;
   const product = await Product.findById(req.params.id);
 
@@ -146,15 +140,9 @@ exports.addReveiw = async (req, res) => {
       rating: product.ratingsAverage,
     });
   } catch (error) {
-<<<<<<< HEAD
-    console.log(error)
-      res.status(500).json({message:error})
-  }*/
-=======
     console.log(error);
     res.status(500).json({ message: error });
   }
->>>>>>> 4d9c931bf4b50c1df001b512901e970848daab0d
 
   const {rating, comment, userId} = req.body;
   //if(!rating || !description)return res.status(500).json({message:"Please Provide all Parameters"});
@@ -194,7 +182,6 @@ exports.addReveiw = async (req, res) => {
     })
   } catch (error) {
     console.log(error)
-<<<<<<< HEAD
     res.status(500).json(error)
   }
 }
@@ -219,11 +206,7 @@ exports.getReviews = async(req,res)=>{
       console.log(error)
       res.status(500).json({message:error})
     }
-}
-=======
     res.status(500).json({message:error})
-  }*/
-};
+  };
 
 exports.getReviews = async (req, res) => {};
->>>>>>> 4d9c931bf4b50c1df001b512901e970848daab0d

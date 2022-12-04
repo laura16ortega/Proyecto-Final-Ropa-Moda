@@ -13,12 +13,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNotification } from "../../components/UseNotification/UseNotification";
-import axios from "axios";
-
-import { useState } from "react";
 import { useAppDispatch } from "../../assets/hooks";
 import { setUser } from "../../redux/slices/authSlice";
 import { loginUser } from "../../redux/thunk-actions/authActions";
+
 
 function Copyright(props: any) {
   return (
@@ -40,8 +38,9 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
-  const dispatch = useAppDispatch()
+export default function SignInSide() {/* 
+  const googleLogo = require('../../assets/images/google.svg');
+ */  const dispatch = useAppDispatch()
   const { displayNotification } = useNotification();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -134,6 +133,12 @@ export default function SignInSide() {
                 sx={{ mt: 3, mb: 2 }}
               >
                 Ingresar
+              </Button>
+              <Button href='http://localhost:3001/login' fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}>
+                  Ingresar con google
+                  
               </Button>
               <Grid container>
                 <Grid item xs>
