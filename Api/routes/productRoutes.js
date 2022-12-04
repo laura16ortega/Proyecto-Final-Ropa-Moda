@@ -19,7 +19,7 @@ router
   
   router
   .route("/review/:id")
-  .get(productController.getReviews)
   .post(verifyToken, productController.addReveiw)
+  .get(productController.getReview)
   
 module.exports = router;

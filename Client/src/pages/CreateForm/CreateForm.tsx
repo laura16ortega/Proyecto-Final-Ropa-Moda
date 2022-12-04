@@ -13,6 +13,7 @@ import {
   FormControlLabel,
   Checkbox,
   FormGroup,
+  Input,
 } from "@mui/material";
 import { Formik, FormikHelpers, Form, Field } from "formik";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -33,6 +34,56 @@ export default function CreateForm() {
 
   const dispatch = useAppDispatch();
   const [sizeArr, setSizeArr] = useState<Array<string>>([]);
+  const [fileValue, setFileValue] = useState({
+    image: "",
+  });
+
+  const widgetConfig = {
+    cloudName: "dayt0wtlk",
+    uploadPreset: "gmykq3nv",
+    sources: [
+      "local",
+      "camera",
+      "url",
+      "facebook",
+      "instagram",
+      "google_drive",
+      "image_search",
+      "dropbox",
+    ],
+    showAdvancedOptions: false,
+    cropping: true,
+    multiple: false,
+  };
+
+  const widgetDisplay = (e) => {
+    e.preventDefault();
+    let myWidget = window.cloudinary.createUploadWidget(
+      widgetConfig,
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          console.log(result);
+          setFileValue({
+            image: result.info.url,
+          });
+        }
+      }
+    );
+    myWidget.open();
+  };
+
+  const handleInputSelector = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    //setFileValue(e.currentTarget.value)
+    setTimeout(() => {
+      console.log(typeof e.target.value);
+    }, 5005);
+
+    setTimeout(() => {
+      console.log("filevalue state: ", fileValue);
+    }, 5000);
+  };
 
   const onChange = (e: any) => {
     setSizeArr([...sizeArr, e.target.name]);
@@ -90,7 +141,7 @@ export default function CreateForm() {
                 } else {
                   data.tallaCamiseta = sizeArr;
                 }
-                let allData = { ...data, images: [data.images] };
+                let allData = { ...data, images: [fileValue.image] };
                 console.log(allData);
                 dispatch(createProduct(allData));
               })}
@@ -105,6 +156,8 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  helperText={formState.errors?.name?.message}
+                  error={Boolean(formState.errors?.name?.message)}
                   focused
                 />
                 <TextField
@@ -113,20 +166,27 @@ export default function CreateForm() {
                   label="Precio"
                   className={styles.inputInfo}
                   name="price"
-                  id="filled-basic"
+                  id="outlined-number"
                   variant="filled"
                   color="secondary"
+                  type="number"
+                  error={Boolean(formState.errors?.price?.message)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   focused
                 />
                 <TextField
-                  {...register("description")}
+                  {...register("summary")}
                   key={2}
                   label="Descripcion"
                   className={styles.inputInfo}
-                  name="description"
+                  name="summary"
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  helperText={formState.errors?.summary?.message}
+                  error={Boolean(formState.errors?.summary?.message)}
                   focused
                 />
                 <Select
@@ -137,11 +197,13 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   className={styles.inputInfo}
+                  error={Boolean(formState.errors?.gender?.message)}
                   sx={{ border: "2px solid #ced4da", color: "white" }}
                 >
                   <InputLabel id="label">Genero</InputLabel>
-                  <MenuItem value="Camiseta">Hombre</MenuItem>
-                  <MenuItem value="Pantalon">Mujer</MenuItem>
+                  <MenuItem value="Hombre">Hombre</MenuItem>
+                  <MenuItem value="Mujer">Mujer</MenuItem>
+                  <MenuItem value="Unisex">Unisex</MenuItem>
                 </Select>
                 <Select
                   {...register("category")}
@@ -151,32 +213,37 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   className={styles.inputInfo}
+                  error={Boolean(formState.errors?.category?.message)}
                   sx={{ border: "2px solid #ced4da", color: "white" }}
                 >
                   <InputLabel id="label">Categoria</InputLabel>
                   <MenuItem value="Camiseta">Camiseta</MenuItem>
-                  <MenuItem value="Pantalon">Pantalon</MenuItem>
+                  <MenuItem value="Pantalones">Pantalon</MenuItem>
                 </Select>
-                <TextField
-                  {...register("images")}
-                  key={4}
-                  label="Imagen"
-                  className={styles.inputInfo}
-                  name="image"
-                  id="filled-basic"
-                  variant="filled"
-                  color="secondary"
-                  focused
-                />
+                <Button
+                  sx={{
+                    marginTop: "3rem",
+                    border: "solid 2px #ced4da",
+                    color: "#ced4da",
+                  }}
+                  onClick={(e) => widgetDisplay(e)}
+                >
+                  Subir Imagen...
+                </Button>
                 <TextField
                   {...register("stock")}
                   key={5}
                   label="Stock"
                   className={styles.inputInfo}
                   name="stock"
-                  id="filled-basic"
+                  id="outlined-number"
                   variant="filled"
                   color="secondary"
+                  type="number"
+                  error={Boolean(formState.errors?.stock?.message)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   focused
                 />
                 <TextField
@@ -188,9 +255,10 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  helperText={formState.errors?.marca?.message}
+                  error={Boolean(formState.errors?.marca?.message)}
                   focused
                 />
-
                 {watch("category") === "Camiseta" ? (
                   <FormGroup className={styles.inputInfo}>
                     <FormControlLabel
@@ -226,7 +294,6 @@ export default function CreateForm() {
                     />
                   </FormGroup>
                 )}
-
                 <Button
                   type="submit"
                   variant="contained"

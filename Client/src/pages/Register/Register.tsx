@@ -20,13 +20,14 @@ import * as Yup from "yup";
 import { useNotification } from "../../components/UseNotification/UseNotification";
 import { useAppDispatch } from "../../assets/hooks";
 import { registerUser } from "../../redux/thunk-actions/authActions";
+import { unwrapResult } from "@reduxjs/toolkit"
 
 
 interface FormValues{
   fullName: string;
   email: string;
   gender: string;
-  phone_number: number;
+  phone_number: string;
   password: string;
   confirmPassword: string;
   termsAndConditions?: boolean;
@@ -44,7 +45,7 @@ const Register = () => {
     fullName: "",
     email: "",
     gender: "",
-    phone_number: 0,
+    phone_number: "",
     password: "",
     confirmPassword: "",
     termsAndConditions: false,
@@ -56,9 +57,9 @@ const Register = () => {
     gender: Yup.string()
       .oneOf(["male", "female"], "Required")
       .required("Required"),
-    phoneNumber: Yup.number()
-      .typeError("Introduzca un número válido")
-      .required("Required"),
+    phone_number: Yup.string()
+      .required("Required")
+      .matches(/(\d|\s|_|@|\.|,)/g, "Introduzca un número válido"),
     password: Yup.string()
       .min(8, "la longitud mínima de la contraseña debe ser 8")
       .required("Required"),
@@ -75,8 +76,8 @@ const Register = () => {
   const onSubmit = async(values: FormValues) => {
     try {
       const {fullName, password, email, phone_number} = values 
-      dispatch(registerUser({fullName, password, email, phone_number}));
-
+      const registerDispatch = await dispatch(registerUser({fullName, password, email, phone_number}));
+      unwrapResult(registerDispatch)
       displayNotification({
         message: "Se registró satisfactoriamente ! ",
         type: "success",
@@ -84,8 +85,11 @@ const Register = () => {
       setTimeout(() => {
         window.location.href = "/";
       }, 800);
-    } catch (error) {
-      alert(error)
+    } catch (error: any) {
+      displayNotification({
+        message: error,
+        type: "error",
+      });
     }
   };
 
@@ -155,10 +159,10 @@ const Register = () => {
               <Field
                 as={TextField}
                 fullWidth
-                name="phoneNumber"
+                name="phone_number"
                 label="Phone Number"
                 placeholder="Enter you phone number"
-                helperText={<ErrorMessage name="phoneNumber" />}
+                helperText={<ErrorMessage name="phone_number" />}
               />
 
               <Field

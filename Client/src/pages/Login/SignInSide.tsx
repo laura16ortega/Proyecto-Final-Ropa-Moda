@@ -13,9 +13,14 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNotification } from "../../components/UseNotification/UseNotification";
-import { useAppDispatch } from "../../assets/hooks";
 import { setUser } from "../../redux/slices/authSlice";
+import axios from "axios";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import { loginUser } from "../../redux/thunk-actions/authActions";
+import { unwrapResult } from '@reduxjs/toolkit'
+import Alert from "@mui/material/Alert"
+import Collapse from "@mui/material/Collapse"
 
 
 function Copyright(props: any) {
@@ -42,6 +47,9 @@ export default function SignInSide() {/*
   const googleLogo = require('../../assets/images/google.svg');
  */  const dispatch = useAppDispatch()
   const { displayNotification } = useNotification();
+  const [loginErrors, setLoginErrors] = useState<boolean>(false)
+
+  const { userError } = useAppSelector(state => state.auth)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -51,13 +59,14 @@ export default function SignInSide() {/*
         email: data.get("email"),
         password: data.get("password"),
       };
-      dispatch(loginUser(user));
+      const dispatchLogin = await dispatch(loginUser(user));
+      unwrapResult(dispatchLogin)
       displayNotification({ message: "Bienvenido", type: "success" });
       setTimeout(()=>{
         window.location.href = "/";
       },800)
     } catch (error) {
-      console.log(error)
+      setLoginErrors(true)
     }
   };
 
@@ -134,12 +143,20 @@ export default function SignInSide() {/*
               >
                 Ingresar
               </Button>
+
               <Button href='http://localhost:3001/login' fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}>
                   Ingresar con google
                   
               </Button>
+
+              <Collapse in={loginErrors}>
+                <Alert severity='error' sx={{ mb: 2, textAlign: "center" }} onClose={() => setLoginErrors(false)}>
+                  {userError}
+                </Alert>
+              </Collapse>
+
               <Grid container>
                 <Grid item xs>
                   <Link href="/forgot" variant="body2">

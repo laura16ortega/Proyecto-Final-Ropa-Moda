@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse } from "@mui/material";
+import React, { useEffect, useReducer, useState } from "react"
+import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse, Link } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../assets/hooks";
 import { useParams } from "react-router-dom";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -17,6 +17,7 @@ import {
 } from "../../redux/slices/cartSlice";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import Review from "../Review/Review";
+import { getReview } from "../../redux/thunk-actions/reviewActions";
 
 type ParamTypes = {
    id: string
@@ -25,17 +26,18 @@ type ParamTypes = {
 export default function DetailCard() {
    const { cartLoading, cart } = useAppSelector((state) => state.cart);
    const { productDetails, detailsError, detailsLoading } = useAppSelector((state) => state.productDetails);
-   const { id } = useParams<keyof ParamTypes>() as ParamTypes; 
+   const { postReviewLoading, postReviewError, postReviewSuccess, getReviewLoading, reviewsArr } = useAppSelector(state => state.review)
+   const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0)
+   const { user } = useAppSelector(state => state.auth)
+   const { id } = useParams<keyof ParamTypes>() as ParamTypes;
    const dispatch = useAppDispatch()
-   // console.log("ID: ", id)
+   // console.log("ID: ", productDetails)
    const [openReviewForm, setOpenReviewForm] = useState<boolean>(false)
 
-   //TODO: Pasarlo en assets, presente tambien en card
    const handleCart = (productId: string) => {
       dispatch(addProductToCart(productId));
    }
 
-   //TODO: Pasarlo en assets, presente tambien en IncreaseCartButton
    const handleIncreaseCart = (productId: string) => {
       // ! if quantity > stock === error
       dispatch(increaseCartQuantity(productId));
@@ -57,7 +59,8 @@ export default function DetailCard() {
       return () => {
          clearState()
       }
-   }, [])
+   }, [reducerValue])
+
 
    const reviewPlaceholder = [
       {
@@ -85,8 +88,6 @@ export default function DetailCard() {
          rating: 2.5
       },
    ]
-
-
    return (
       <Box sx={{ minHeight: "80vh", display: "flex", justifyContent: "center" }}>
          <Container maxWidth="xl">
@@ -102,7 +103,7 @@ export default function DetailCard() {
                         <Grid item md={6} sm={12}>
                            <Box>
                               <Box>
-                                 <img src={productDetails?.images[0] ? productDetails.images[0] : ""} alt={`${productDetails?.name} not found`} style={{ width: "100%" }} />
+                                 <img src={!productDetails.images ? "" : productDetails.images.url ? productDetails.images.url : productDetails.images[0]} alt={`${productDetails?.name} not found`} style={{ width: "100%" }} />
                               </Box>
                            </Box>
                         </Grid>
@@ -113,7 +114,7 @@ export default function DetailCard() {
                                     <CircleIcon sx={{ fontSize: 18, color: "green" }}></CircleIcon> Disponible
                                  </Typography>
                               </Box>
-                              <Typography variant="h1" sx={{ fontFamily: "poppins", fontWeight: "800", width: "100%", }}>
+                              <Typography variant="h1" sx={{ fontFamily: "poppins", fontWeight: "800", width: "100%", fontSize: "5rem" }}>
                                  {productDetails?.name}
                               </Typography>
                               <Typography variant="h5">
@@ -200,23 +201,39 @@ export default function DetailCard() {
                               <Typography variant="h5">
                                  Cuentanos que opinas sobre el producto
                               </Typography>
-                              <Button variant="contained" disableElevation onClick={() => setOpenReviewForm(!openReviewForm)} sx={{marginTop: "1.5rem", padding: "15px 22px"}}>
-                                 Escribir una review
-                              </Button>
+                              <Box sx={{ marginTop: "1.5rem" }}>
+                                 {Object.keys(user).length ?
+                                    <Box>
+                                       <Button variant="contained" disableElevation onClick={() => setOpenReviewForm(!openReviewForm)} sx={{ padding: "15px 22px" }}>
+                                          Escribir una review
+                                       </Button>
+                                       <Collapse in={openReviewForm}>
+                                          <ReviewForm productId={id} setOpenReviewForm={setOpenReviewForm} forceUpdate={forceUpdate} />
+                                       </Collapse>
+                                    </Box>
+                                    :
+                                    <Link href="/login">
+                                       <Typography variant="h6">
+                                          Debes tener una cuenta para poder comentar
+                                       </Typography>
+                                    </Link>
+                                 }
+                              </Box>
                            </Box>
-                           <Collapse in={openReviewForm}>
-                              <ReviewForm />
-                           </Collapse>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
-                                 {reviewPlaceholder.length ? reviewPlaceholder.map(e =>
-                                    <Box key={e.username} sx={{ borderBottom: "2px solid #DFDFDF" }} >
-                                       <Review review={e} />
-                                    </Box>)
-                                    : 
-                                    <Box sx={{marginY: "7rem"}}>
-                                       <Typography variant="h3" sx={{fontFamily: "poppins", fontWeight: "700"}}>Sin reviews</Typography>
+                                 {productDetails.reviews.length <= 0 ?
+                                    <Box sx={{ marginY: "7rem" }}>
+                                       <Typography variant="h3" sx={{ fontFamily: "poppins", fontWeight: "700" }}>Sin reviews</Typography>
                                     </Box>
+                                    : productDetails ? productDetails?.reviews.map((e, i) =>
+                                       <Box key={i + 1} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                          <Review id={e} />
+                                       </Box>)
+                                       :
+                                       <Box sx={{ marginY: "7rem" }}>
+                                          <Typography variant="h3" sx={{ fontFamily: "poppins", fontWeight: "700" }}>Sin reviews</Typography>
+                                       </Box>
                                  }
                               </Container>
                            </Box>

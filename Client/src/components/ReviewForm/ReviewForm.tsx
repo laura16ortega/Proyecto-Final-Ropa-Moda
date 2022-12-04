@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
-import { Container, Box, Typography, Rating, TextField, Button, Avatar, FormHelperText  } from "@mui/material"
+import { Container, Box, Typography, Rating, TextField, Button, Avatar, FormHelperText, Collapse, Alert } from "@mui/material"
 import { Formik, FormikHelpers, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup"
-import { useAppDispatch } from '../../assets/hooks';
+import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { postReview } from '../../redux/thunk-actions/reviewActions';
-import { useParams } from 'react-router-dom';
+import { useNotification } from "../UseNotification/UseNotification";
+import { unwrapResult } from '@reduxjs/toolkit'
 
 /* Props: userId, comment, commentTitle, rating, isAuthenticated, localuser */
 type InitialValue = {
-   userId: string
    rating: number
    comment: string
-   productId: string | undefined
-   token: string | null
+   userId: string
+   token: string
+   productId: string
 }
 
 type FieldType = {
@@ -25,20 +26,28 @@ type FieldProps = {
    form: any
 }
 
-const ReviewForm = () => {
-   // userId, userImage, name, comment, rating 
-   const {id:productId} = useParams();
-   const dispatch = useAppDispatch();
-   const {userId} = localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User")!) : "";
-   //const token = localStorage.getItem("jwt") ? localStorage.getItem("jwt") : ""
+type ReviewFormProps = {
+   productId: string
+   setOpenReviewForm: React.Dispatch<React.SetStateAction<boolean>>
+   forceUpdate: React.DispatchWithoutAction
+}
 
+const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormProps) => {
+   // userId, userImage, name, comment, rating 
+   const dispatch = useAppDispatch()
+   const [errors, setErrors] = useState<boolean>(false)
+
+   const { user, userLoading, token } = useAppSelector(state => state.auth)
+   const { postReviewLoading, postReviewError, postReviewSuccess } = useAppSelector(state => state.review)
+
+   const loggedUser = Object.keys(user).length
 
    const initialValue: InitialValue = {
-      userId: userId, // Solo para mostrar en el formulario, no se envia
       rating: 0,
       comment: "",
-      productId: productId, // Props
-      token: localStorage.getItem("jwt") ? localStorage.getItem("jwt") : ""// localStorage.get
+      userId: user ? user.userId : "",
+      token: token ? token : "",
+      productId
    }
 
    const validation = yup.object({
@@ -49,23 +58,39 @@ const ReviewForm = () => {
       rating: yup
          .number()
          .required("Este campo es requerido")
-         .min(1, "El rating valido es de 1 a 5")
+         .min(0.5, "El rating valido es de 0.5 a 5")
    });
 
-   const handleSubmit = async(value: InitialValue, actions: FormikHelpers<InitialValue>) => {
+   const { displayNotification } = useNotification();
+
+   const handleSubmit = async (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
       try {
-         dispatch(await postReview(value))
+         const resultAction = await dispatch(postReview(value))
+         const originalPromiseResult = unwrapResult(resultAction)
+         displayNotification({
+            message: "Review enviada con exito!",
+            type: "success",
+         });
+         setOpenReviewForm(false)
+         forceUpdate()
          actions.resetForm()
       } catch (error) {
-         console.log(error)
+       setErrors(true)
       }
    }
 
    return (
       <Box sx={{ marginTop: "24px", paddingTop: "24px", borderTop: "1px solid rgba(0,0,0,0.1)", textAlign: "left" }}>
          <Container maxWidth="sm">
+            <Collapse in={errors}>
+               <Box>
+                  <Alert severity='error' sx={{ mb: 2, textAlign: "center" }}>
+                     {postReviewError}
+                  </Alert>
+               </Box>
+            </Collapse>
             <Typography variant="h6" sx={{ textAlign: "left", paddingBottom: ".7rem" }}>
-               Write a review
+               Cuentanos tu opinion
             </Typography>
             <Formik
                initialValues={initialValue}
@@ -73,14 +98,16 @@ const ReviewForm = () => {
                onSubmit={(value, actions) => handleSubmit(value, actions)}>
                {({ setFieldValue, values }) => (
                   <Form>
-                     <Box sx={{ marginBottom: ".9rem"}}>
-                        <Box sx={{display: "flex"}}>
+                     <Box sx={{ marginBottom: ".9rem" }}>
+                        <Box sx={{ display: "flex" }}>
                            <Box>
-                              <Avatar sx={{ height: "56px", width: "56px" }}>H</Avatar>
+                              <Avatar src={/*user.image*/user?.fullName} sx={{ height: "56px", width: "56px" }}>
+                                 {loggedUser > 0 ? user.fullName.slice(0, 1).toUpperCase() : ""}
+                              </Avatar>
                            </Box>
                            <Box sx={{ marginLeft: "1rem" }}>
                               <Typography variant="subtitle1" sx={{ marginLeft: ".25rem" }}>
-                                 User1
+                                 {loggedUser > 0 ? user.fullName : ""}
                               </Typography>
                               <Rating name="rating" size="large" defaultValue={0} precision={0.5} value={values.rating} onChange={(e, newVal) => setFieldValue("rating", Number(newVal))} />
                            </Box>
@@ -109,6 +136,7 @@ const ReviewForm = () => {
                         type="submit"
                         size="large"
                         variant="contained"
+                        disabled={postReviewLoading}
                      >
                         Publicar review
                      </Button>

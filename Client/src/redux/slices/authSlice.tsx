@@ -1,11 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { RootState } from '../store';
 import { loginUser, registerUser } from '../thunk-actions/authActions';
+import type { UserType } from "../types/userTypes"
 
 type InitialState = {
-    user: null | {}
+    user: UserType
     userLoading: boolean
-    token: null | string
+    token: string
     userError: null | any
 }
 
@@ -19,19 +20,12 @@ export const authSlice = createSlice({
     name:"auth",
     initialState,
     reducers:{
-        setUser: (
-            state,
-            action: PayloadAction<{token: string; user: []}>
-        ) => {
-            state.user = action.payload.user
-            state.token = action.payload.token
-        },
         logout: (
             state
         ) =>{
-            localStorage.clear();
-            state.user = null;
-            state.token = null;
+            localStorage.removeItem("jwt");
+            localStorage.removeItem("User")
+            state.token = ""
         }
     },
     extraReducers(builder) {
@@ -46,7 +40,7 @@ export const authSlice = createSlice({
             state.user = {
                 userId,
                 fullName,
-                email
+                email,
             }
             state.token = token
         })
@@ -75,6 +69,6 @@ export const authSlice = createSlice({
 
 export const selectAuth = (state:RootState) => state.auth;
 
-export const {setUser, logout} = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

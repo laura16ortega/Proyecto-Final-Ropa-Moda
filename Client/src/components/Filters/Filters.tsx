@@ -7,12 +7,12 @@ import { filterElements, sortProducts } from '../../redux/slices/testSlice';
 import { useAppDispatch } from '../../assets/hooks';
 import ConditionalRendering from '../FilterPopup/ConditionalRendering';
 
-export type FilterTypedState = {
-   category: [] | string[]
-   gender: [] | string[]
-   tallaCamiseta: [] | string[]
-   tallaPantalón: [] | string[]
-   marca: [] | string[]
+export type FilterTypedState = { // Previamente tenian un array vacio como posible tipo, causando errores en ConditionalRendering
+   category: string[]
+   gender: string[]
+   tallaCamiseta: string[]
+   tallaPantalón: string[]
+   marca: string[]
    [index: string]: string | string[]
 }
 
