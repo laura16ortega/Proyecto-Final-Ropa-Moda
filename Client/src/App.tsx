@@ -17,6 +17,7 @@ import CreateForm from "./pages/CreateForm/CreateForm";
 import AllCards from "./components/AllCards/AllCards";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import BuyConfirmed from "./pages/BuyConfirmed/BuyConfirmed";
 
 function App() {
   useEffect(() => {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/create" element={<CreateForm />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path='/confirmed' element={<BuyConfirmed />} />
       </Routes>
 
       <Footer />
