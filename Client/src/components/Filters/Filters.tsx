@@ -34,8 +34,6 @@ const SortFilter = () => {
       marca: []
    })
 
-   console.log("Filters state: ", filters)
-
    const filterTypes = [
       { nameToDisplay: "Genero", name: "gender", options: ["Mujer", "Hombre", "Unisex"]},
       { nameToDisplay: "Categoria", name: "category", options: ["Camiseta", "Pantalones"]},

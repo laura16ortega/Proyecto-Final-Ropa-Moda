@@ -38,7 +38,6 @@ export const getAllProducts = createAsyncThunk<mappedDbProductsType[]>(
       const { data } = await axios.get<DbCall>(
         "http://localhost:3001/api/v1/products"
       );
-      console.log("data: ", data)
       const mappedData = data.data.products.map((e: DbProductType) => {
         return {
           images: e.images,
