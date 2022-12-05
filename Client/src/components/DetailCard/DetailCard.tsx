@@ -114,7 +114,12 @@ export default function DetailCard() {
                   <Typography variant="subtitle1"><Skeleton sx={{width: "24%"}}/></Typography>
                </Grid>
             </Grid>
-               : detailsError ? <h1>Error: {detailsError}</h1>
+               : detailsError ? 
+               <Box sx={{marginTop: "8rem"}}>
+                  <Typography variant="h2">
+                     Error: {detailsError}
+                  </Typography>
+               </Box>
                   : Object.keys(productDetails).length &&
                   <Box sx={{ marginTop: "3rem"}}>
                      <Grid container spacing={6} >
@@ -144,7 +149,6 @@ export default function DetailCard() {
                                  <Typography variant="h4" sx={{ fontFamily: "poppins", fontWeight: "800" }}>
                                     {`$${productDetails?.price}`}
                                  </Typography>
-
                               </Box>
                            </Box>
                            <Box>

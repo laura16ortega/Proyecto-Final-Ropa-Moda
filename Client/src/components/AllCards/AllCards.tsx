@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import { getAllProducts } from "../../redux/thunk-actions/testActions";
 import Card from "../Card/Card";
-import { Container, Grid, Skeleton, Paper, Box, Typography} from "@mui/material";
+import { Container, Grid, Skeleton, Paper, Box, Typography } from "@mui/material";
 import Loading from "../Loading/loading";
 import Pagination from '../Pagination/Pagination'
 
@@ -34,52 +34,52 @@ const AllCards = () => {
         maximo={maximo}
         pagina={pagina}
         setPagina={setPagina}
-        />
-          {/* <Pagination count={10} page={page} onChange={handleChange} /> */}
-      <Grid container spacing={1.5}>
+      />
+      {/* <Pagination count={10} page={page} onChange={handleChange} /> */}
+      <Grid container spacing={1.5} sx={{ marginTop: "1rem" }}>
         <>
-      {loading && !error ? (        
-         arr.map((item, index) => {
-           return (
-             <Grid item xs={12} sm={6} md={4} lg={3} key={index + 1}>
-               <Paper
-                 elevation={3}
-                 sx={{ display: "flex", marginTop: "20px" }}
-               >
-                 <Skeleton
-                   variant="rectangular"
-                   width={280}
-                   height={700}
-                   sx={{
-                     padding: ".5rem",
-                     display: "flex",
-                     flexDirection: "column",
-                     flex: 1,
-                   }}
-                 />
-               </Paper>
-             </Grid>
-           );
-         })
-       ) : error ? (
-         <Box sx={{height: "66vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
-          <Typography variant="h2">
-            Error: {error}
-          </Typography>
-         </Box>
-       ) : allData?.length === 0 ? (
-        <Box sx={{minHeight: "40vh", display: "flex", alignItems: "center", justifyContent: "center", width: "inherit"}}>
-          <Typography variant="h3" fontFamily={"poppins"} fontWeight="600">
-            Sin resultados
-          </Typography>
-        </Box>
-       ) : (
-         allData.slice (
-          (pagina - 1) * productosPorPagina,
-          (pagina - 1) * productosPorPagina + productosPorPagina)?.map((e, i) => <Card key={i + 1} product={e} />)
-       )} 
-       
-      </>      
+          {loading && !error ? (
+            arr.map((item, index) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={index + 1}>
+                  <Paper
+                    elevation={3}
+                    sx={{ display: "flex", marginTop: "20px" }}
+                  >
+                    <Skeleton
+                      variant="rectangular"
+                      width={280}
+                      height={700}
+                      sx={{
+                        padding: ".5rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        flex: 1,
+                      }}
+                    />
+                  </Paper>
+                </Grid>
+              );
+            })
+          ) : error ? (
+            <Box sx={{ height: "66vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Typography variant="h2">
+                Error: {error}
+              </Typography>
+            </Box>
+          ) : allData?.length === 0 ? (
+            <Box sx={{ minHeight: "40vh", display: "flex", alignItems: "center", justifyContent: "center", width: "inherit" }}>
+              <Typography variant="h3" fontFamily={"poppins"} fontWeight="600">
+                Sin resultados
+              </Typography>
+            </Box>
+          ) : (
+            allData.slice(
+              (pagina - 1) * productosPorPagina,
+              (pagina - 1) * productosPorPagina + productosPorPagina)?.map((e, i) => <Card key={i + 1} product={e} />)
+          )}
+
+        </>
       </Grid>
     </Container>
   );
