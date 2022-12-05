@@ -4,6 +4,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ReviewType } from "../../redux/types/reviewTypes"
 import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { useParams } from 'react-router-dom';
+import { getReview } from '../../redux/thunk-actions/reviewActions';
 
 /* { username, userImage, comment, rating } <<-- placeholder */
 /* { userId(getUser), comment, rating} <<-- api */
@@ -28,6 +29,7 @@ const Review = ({ id }: ReviewProps) => {
       const fetchReview = async()=>{
          try {
             const { payload } : any = await dispatch(getReview(id));
+            console.log(payload)
             setFechReview({
                name: payload.name,
                picture: payload.picture,
@@ -59,7 +61,7 @@ const Review = ({ id }: ReviewProps) => {
          <Box sx={{ display: "flex", alignItems: "center", marginY: "1rem" }}>
             <Rating value={fetchReview.rating} size="large" readOnly precision={0.5} />
             <Typography variant="subtitle2" sx={{ marginLeft: "1rem" }}>
-               {`${fetchReview.date.split("T")[0].split("-").reverse().join("/")}`}
+               {/*`${fetchReview.date.split("T")[0].split("-").reverse().join("/")}`*/}
             </Typography>
          </Box>
          <Box>

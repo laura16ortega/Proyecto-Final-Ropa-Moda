@@ -142,7 +142,6 @@ exports.addReveiw = async(req,res)=>{
     return res.send({message:"Review Created Succesfully"})
   } catch (error) {
     console.log(error)
-    res.status(500).json({message:error})
   }
 }
 
@@ -156,6 +155,7 @@ exports.getReview = async(req,res)=>{
       if(!reviews){
         return res.status(404).json({message:"Review Not Found"})
       }
+      console.log(reviews)
       const review = {
         rating: reviews.rating,
         name: reviews.userId.fullName,

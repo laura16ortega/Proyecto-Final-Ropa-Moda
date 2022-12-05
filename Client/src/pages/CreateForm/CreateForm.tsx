@@ -34,22 +34,27 @@ export default function CreateForm() {
 
   const dispatch = useAppDispatch();
   const [sizeArr, setSizeArr] = useState<Array<string>>([]);
-  const [image, setImage] = useState<string | null | ArrayBuffer>('');
+  const [image, setImage] = useState<Array<any>>([]);
 
   const onChange = (e: any) => {
     setSizeArr([...sizeArr, e.target.name]);
   };
 
-  const imageChange = (e:any) =>{
-      console.log(e.target.files[0])
-      setImage(e.target.files[0])
-      /*const files = e.currentTarget.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(files);
-      reader.onloadend = ()=>{
-        setImage(reader.result)
-      }*/
+  const handleimage = (e:any) =>{
+      const files = Array.from(e.target.files);
+      setImage([])
+      files.forEach((file:any)=>{
+        const reader = new FileReader();
+        reader.onload =()=>{
+          if(reader.readyState === 2){
+            setImage((old)=>[...old, reader.result]);
+          }
+        };
+        reader.readAsDataURL(file)
+      })
   }
+
+
 
   return (
     <Box sx={{ backgroundColor: "#3e3e3e" }}>
@@ -103,10 +108,10 @@ export default function CreateForm() {
                 } else {
                   data.tallaCamiseta = sizeArr;
                 }
-                data.images = image
+                console.log(data)
                 //let allData = { ...data, images: [data.images] };
                 //console.log(allData);
-                dispatch(createProduct(data));
+                //dispatch(createProduct(data));
               })}
             >
               <FormControl>
@@ -191,6 +196,7 @@ export default function CreateForm() {
                   id="filled-basic"
                   variant="filled"
                   color="secondary"
+                  type="file"
                   focused
                 />
                 <TextField
@@ -257,6 +263,7 @@ export default function CreateForm() {
                     />
                   </FormGroup>
                 )}
+                <input type="file" onChange={handleimage}/>
                 <Button
                   type="submit"
                   variant="contained"

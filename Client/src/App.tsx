@@ -14,9 +14,10 @@ import Register from "./pages/Register/Register";
 import Contact from "./pages/ContactUs/Contact";
 import { useEffect } from "react";
 import CreateForm from "./pages/CreateForm/CreateForm";
-import AllCards from "./components/AllCards/AllCards";
+import {useAuth0} from '@auth0/auth0-react';
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import LoginButton from "./components/LoginButton/LoginButton";
 
 function App() {
   useEffect(() => {
@@ -45,7 +46,6 @@ function App() {
         <Route path="/create" element={<CreateForm />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
-
       <Footer />
     </div>
   );

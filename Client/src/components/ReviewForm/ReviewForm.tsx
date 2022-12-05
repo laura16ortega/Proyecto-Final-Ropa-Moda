@@ -4,14 +4,9 @@ import { Formik, FormikHelpers, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup"
 import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { postReview } from '../../redux/thunk-actions/reviewActions';
-<<<<<<< HEAD
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-=======
-import { useNotification } from "../UseNotification/UseNotification";
-import { unwrapResult } from '@reduxjs/toolkit'
->>>>>>> 7a381a9d5c4021ef81171078c57610c368c1d912
 
 /* Props: userId, comment, commentTitle, rating, isAuthenticated, localuser */
 type InitialValue = {
@@ -71,19 +66,9 @@ const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormPro
 
    const handleSubmit = async (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
       try {
-<<<<<<< HEAD
+
          dispatch(await postReview(value))
          toast.success("Review Created Successfully")
-=======
-         const resultAction = await dispatch(postReview(value))
-         const originalPromiseResult = unwrapResult(resultAction)
-         displayNotification({
-            message: "Review enviada con exito!",
-            type: "success",
-         });
-         setOpenReviewForm(false)
-         forceUpdate()
->>>>>>> 7a381a9d5c4021ef81171078c57610c368c1d912
          actions.resetForm()
       } catch (error) {
        setErrors(true)
