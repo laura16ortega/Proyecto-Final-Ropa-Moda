@@ -62,7 +62,11 @@ const AllCards = () => {
            );
          })
        ) : error ? (
-         <h1>Error: {error}</h1>
+         <Box sx={{height: "66vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
+          <Typography variant="h2">
+            Error: {error}
+          </Typography>
+         </Box>
        ) : allData?.length === 0 ? (
         <Box sx={{minHeight: "40vh", display: "flex", alignItems: "center", justifyContent: "center", width: "inherit"}}>
           <Typography variant="h3" fontFamily={"poppins"} fontWeight="600">
