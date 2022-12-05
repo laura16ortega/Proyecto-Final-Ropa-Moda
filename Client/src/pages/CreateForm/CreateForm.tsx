@@ -56,11 +56,11 @@ export default function CreateForm() {
     multiple: false,
   };
 
-  const widgetDisplay = (e) => {
+  const widgetDisplay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     let myWidget = window.cloudinary.createUploadWidget(
       widgetConfig,
-      (error, result) => {
+      (error: any, result: any) => {
         if (!error && result && result.event === "success") {
           console.log(result);
           setFileValue({
