@@ -61,7 +61,7 @@ const Review = ({ id }: ReviewProps) => {
          <Box sx={{ display: "flex", alignItems: "center", marginY: "1rem" }}>
             <Rating value={fetchReview.rating} size="large" readOnly precision={0.5} />
             <Typography variant="subtitle2" sx={{ marginLeft: "1rem" }}>
-               {/*`${fetchReview.date.split("T")[0].split("-").reverse().join("/")}`*/}
+               {`${fetchReview.date.split("T")[0].split("-").reverse().join("/")}`}
             </Typography>
          </Box>
          <Box>

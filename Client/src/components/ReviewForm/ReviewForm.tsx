@@ -6,6 +6,8 @@ import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { postReview } from '../../redux/thunk-actions/reviewActions';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useNotification } from "../UseNotification/UseNotification";
+import { unwrapResult } from '@reduxjs/toolkit'
 
 
 /* Props: userId, comment, commentTitle, rating, isAuthenticated, localuser */
@@ -62,13 +64,18 @@ const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormPro
          .min(0.5, "El rating valido es de 0.5 a 5")
    });
 
-   // { displayNotification } = useNotification();
+   const { displayNotification } = useNotification();
 
    const handleSubmit = async (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
       try {
-
-         dispatch(await postReview(value))
-         toast.success("Review Created Successfully")
+         const resultAction = await dispatch(postReview(value))
+         const originalPromiseResult = unwrapResult(resultAction)
+         displayNotification({
+            message: "Review enviada con exito!",
+            type: "success",
+         });
+         setOpenReviewForm(false)
+         forceUpdate()
          actions.resetForm()
       } catch (error) {
        setErrors(true)
