@@ -29,7 +29,6 @@ const Review = ({ id }: ReviewProps) => {
       const fetchReview = async()=>{
          try {
             const { payload } : any = await dispatch(getReview(id));
-            console.log(payload)
             setFechReview({
                name: payload.name,
                picture: payload.picture,
