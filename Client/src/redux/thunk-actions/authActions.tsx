@@ -58,6 +58,21 @@ export const loginUser = createAsyncThunk(
         }
     }
 );
+export const getUserInfo = createAsyncThunk(
+    "get/user",
+    async(userData:any) => {
+        try{
+            const {data}:any = await axios.get(
+                `${BACKEND_URL}/api/v1/users/${userData.userId}`, {headers: { Authorization: `Bearer ${userData.token}`}}
+            );
+            window.localStorage.setItem("jwt", data.loginData.token);
+            window.localStorage.setItem("User", JSON.stringify(data.loginData.user));
+            return data.loginData
+        }catch(error:any){
+            console.log(error)
+        }
+    }
+)
 
 //Forgot Password
 export const forgotPassword = createAsyncThunk(
