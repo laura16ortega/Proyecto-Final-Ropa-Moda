@@ -182,12 +182,15 @@ const Cart = () => {
                                 textAlign: "left",
                               }}
                             >
+
+<Link href={`/products/${e._id}`}>
                               <Typography
                                 variant="h6"
                                 className={s.productName}
                               >
                                 {e.name}
                               </Typography>
+                              </Link>
                               <Typography variant="subtitle1">
                                 {`$${e.price}`}
                               </Typography>

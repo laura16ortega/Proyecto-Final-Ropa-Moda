@@ -5,6 +5,7 @@ import authSlice from './slices/authSlice'
 import { NotificationReducer } from './slices/notificationSlice'
 import productDetailsSlice from './slices/productDetailsSlice'
 import reviewSlice from './slices/reviewSlice'
+import favoriteSlice from './slices/favoriteSlice'
 
 const store = configureStore({
    reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
       data: testSlice,
       productDetails: productDetailsSlice,
       cart: cartSlice,
+      fav: favoriteSlice,
       notification: NotificationReducer,
       review: reviewSlice
    },

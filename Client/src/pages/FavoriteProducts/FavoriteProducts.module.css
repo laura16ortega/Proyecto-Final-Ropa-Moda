@@ -1,0 +1,95 @@
+.productsContainer:nth-child(n+2) {
+    margin-top: 2rem;
+}
+
+.productName {
+    font-family: "New-Grotesk-Square" !important;
+    text-transform: uppercase;
+    font-size: 1.5rem !important;
+}
+
+.productImage {
+    height: 75px;
+    max-width: 100%;
+    border-radius: .375rem;
+    display: block
+}
+
+.counterButton {
+    border-radius: 9999px !important;
+    border: 1px solid rgb(224, 222, 220) !important;
+    width: 2rem;
+    height: 2rem;
+    min-width: 0px !important;
+    padding: 0 !important;
+    color: rgb(17, 17, 17);
+    background-color: transparent !important;
+    transition-duration: .3s !important;
+}
+
+.counterButton:hover {
+    background-color: rgb(17, 17, 17) !important;
+}
+
+.counterButton:hover svg {
+    color: white ;
+}
+
+.deleteIcon {
+    min-width: 0px !important;
+    padding: 0 !important;
+    color: rgb(17, 17, 17) !important;
+    min-width: 0px !important;
+}
+
+.deleteIcon:hover {
+    color: brown !important;
+}
+
+.pricesContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pricesContainer:nth-child(n+2) {
+    margin-top: 1.25rem;
+}
+
+.addButton {
+    border-radius: 2rem !important; 
+    padding: .85rem 2.5rem !important;
+    background-color: rgba(17, 17, 17, 1) !important;
+    width: 100%;
+    font-weight: 600 !important;
+}
+
+.addButton:hover {
+    background-color: #333333 !important;
+}
+
+.addButton:disabled {
+    background-color: #E0E0E0 !important;
+    color: rgba(119, 119, 122, 1) !important;
+}
+
+.paypalButton {
+    border-radius: 2rem !important; 
+    padding: .85rem 2.5rem !important;
+    background-color: "#F5F5F5" !important;
+    width: 100%;
+    font-weight: 600 !important;
+    margin-top: 1rem !important;
+    background-color: #FFFFFF !important;
+    color: black !important;
+    margin-bottom: 1rem !important
+}
+
+.paypalButton span {
+    font-family: "Roboto","Helvetica","Arial",sans-serif ;
+}
+
+.orderSummary {
+    font-size: 1.5rem !important;
+    text-transform: uppercase;
+}

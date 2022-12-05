@@ -60,7 +60,6 @@ export default function SearchBar() {
 
   useEffect(() => {
     window.localStorage.setItem('input',search)
-
     
  },[search])
 
