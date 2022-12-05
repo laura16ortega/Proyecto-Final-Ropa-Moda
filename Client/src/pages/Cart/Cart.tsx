@@ -1,4 +1,4 @@
-import { Container, Box, Button, Grid, Typography, Link } from "@mui/material";
+import { Container, Box, Button, Grid, Typography, Link, Alert, Collapse } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -18,18 +18,24 @@ import { useNotification } from '../../components/UseNotification/UseNotificatio
 import type { mappedDbProductsType } from "../../redux/types/productTypes"
 import { getAllProducts } from "../../redux/thunk-actions/testActions";
 import CartSlider from "../../components/CartSlider/CartSlider";
-
+import { stripeCheckout } from "../../redux/thunk-actions/cartActions";
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const Cart = () => {
   const { displayNotification } = useNotification();
   const [openPaypal, setOpenPaypal] = useState(false);
+  const [checkoutError, setCheckoutError] = useState(false)
   const dispatch = useAppDispatch();
-  const { cart, cartLoading, cartError } = useAppSelector(
+  const { cart, cartLoading, cartError, checkoutLoad } = useAppSelector(
     (state) => state.cart
   );
   const { allData, loading } = useAppSelector((state) => state.data);
 
   const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
+  const userToken: string = localStorage.getItem("jwt") || ""
+
+  // console.log("Cart state:", cart) --- []
+  // console.log("Cart localstorage: ", cartProd) --- [{...}]
 
   const subTotalPrice = cartProd?.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -55,6 +61,32 @@ const Cart = () => {
     dispatch(removeCartItem(productId));
   };
 
+  const handleStripeCheckout = async (cartData: mappedDbProductsType[]) => {
+    try {
+      if (!userToken) {
+        displayNotification({ message: "Debes estar registrado para poder comprar", type: "info", timeout: 10000 });
+      } else {
+        const checkoutData = {
+          token: userToken,
+          cartData
+        }
+        const dispatchCheckout = await dispatch(stripeCheckout(checkoutData))
+        const payloadUrl = unwrapResult(dispatchCheckout)
+        window.location.href = payloadUrl
+      }
+    } catch (e) {
+      setCheckoutError(true)
+    }
+  }
+
+  const handlePaypalButton = () => {
+    if (!userToken) {
+      displayNotification({ message: "Debes estar registrado para poder comprar", type: "info", timeout: 10000 });
+    } else {
+      setOpenPaypal(!openPaypal);
+    }
+  }
+
   useEffect(() => {
     if (!allData?.length) {
       dispatch(getAllProducts());
@@ -69,7 +101,6 @@ const Cart = () => {
         <h1>CartError: {cartError}</h1>
       ) : !cartProd?.length ? (
         <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
-          {/* Container MUI */}
           <Box sx={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
               TU CARRO ESTA VACIO
@@ -123,10 +154,7 @@ const Cart = () => {
                       sx={{ marginLeft: "1rem", color: "gray" }}
                     >
                       {`${itemRes} ${itemRes === 1 ? "item" : "items"}`}
-                      {/* cart?.reduce((total, item)=>total+(item.quantity + cart.length),0) */}
                     </Typography>
-                    {/*<h2>Carro</h2>
-                                                <p style={{ marginLeft: "1rem" }}>{`${cart.length} items`}</p>*/}
                   </Box>
                   <Box sx={{ marginTop: "2.5rem" }}>
                     {cartProd?.map((e, i) => (
@@ -134,13 +162,12 @@ const Cart = () => {
                         <Box
                           sx={{
                             display: "flex",
-                            /*justifyContent: "space-between",*/ alignItems:
-                              "center",
+                            alignItems: "center",
                           }}
                         >
                           <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
                             <img
-                              src={e.images[0]}
+                              src={!e.images ? "" : e.images.url ? e.images.url : e.images[0]}
                               alt=""
                               className={s.productImage}
                             />
@@ -155,15 +182,17 @@ const Cart = () => {
                                 textAlign: "left",
                               }}
                             >
+
+<Link href={`/products/${e._id}`}>
                               <Typography
                                 variant="h6"
                                 className={s.productName}
                               >
                                 {e.name}
                               </Typography>
+                              </Link>
                               <Typography variant="subtitle1">
                                 {`$${e.price}`}
-                                {/*<span>{`$${e.price}`}</span>*/}
                               </Typography>
                             </Box>
                             <Box
@@ -242,7 +271,6 @@ const Cart = () => {
                       <Typography variant="h4" className={s.orderSummary}>
                         Resumen de compra
                       </Typography>
-                      {/*<h2 style={{ letterSpacing: "0.2em", lineHeight: "1.2", marginBottom: "2rem" }}>ORDER SUMMARY</h2>*/}
                     </Box>
                     <Box>
                       <Box sx={{ marginBottom: "1.25rem" }}>
@@ -268,8 +296,6 @@ const Cart = () => {
                             >
                               {e.price && e.price <= 0 ? "-" : `$${e.price}`}
                             </Typography>
-                            {/*<p style={{ letterSpacing: "0.2em", lineHeight: 1.6 }}>{e.title}</p>
-                                                                <p style={{ letterSpacing: "0.2em", lineHeight: 1.6 }}>{e.price <= 0 ? "-" : e.price}</p>*/}
                           </Box>
                         ))}
                       </Box>
@@ -305,14 +331,19 @@ const Cart = () => {
                             0
                           )}`}
                         </Typography>
-                        {/*<p style={{ letterSpacing: "0.1em", lineHeight: 1.6 }}>Total</p>
-                                                        <p style={{ letterSpacing: "0.1em", lineHeight: 1.6 }}>125.45</p>*/}
                       </Box>
                       <Box sx={{ marginTop: "1.5rem", marginBottom: "2.5rem" }}>
+                        <Collapse in={checkoutError}>
+                          <Alert severity='error' sx={{ mb: 2, textAlign: "center" }}>
+                            Hubo un error al procesar el pago
+                          </Alert>
+                        </Collapse>
                         <Button
                           variant="contained"
                           disableElevation
                           className={s.addButton}
+                          onClick={() => handleStripeCheckout(cartProd)}
+                          disabled={checkoutLoad}
                         >
                           Checkout
                         </Button>
@@ -320,14 +351,15 @@ const Cart = () => {
                           variant="contained"
                           disableElevation
                           className={s.paypalButton}
+                          disabled={checkoutLoad}
                           onClick={() => {
-                            setOpenPaypal(!openPaypal);
+                            handlePaypalButton();
                           }}
                         >
                           <span
                             style={{ display: "flex", alignItems: "center" }}
                           >
-                            <span>Checkout with</span>
+                            <span>Checkout con</span>
                             <img
                               src={paypalImg}
                               alt=""
@@ -339,30 +371,28 @@ const Cart = () => {
                           </span>
                         </Button>
 
-                          { openPaypal ? <PayPalScriptProvider options={{"client-id": "Af_2kGfokFGu8n5l3n7OC64eb-BSX4kRvnCZu65B4_48mFGOC6R5f937BMhEM5b-GvfLE-wulIotXk6S"}}>
-                          <PayPalButtons  createOrder={(data, actions) => {
-            return actions.order.create({
-              purchase_units: [
-                {
-                  amount: {
-                    value: subTotalPrice,
-                  },
-                },
-              ],
-            });
-          }}
-          onApprove={async (data, actions) => {
-            const details = await actions.order.capture();
-            
-            const name = details.payer.name.given_name;
-            console.log(details);
-            displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type:"success" })
-            setTimeout(() => {
-              window.location.href = '/confirmed'
-            }, 500)
+                        {openPaypal ? <PayPalScriptProvider options={{ "client-id": "Af_2kGfokFGu8n5l3n7OC64eb-BSX4kRvnCZu65B4_48mFGOC6R5f937BMhEM5b-GvfLE-wulIotXk6S" }}>
+                          <PayPalButtons createOrder={(data, actions) => {
+                            return actions.order.create({
+                              purchase_units: [
+                                {
+                                  amount: {
+                                    value: `${subTotalPrice}`,
+                                  },
+                                },
+                              ],
+                            });
+                          }}
+                            onApprove={async (data, actions) => {
+                              const details = await actions.order?.capture()
 
-          }}
-          />
+                              const name = details?.payer.name?.given_name 
+                              console.log(details);
+                              displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type: "success" })
+
+
+                            }}
+                          />
                         </PayPalScriptProvider> : <div></div>}
                       </Box>
                       <Box
@@ -381,9 +411,6 @@ const Cart = () => {
                       </Box>
                     </Box>
                   </Box>
-                  {/*<div>
-                                                Accepted cards
-                                            </div>*/}
                 </Grid>
               </Grid>
             </Box>

@@ -2,33 +2,39 @@ import React, { useState, useEffect } from 'react'
 import { useAppSelector } from "../../assets/hooks"
 import s from '../../components/Pagination/pagination.module.css';
 
+type PaginationProps = {
+  pagina: number
+  setPagina: React.Dispatch<React.SetStateAction<number>>
+  maximo: number
+}
 
-export default function Pagination({pagina, setPagina, maximo}) {
+
+export default function Pagination({pagina, setPagina, maximo}: PaginationProps) {
   const { allData } = useAppSelector(state => state.data)
-  const [input, setInput] = useState (1);
+  const [input, setInput] = useState<number>(1);
 
   const nextPage = () => {
-    setInput (parseInt(input) + 1);
-    setPagina (parseInt(pagina) + 1);
+    setInput (input + 1);
+    setPagina (pagina + 1);
   };
 
   const previousPage = () => {
-    setInput (parseInt(input) - 1);
-    setPagina (parseInt(pagina) - 1);
+    setInput (input - 1);
+    setPagina (pagina - 1);
   };
 
-  const onKeyDown = e => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode == 13) {
-      setPagina (parseInt (e.target.value));
+      setPagina(parseInt (e.currentTarget.value));
       if (
-        parseInt (e.target.value < 1) ||
-        parseInt (e.target.value) > Math.ceil (maximo) ||
-        isNaN (parseInt (e.target.value))
+        parseInt(e.currentTarget.value) < 1 ||
+        parseInt(e.currentTarget.value) > Math.ceil(maximo) ||
+        isNaN (parseInt(e.currentTarget.value))
       ) {
         setPagina (1);
         setInput (1);
       } else {
-        setPagina (parseInt (e.target.value));
+        setPagina (parseInt(e.currentTarget.value));
       }
     }
   };
@@ -39,8 +45,8 @@ export default function Pagination({pagina, setPagina, maximo}) {
   }, [allData])
   
 
-  const onChange = e => {
-    setInput (e.target.value);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(Number(e.target.value));
   };
 
   return (
@@ -54,13 +60,13 @@ export default function Pagination({pagina, setPagina, maximo}) {
         </svg>
       </button>
       <input
-        onChange={e => onChange (e)}
-        onKeyDown={e => onKeyDown (e)}
+        onChange={e => onChange(e)}
+        onKeyDown={e => onKeyDown(e)}
         name="page"
         autoComplete="off"
         value={input}
       />
-      <p> de {parseInt(maximo + 1)} </p>
+      <p> de {Math.ceil(Number(maximo))} </p>
       <button
       disabled={pagina === Math.ceil (maximo) || pagina > Math.ceil (maximo)}
       onClick={nextPage}

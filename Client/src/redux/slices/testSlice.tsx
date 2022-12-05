@@ -5,8 +5,8 @@ import { mappedDbProductsType } from "../types/productTypes"
 type InitialState = {
   loading: boolean;
   error: null | string;
-  allData: null | mappedDbProductsType[];
-  dataBackup: null | mappedDbProductsType[];
+  allData: mappedDbProductsType[];
+  dataBackup: mappedDbProductsType[];
 };
 
 const initialState = {
@@ -26,16 +26,21 @@ export const testSlice = createSlice({
   initialState,
   reducers: {
     filterSearch: (state, action: PayloadAction<string>) => {
+      
       const filteredCards =
         state.allData &&
         state.allData.filter((card) => {
+          
           return card.name
             .toLowerCase()
             .includes(action.payload.toLowerCase());
         });
+
+
       return {
         ...state,
-        allData: filteredCards,
+
+        allData: filteredCards
       };
     },
     filterElements: (state, action: PayloadAction<FilterTypedState>) => {

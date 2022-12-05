@@ -1,5 +1,7 @@
 const Product = require("./../models/productModels");
+
 const cloudinary = require("../services/cloudinaryServices");
+const Review = require("../models/ReviewModel")
 
 //ROUTE HANDLERS
 
@@ -23,7 +25,7 @@ exports.getAllProducts = async (req, res) => {
     //EXECUTE THE QUERY
     const products = await query; //le hacemos el await a la variable query para poder encadenar los métidos como sort, limit, page
     //SEND RESPONSE
-    res.status(200).json({
+    res.status(203).json({
       status: "success",
       results: products.length,
       data: { products },
@@ -49,11 +51,12 @@ exports.createProduct = async (req, res) => {
       price,
       description,
       category,
-      image,
+      images,
       stock,
       tallaCamiseta,
       tallaPantalon,
       marca,
+
     } = req.body;
     if (!name || !price || !image || !marca || !category) {
       return res.status(500).json({ message: "Please Provide all Parameters" });
@@ -62,6 +65,18 @@ exports.createProduct = async (req, res) => {
     const result = await cloudinary.uploader.upload(image, {
       folder: "products",
     });
+      gender,
+      summary
+    } = req.body;
+    if (!name || !price || !images || !marca || !category) {
+      return res.status(500).json({ message: "Please Provide all Parameters" });
+    }
+
+    const result = await cloudinary.uploader.upload(images[0], {
+      folder: "products",
+    });
+    console.log("CLOUDINARY RESULT", result)
+
 
     const newProduct = await Product.create({
       name,
@@ -71,10 +86,19 @@ exports.createProduct = async (req, res) => {
       stock,
       tallaCamiseta: tallaCamiseta ? tallaCamiseta : [],
       tallaPantalon: tallaPantalon ? tallaPantalon : [],
+
       image: {
         public_id: result.public_id,
         url: result.secure_url,
       },
+
+      images: {
+        public_id: result.public_id,
+        url: result.secure_url,
+      },
+      gender,
+      summary
+
     });
     res.status(201).json({
       status: "success",
@@ -110,6 +134,7 @@ exports.deleteProduct = async (req, res) => {
 };
 
 //REVIEW SECTION
+
 exports.addReveiw = async (req, res) => {
   const { userId, rating, comment } = req.body;
   const productId = req.params.id;
@@ -154,34 +179,69 @@ exports.addReveiw = async (req, res) => {
   const product = await Product.findById(req.params.id);
   if(!product) return res.stauts(400).json({message:"Product not found"});
 
+
+exports.addReveiw = async(req,res)=>{
+
+  const {rating, comment, userId} = req.body;
+  //if(!rating || !description)return res.status(500).json({message:"Please Provide all Parameters"});
+  
+  try {
+  const product = await Product.findById(req.params.id);
+  //if(!product) return res.stauts(400).json({message:"Product not found"});
+    
+
   /*if(product){
       console.log(product)
-      if(product.reveiws.find((x)=>x.userId === req.userId)){
+      if(product.reveiws?.find((x)=>x.userId === req.userId)){
         return res.stauts(400).json({message:"Your Already Submitted a review"})
       }
-    }
+    }*/
 
     const review = {
       rating,
-      description,
+      comment,
       userId,
       productId: req.params.id
     }
     //console.log(product.reviews.reduce((a,c)=>c.ratingsAverage + a,0)/product.reviews.length)
-  try {
     const createdReview = await Review.create(review);
-    product.reviews.push(createdReview._id);
+    product.reviews = [...product.reviews, createdReview._id]
     product.ratingsQuantity = product.reviews.length;
-    const updatedProduct = await product.save();
-
-    //Calcular promedio de rating del producto y de las reveiw y devolverlas
-    res.status(201).json({
-      message:"Review created successfully",
-      updatedProduct
-    })
-
+    await product.save();
+    return res.send({message:"Review Created Succesfully"})
   } catch (error) {
     console.log(error)
+
     res.status(500).json({message:error})
   }*/
 };
+
+  }
+}
+
+
+exports.getReview = async(req,res)=>{
+  //debo encontrar review por id de parametro
+  //modificar data para devolver solo el rating, name, comment y la imagen
+    try {
+      const {id} = req.params;
+      const reviews = await Review.findById(id).populate("userId")
+      if(!reviews){
+        return res.status(404).json({message:"Review Not Found"})
+      }
+      const review = {
+        rating: reviews.rating,
+        name: reviews.userId.fullName,
+        comment: reviews.comment,
+        picture:"",
+        date: reviews.createdAt
+
+      }
+      res.status(200).json(review)
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({message:error})
+    }
+}
+
+

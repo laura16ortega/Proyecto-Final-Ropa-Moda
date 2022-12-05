@@ -1,17 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { addProductToCart } from "../thunk-actions/cartActions"
+import { addProductToCart, stripeCheckout } from "../thunk-actions/cartActions"
 import type { mappedDbProductsType } from "../types/productTypes"
 
 type InitialState = {
     cartLoading: boolean,
     cartError: null | string,
     cart: null | mappedDbProductsType[]
+    checkoutLoad: boolean
 }
 
 const initialState = {
     cartLoading: false,
     cartError: null,
     cart: [],
+    checkoutLoad: false
 } as InitialState
 
 export const cartSlice = createSlice({
@@ -19,7 +21,10 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         increaseCartQuantity: (state, action: PayloadAction<string>) => {
-            const findOnCart = state.cart && state.cart.find(e => e._id === action.payload)
+            const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
+            state.cart = cartProd
+            const findOnCart = state.cart && state.cart.find(e => e._id === action.payload) // Buscar en localstorage, no funciona al recargar
+            console.log("cart from localstorage - reducer: ", cartProd)
             if (findOnCart) {
                 const newqty = findOnCart.quantity = findOnCart.quantity + 1
                 findOnCart.quantity = newqty
@@ -27,6 +32,8 @@ export const cartSlice = createSlice({
             }
         },
         decreaseCartQuantity: (state, action: PayloadAction<string>) => {
+            const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
+            state.cart = cartProd
             const findOnCart = state.cart && state.cart.find(e => e._id === action.payload)
 
             if (findOnCart) {
@@ -42,6 +49,9 @@ export const cartSlice = createSlice({
 
         },
         removeCartItem: (state, action: PayloadAction<string>) => {
+            const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
+            state.cart = cartProd
+            
             const newState = state.cart && state.cart.filter(e => e._id !== action.payload)
             state.cart = newState
             localStorage.setItem('cart', JSON.stringify(state.cart));
@@ -60,6 +70,12 @@ export const cartSlice = createSlice({
             .addCase(addProductToCart.rejected, (state, action: PayloadAction<any>) => {
                 state.cartLoading = false
                 state.cartError = action.payload
+            })
+            .addCase(stripeCheckout.pending, (state, action) => {
+                state.checkoutLoad = true
+            })
+            .addCase(stripeCheckout.fulfilled, (state, action) => {
+                state.checkoutLoad = false
             })
     },
 })

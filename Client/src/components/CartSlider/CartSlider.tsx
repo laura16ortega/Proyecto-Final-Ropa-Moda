@@ -10,9 +10,9 @@ type CartSliderProps = {
     allData: mappedDbProductsType[]
 }
 
-// ! No mapear todos los productos
-
 const CartSlider = ({ allData }: CartSliderProps) => {
+
+    const slideData = allData.slice(-6)
 
     return (
         <Box sx={{ marginBottom: "2rem", marginX: "2rem"}}>
@@ -37,7 +37,7 @@ const CartSlider = ({ allData }: CartSliderProps) => {
                         slidesPerView: 1
                     }
                 }}>
-                {allData.map((e, i) => 
+                {slideData.map((e, i) => 
                 <SwiperSlide key={i + 1}>
                     <Card product={e} margin="0 7px"/>
                 </SwiperSlide>

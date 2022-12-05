@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 
+
+const Review = require("./ReviewModel");
+
+
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -31,7 +35,19 @@ const productSchema = new mongoose.Schema({
     trim: true,
   },
 
+
   images: [String], //acá aclaro que para esta propiedad quiero un arreglo de strings
+  images: {
+      public_id:{
+        type:String,
+ 
+      },
+      url:{
+        type:String,
+
+      }
+  }, //acá aclaro que para esta propiedad quiero un arreglo de strings
+
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -60,6 +76,12 @@ const productSchema = new mongoose.Schema({
   tallaCamiseta: [String],
   tallaPantalón: [String],
   marca: String,
+
+  reviews:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Review"
+  }],
+
 });
 const Product = mongoose.model("Product", productSchema);
 

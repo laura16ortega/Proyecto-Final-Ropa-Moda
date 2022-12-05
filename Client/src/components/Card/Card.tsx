@@ -11,9 +11,12 @@ import s from "./Card.module.css";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import { addProductToCart } from "../../redux/thunk-actions/cartActions";
+import { addProductToFav } from "../../redux/thunk-actions/favoriteActions";
 import type { mappedDbProductsType } from "../../redux/types/productTypes";
 import IncreaseCartButton from "../IncreaseCartButton/IncreaseCartButton"
-
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { removefavItem } from "../../redux/slices/favoriteSlice";
 type productProps = {
   product: mappedDbProductsType;
   margin?: string; // Slider
@@ -22,15 +25,27 @@ type productProps = {
 const Card = ({ product, margin }: productProps) => {
   const dispatch = useAppDispatch();
   const { cartLoading, cart } = useAppSelector((state) => state.cart);
-
+  const { favLoading, fav } = useAppSelector((state) => state.fav);
   const cartProd: mappedDbProductsType[] = JSON.parse(
     localStorage.getItem("cart") || ""
   );
+  const favProd: mappedDbProductsType[] = JSON.parse(
+    localStorage.getItem("fav") || ""
+  );
+
+  const foundOnFav = favProd.find((e) => e.name === product.name);
   const foundOnCart = cartProd.find((e) => e.name === product.name);
 
   const handleCart = (productId: string) => {
     dispatch(addProductToCart(productId));
   };
+
+  const handleFav = (productId: string) => {
+    dispatch(addProductToFav(productId));
+  };
+  const handleRemoveFav = (productId: string) => {
+    dispatch(removefavItem(productId));
+ };
 
   return (
     <Grid
@@ -51,11 +66,11 @@ const Card = ({ product, margin }: productProps) => {
             flex: 1,
           }}
         >
-          {/* Special tags: limited edition, best seller, low calories, etc */}
           <Link href={`/products/${product._id}`}>
             <Box>
+            
               <img
-                src={product.images[0]}
+                src={!product.images? "" : product.images.url? product.images.url : product.images[0]}
                 alt={`${product.name} not found`}
                 className={s.image}
                 style={{ marginBottom: ".7rem" }}
@@ -82,7 +97,7 @@ const Card = ({ product, margin }: productProps) => {
                 {product.ratingsQuantity} review/s
               </Typography>
             </Box>
-            <Box>
+            <Box style={{display:'flex', flexDirection:'row'}}>
               <Box>
                 <Typography
                   variant="h5"
@@ -92,7 +107,7 @@ const Card = ({ product, margin }: productProps) => {
                   {`$${product.price}`}
                 </Typography>
               </Box>
-              <Box sx={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
+              <Box sx={{ marginBottom: "0.5rem", marginTop: "1rem", marginLeft:'2rem' }}>
                 {!foundOnCart ? (
                   <Button
                     variant="contained"
@@ -105,9 +120,35 @@ const Card = ({ product, margin }: productProps) => {
                     {cartLoading ? "Agregando..." : "Agregar al carro"}
                   </Button>
                 ) : (
-                  <IncreaseCartButton id={product._id} quantity={foundOnCart.quantity}/>
+                  <div style={{marginLeft:'2rem'}}>
+                  <IncreaseCartButton id={product._id} quantity={foundOnCart.quantity}  />
+                  </div>
                 )}
               </Box>
+              
+                {!foundOnFav ? (
+                  <Button
+                    
+                    disableElevation
+                    size="small"
+                    className={s.addButtonFav}
+                    onClick={() => handleFav(product._id)}
+                    disabled={favLoading}
+                  >
+                    {favLoading ? "♥" : <FavoriteBorderIcon/> }
+                  </Button>
+                ) : (
+                  <Button  disableElevation
+                  size="small"
+                  className={s.addButtonFav} onClick={() => handleRemoveFav(product._id)}>
+                  <FavoriteIcon style={{fill:'red'}}  />
+                  </Button>
+              
+                )}
+             
+
+
+
             </Box>
         </Box>
       </Paper>

@@ -2,6 +2,7 @@ const {encrypt, verified} = require("../services/authServices");
 const User = require("../models/UserModel");
 const { generateToken } = require("../services/JwtServices");
 const passport = require("passport");
+const sendEmail = require("../services/sendMailServices")
 
 
 
@@ -15,22 +16,23 @@ const registerCtrl = async(request,response)=>{
             isAdmin
         } = request.body;
 
-        if(!fullName || !password || !email || !phone_number){
-            return response.status(500).json({message:"Faltan Datos del Usuario"})
-        }
+        /*if(!fullName || !password || !email || !phone_number){
+            return response.status(500).json({message:"Faltan Datos del Usuario2"})
+        }*/
 
         try{
             const checkIs = await User.findOne({email});
-            if(checkIs) return response.status(500).json({message:"Email Already exist"})    
+            if(checkIs) return response.status(500).json({message:"El email ya esta en uso!"})    
             
             const passHash = await encrypt(password);
+            const newPhoneNumber = Number(phone_number.replace(/\s/g, ''))
             
             //Create new User
             const user = await User.create({
                 fullName,
                 password:passHash,
                 email,
-                phone_number,
+                phone_number: newPhoneNumber,
                 isAdmin
             });
 
@@ -47,13 +49,33 @@ const registerCtrl = async(request,response)=>{
                 secure:true
             })
 
+            const subject = "Usuario registrado con exito"
+            const send_to = email
+            const sent_from = process.env.EMAIL_USER
+            const message = `
+            <h1><strong>Hola ${fullName}!</strong></h1>
+
+            <h2>El equipo del Proyecto final - <strong>FM</strong> te da la bienvenida</h2>
+
+            <h3>Tus nuevos datos de usuario son</h3>
+            <ul>
+                <li><strong>Nombre de usuario:</strong> ${fullName}</li>
+                <li><strong>Contraseña:</strong> ${password}</li>
+                <li><strong>Numero de telefono:</strong> ${phone_number}</li>
+            </ul>
+            
+            <p>- Fashion Cloth Mode</p>`
+
+            await sendEmail(subject, message, send_to, sent_from);
+
             return response.status(200).json({
                 message:"User Create Successfully",
                 registerNewUser:{
                     fullName,
                     email,
                     isAdmin,
-                    token
+                    token,
+                    userId: user._id
                 }
             })
         } catch (error) {
@@ -79,11 +101,11 @@ const loginCtrl = async(request,response)=>{
     const {email, password} = request.body;
     try {
         const checkIs = await User.findOne({email});
-        if(!checkIs) return response.status(404).json({message:"User Not Found"})
+        if(!checkIs) return response.status(404).json({message:"Usuario no encontrado"})
 
         const passwordHash = checkIs.password;
         const isCorrect = await verified(password, passwordHash);
-        if(!isCorrect)return response.status(404).json({message:"User Not Found"})
+        if(!isCorrect)return response.status(404).json({message:"Usuario no encontrado"})
         
         if(checkIs && isCorrect){
             const token = generateToken(checkIs);
