@@ -15,7 +15,13 @@ type ImagesType = {
 
 // Producto en general
 export type DbProductType = {
+<<<<<<< HEAD
+    map(arg0: (e: any) => JSX.Element): import("react").ReactNode
+    length: number
+    images: string[] | []
+=======
     images: any // Pasar a string[] | [] | ImagesType cuando se arregle
+>>>>>>> 7a381a9d5c4021ef81171078c57610c368c1d912
     ratingsAverage: number
     ratingsQuantity: number
     tallaCamiseta: string[] | []
