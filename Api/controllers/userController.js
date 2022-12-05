@@ -35,7 +35,7 @@ const getUser = async(request,response)=>{
 //Update a User
 const updatedUser = async(request,response)=>{
     const user = await User.findById(request.body.userId);
-
+    console.log(user)
     if(user){
         const {fullName, email, phone_number} = user;
         user.email = email;
@@ -43,6 +43,7 @@ const updatedUser = async(request,response)=>{
         user.phone_number = request.body.phone_number || phone_number;
 
         const updatedUser = await user.save();
+        console.log(user)
         response.status(200).json({
             message:"User Update Succesfully",
             _id: updatedUser._id,

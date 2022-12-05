@@ -43,6 +43,7 @@ export type FormType = typeof PRODUCT_FORM_VALIDATOR_SCHEMA["__outputType"];
 export function useCreateForm() {
   const data = useForm<FormType>({
     resolver: yupResolver(PRODUCT_FORM_VALIDATOR_SCHEMA, {}),
+    defaultValues: {},
   });
 
   return data;

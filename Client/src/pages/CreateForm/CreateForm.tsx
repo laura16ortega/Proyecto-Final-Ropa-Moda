@@ -34,6 +34,7 @@ export default function CreateForm() {
 
   const dispatch = useAppDispatch();
   const [sizeArr, setSizeArr] = useState<Array<string>>([]);
+  const [image, setImage] = useState<Array<any>>([]);
   const [fileValue, setFileValue] = useState({
     image: "",
   });
@@ -56,11 +57,11 @@ export default function CreateForm() {
     multiple: false,
   };
 
-  const widgetDisplay = (e) => {
+  const widgetDisplay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     let myWidget = window.cloudinary.createUploadWidget(
       widgetConfig,
-      (error, result) => {
+      (error: any, result: any) => {
         if (!error && result && result.event === "success") {
           console.log(result);
           setFileValue({
@@ -88,6 +89,22 @@ export default function CreateForm() {
   const onChange = (e: any) => {
     setSizeArr([...sizeArr, e.target.name]);
   };
+
+  const handleimage = (e:any) =>{
+      const files = Array.from(e.target.files);
+      setImage([])
+      files.forEach((file:any)=>{
+        const reader = new FileReader();
+        reader.onload =()=>{
+          if(reader.readyState === 2){
+            setImage((old)=>[...old, reader.result]);
+          }
+        };
+        reader.readAsDataURL(file)
+      })
+  }
+
+
 
   return (
     <Box sx={{ backgroundColor: "#3e3e3e" }}>
@@ -141,6 +158,10 @@ export default function CreateForm() {
                 } else {
                   data.tallaCamiseta = sizeArr;
                 }
+                console.log(data)
+                //let allData = { ...data, images: [data.images] };
+                //console.log(allData);
+                //dispatch(createProduct(data));
                 let allData = { ...data, images: [fileValue.image] };
                 console.log(allData);
                 dispatch(createProduct(allData));
@@ -203,11 +224,13 @@ export default function CreateForm() {
                   <InputLabel id="label">Genero</InputLabel>
                   <MenuItem value="Hombre">Hombre</MenuItem>
                   <MenuItem value="Mujer">Mujer</MenuItem>
+                  <MenuItem value="Hombre">Hombre</MenuItem>
+                  <MenuItem value="Mujer">Mujer</MenuItem>
                   <MenuItem value="Unisex">Unisex</MenuItem>
                 </Select>
                 <Select
                   {...register("category")}
-                  key={3}
+                  key={4}
                   label="Categoria"
                   name="category"
                   id="filled-basic"
@@ -219,7 +242,20 @@ export default function CreateForm() {
                   <InputLabel id="label">Categoria</InputLabel>
                   <MenuItem value="Camiseta">Camiseta</MenuItem>
                   <MenuItem value="Pantalones">Pantalon</MenuItem>
+                  <MenuItem value="Pantalones">Pantalon</MenuItem>
                 </Select>
+                <TextField
+                  {...register("images")}
+                  key={4}
+                  label="Imagen"
+                  className={styles.inputInfo}
+                  name="image"
+                  id="filled-basic"
+                  variant="filled"
+                  color="secondary"
+                  type="file"
+                  focused
+                />
                 <Button
                   sx={{
                     marginTop: "3rem",
@@ -232,7 +268,7 @@ export default function CreateForm() {
                 </Button>
                 <TextField
                   {...register("stock")}
-                  key={5}
+                  key={6}
                   label="Stock"
                   className={styles.inputInfo}
                   name="stock"
@@ -294,6 +330,7 @@ export default function CreateForm() {
                     />
                   </FormGroup>
                 )}
+                <input type="file" onChange={handleimage}/>
                 <Button
                   type="submit"
                   variant="contained"
