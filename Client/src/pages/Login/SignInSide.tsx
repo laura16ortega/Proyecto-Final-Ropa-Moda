@@ -13,14 +13,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNotification } from "../../components/UseNotification/UseNotification";
+/* import { setUser } from "../../redux/slices/authSlice"; */
 import axios from "axios";
-
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import { loginUser } from "../../redux/thunk-actions/authActions";
 import { unwrapResult } from '@reduxjs/toolkit'
 import Alert from "@mui/material/Alert"
 import Collapse from "@mui/material/Collapse"
+
 
 function Copyright(props: any) {
   return (
@@ -42,8 +43,9 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
-  const dispatch = useAppDispatch()
+export default function SignInSide() {/* 
+  const googleLogo = require('../../assets/images/google.svg');
+ */  const dispatch = useAppDispatch()
   const { displayNotification } = useNotification();
   const [loginErrors, setLoginErrors] = useState<boolean>(false)
 
@@ -141,11 +143,20 @@ export default function SignInSide() {
               >
                 Ingresar
               </Button>
+
+              <Button href='http://localhost:3001/login' fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}>
+                  Ingresar con google
+                  
+              </Button>
+
               <Collapse in={loginErrors}>
                 <Alert severity='error' sx={{ mb: 2, textAlign: "center" }} onClose={() => setLoginErrors(false)}>
                   {userError}
                 </Alert>
               </Collapse>
+
               <Grid container>
                 <Grid item xs>
                   <Link href="/forgot" variant="body2">

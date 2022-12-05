@@ -17,7 +17,9 @@ export default function Footer() {
                   <a href="/contact">Contacto</a>
                 </li>
                 <li>
-                  <a href="https://laurajulianaortega.wixsite.com/pol-tica-de-privacid">Política de privacidad</a>
+                  <a href= "https://laurajulianaortega.wixsite.com/pol-tica-de-privacid">
+                    Política de privacidad
+                  </a>
                 </li>
               </ul>
             </div>
@@ -33,13 +35,20 @@ export default function Footer() {
               </ul>
             </div>
             <div className={styles.footerCol}>
-              <h4>Mensajes</h4>
+              <h4>Siguenos</h4>
               <ul>
                 <li>
-                  <a href='https://www.facebook.com/people/Ropa-Y-Moda/100088461934792/' target="blank">Siganos</a>
+                  <a
+                    href="https://www.facebook.com/people/Ropa-Y-Moda/100088461934792/"
+                    target="blank"
+                  >
+                    Facebook
+                  </a>
                 </li>
                 <li>
-                  <a href='https://laurajulianaortega.wixsite.com/ropa-y-moda'>Historia</a>
+                  <a href="https://laurajulianaortega.wixsite.com/ropa-y-moda">
+                    Historia
+                  </a>
                 </li>
                 <li>
                   <a href="/products">Lista</a>

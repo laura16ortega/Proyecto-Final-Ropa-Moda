@@ -3,6 +3,7 @@ const {cloudinaryUploadImg} = require("../services/cloudinaryServices")
 const Review = require("../models/ReviewModel");
 const fs = require("fs-extra");
 
+
 //ROUTE HANDLERS
 
 exports.getAllProducts = async (req, res) => {
@@ -114,6 +115,7 @@ exports.deleteProduct = async (req, res) => {
 
 //REVIEW SECTION
 exports.addReveiw = async(req,res)=>{
+
   const {rating, comment, userId} = req.body;
   //if(!rating || !description)return res.status(500).json({message:"Please Provide all Parameters"});
   
@@ -170,3 +172,4 @@ exports.getReview = async(req,res)=>{
       res.status(500).json({message:error})
     }
 }
+
