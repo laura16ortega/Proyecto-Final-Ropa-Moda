@@ -22,6 +22,7 @@ import type { mappedDbProductsType } from "../../redux/types/productTypes";
 import { logout } from "../../redux/slices/authSlice";
 import logo from "../../assets/images/logo.png";
 import styles from "./Navbar.module.css";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +34,12 @@ export const Navbar = () => {
     (total: number, item: mappedDbProductsType) => total + item.quantity,
     0
   );
+
+
+  const favItems = localStorage.getItem('fav') ? JSON.parse(localStorage.getItem("fav")!) : [];
+  const favAmount = favItems?.reduce(
+    (total: number, item: mappedDbProductsType) => total + item.quantity, 0);
+    console.log(favItems)
 
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -121,12 +128,16 @@ export const Navbar = () => {
                   <PersonIcon />
                 </IconButton>
                 <IconButton
+                  component={NavLink}
+                  to='/favoritos'
                   size="large"
                   edge="start"
                   color="inherit"
                   aria-label="logo"
                 >
-                  <SettingsApplicationsIcon />
+                  <Badge badgeContent={favAmount} color="warning" max={99}>
+                  <FavoriteBorderIcon />
+                  </Badge>
                 </IconButton>
               </>
             ) : (

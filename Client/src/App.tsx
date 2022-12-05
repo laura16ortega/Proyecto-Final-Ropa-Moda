@@ -17,6 +17,8 @@ import CreateForm from "./pages/CreateForm/CreateForm";
 import AllCards from "./components/AllCards/AllCards";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import BuyConfirmed from "./pages/BuyConfirmed/BuyConfirmed";
+import FavoriteProducts from './pages/FavoriteProducts/FavoriteProducts';
 
 function App() {
   useEffect(() => {
@@ -25,7 +27,12 @@ function App() {
       localStorage.setItem("cart", JSON.stringify([]));
     }
   }, []);
-
+  useEffect(() => {
+    const findFav = localStorage.getItem("fav");
+    if (!findFav) {
+      localStorage.setItem("fav", JSON.stringify([]));
+    }
+  },[])
   return (
     <div className="App">
       <Navbar />
@@ -44,6 +51,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/create" element={<CreateForm />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path='/confirmed' element={<BuyConfirmed />} />
+        <Route path='/favoritos' element={<FavoriteProducts /> } />
       </Routes>
 
       <Footer />
