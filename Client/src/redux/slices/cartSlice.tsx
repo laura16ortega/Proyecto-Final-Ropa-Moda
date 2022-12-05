@@ -24,7 +24,6 @@ export const cartSlice = createSlice({
             const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
             state.cart = cartProd
             const findOnCart = state.cart && state.cart.find(e => e._id === action.payload) // Buscar en localstorage, no funciona al recargar
-            console.log("cart from localstorage - reducer: ", cartProd)
             if (findOnCart) {
                 const newqty = findOnCart.quantity = findOnCart.quantity + 1
                 findOnCart.quantity = newqty
