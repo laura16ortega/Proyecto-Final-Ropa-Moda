@@ -40,11 +40,13 @@ const updatedUser = async(request,response)=>{
         try {
             const {fullName, email, phone_number} = user;
             user.email = email;
-            user.fullName = request.body.name || fullName;
+
+            user.fullName = request.body.fullName || fullName;
             user.phone_number = request.body.phone_number || phone_number;
     
             const updatedUser = await user.save();
-            console.log("Updated user", user)
+            console.log(user)
+
             response.status(200).json({
                 message:"User Update Succesfully",
                 _id: updatedUser._id,

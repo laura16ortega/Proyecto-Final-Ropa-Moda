@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 export default Profile;
 import * as React from "react";
 import {Avatar, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Grid, Box,Typography,} from "@mui/material"
-
+import { getUserInfo } from "../../redux/thunk-actions/authActions";
 import Button, { buttonClasses } from "@mui/material/Button";
 
 
@@ -20,29 +20,43 @@ type User = {
   email: string;
   isAdmin: boolean;
   userId: string;
+  phone_number: number;
 };
 
 function Profile(props: any) {
+  const dispatch = useAppDispatch()
   const theme = createTheme();
-  const { user }: any = useAppSelector((state) => state.auth);
+  const { user }= useAppSelector((state) => state.auth);
   const perfil = localStorage.getItem("userInfo");
+
+  
+  console.log(window.localStorage.getItem('jwt'))
 
   const [editName, setEditName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
-  const [input, setInput] = useState({});
+  const [input, setInput] = React.useState<any>({});
 
-
+  const token = window.localStorage.getItem('jwt')
+  const userId = user.userId
+/*   const obj1 = {
+    token:{token},
+    userId:{userId}
+  } */
 
   const submitHandler = async (event: React.FormEvent<HTMLButtonElement>) => {
     try{
       event.preventDefault()
-      console.log('holaa')
-      /* const target = event?.target as HTMLInputElement;
-      const modification = {[target.name]: input[target.name as keyof typeof input]} */
-      console.log(input)
-      /* const send = await axios.put('http://localhost:3001/api/updateuser', modification); */
+      const { data } = await axios.patch(`http://localhost:3001/api/v1/users/updateUser`, input, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      console.log(data)
+      
+      setEditName(false);
+      setEditEmail(false);
+      
+      return data;
     }catch(err){
       console.log(err)
     }
@@ -54,7 +68,8 @@ function Profile(props: any) {
     const target = event?.target as HTMLInputElement;
     setInput({
       ...input,
-      [target.name]: target.value
+      [`${target.name}`]: target.value,
+      userId: userId
     })
   };
 console.log(input)
@@ -100,9 +115,9 @@ console.log(input)
                     <TextField
                       margin="normal"
                       required
-                      id="name"
+                      id="fullName"
                       label="Nuevo nombre"
-                      name="name"
+                      name="fullName"
                       autoComplete="off"
                       type="text"
                       autoFocus
