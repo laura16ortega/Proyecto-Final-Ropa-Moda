@@ -29,6 +29,8 @@ const verifyToken = async(request,response, next)=>{
 };
 
 const verifyTokenAndAuthorization = (request,response,next)=>{
+    console.log(request.user)
+    //console.log(request.params)
     verifyToken(request,response,()=>{
         if(request.user.id === request.params.id || request.user.isAdmin){
             next();

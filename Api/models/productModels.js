@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Review = require("./ReviewModel");
+
 
 const productSchema = new mongoose.Schema({
   name: {
@@ -23,15 +25,26 @@ const productSchema = new mongoose.Schema({
   summary: {
     type: String,
     trim: true, //solo funciona para strings y remueve todos los espacios en blanco al inicio y al final del string
+
     required: [true, "A product must have a description"],
     minlength: [4, "A summary must have more or equal than 4 characters"],
   },
   description: {
     type: String,
-    trim: true,
+    trim: [true, "A product must have a description"],
   },
 
-  images: [String], //acá aclaro que para esta propiedad quiero un arreglo de strings
+  images: {
+      public_id:{
+        type:String,
+ 
+      },
+      secure_url:{
+        type:String,
+
+      }
+  }, //acá aclaro que para esta propiedad quiero un arreglo de strings
+
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -60,6 +73,12 @@ const productSchema = new mongoose.Schema({
   tallaCamiseta: [String],
   tallaPantalón: [String],
   marca: String,
+
+  reviews:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Review"
+  }],
+
 });
 const Product = mongoose.model("Product", productSchema);
 

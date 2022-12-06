@@ -92,6 +92,12 @@
   border-bottom: 3px solid white !important;
 }
 
+.text {
+  text-align: center;
+  color: white;
+  cursor: pointer;
+}
+
 @media (max-width: 650px) {
   .contactLeft {
     width: 100%;

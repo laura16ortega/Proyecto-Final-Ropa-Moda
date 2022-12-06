@@ -1,12 +1,15 @@
 import * as React from "react";
+import { useState, useEffect } from 'react'
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
+
 import { useAppDispatch } from "../../assets/hooks";
 import { filterSearch } from "../../redux/slices/testSlice";
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getAllProducts } from "../../redux/thunk-actions/testActions";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -50,13 +53,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchBar() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
-
   let dispatch = useAppDispatch();
 
+  useEffect(() => {
+    window.localStorage.setItem('input',search)
+    
+ },[search])
+
+
   const handleSubmit = (e: any) => {
+    if(location.pathname !== '/products'){    
+      const persistedInput: any = window.localStorage.getItem('input');
+
+      dispatch(filterSearch(persistedInput))
+      navigate('/products');
+      return
+    }else{
     e.preventDefault();
+    setSearch("");
     dispatch(filterSearch(search));
+
+    }
   };
 
   const handleChange = (e: any) => {

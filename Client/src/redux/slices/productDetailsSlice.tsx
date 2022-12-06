@@ -5,7 +5,7 @@ import { getProductDetail } from "../thunk-actions/productDetailsActions"
 type InitialState = {
     detailsLoading: boolean
     detailsError: null | string
-    productDetails: null | DbProductType
+    productDetails: DbProductType
 }
 
 const initialState = {
@@ -19,7 +19,7 @@ export const productDetailSlice = createSlice({
     initialState,
     reducers: {
         clearState: (state, action: PayloadAction<void>) => {
-            state.productDetails = null
+            // state.productDetails = {} <-- Errores de typescript, y creo que no se necesita limpiar el estado
         },
     },
     extraReducers(builder) {

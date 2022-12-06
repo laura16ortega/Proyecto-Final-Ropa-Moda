@@ -64,3 +64,55 @@ export const getAllProducts = createAsyncThunk<mappedDbProductsType[]>(
     }
   }
 );
+
+export const createProduct = createAsyncThunk(
+  "test/create",
+  async (bodyData: object, thunkApi) => {
+    try {
+      const { data } = await axios.post(`http://localhost:3001/api/v1/products`, bodyData);
+      console.log("Data post: ", data)
+      return data;
+    } catch (error: any) {
+      console.log("post product error: ", error)
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const editProduct = createAsyncThunk(
+  "product/edit",
+  async (bodyData, thunkApi) => { // pasar id del producto dentro del bodydata
+    console.log("body data edit sent: ", bodyData)
+     try {
+        const { data } = await axios.post("http://localhost:3001/api/v1/payment/stripe", bodyData)
+        return "Producto eliminado"
+     } catch (error: any) {
+        return thunkApi.rejectWithValue(error.message)
+     }
+  }
+)
+
+export const deleteProduct = createAsyncThunk(
+  "product/edit", 
+  async (productId: string, thunkApi) => {
+    console.log("productId: ", productId)
+     try {
+        const { data } = await axios.delete(`http://localhost:3001/api/v1/products/${productId}`)
+        return data // json({ status: "success", data: null }); // ya no enviamos datos sino que enviamos null
+     } catch (error: any) {
+        return thunkApi.rejectWithValue(error.message)
+     }
+  }
+)
+
+export const getCheckoutSessions = createAsyncThunk(
+  "test/getStripeData",
+  async(data, thunkApi) => {
+    try {
+      const { data } = await axios.get("http://localhost:3001/api/v1/payment/stripe")
+      return data
+    } catch (e) {
+      return thunkApi.rejectWithValue(e)
+    }
+  }
+)

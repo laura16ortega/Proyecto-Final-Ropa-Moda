@@ -82,6 +82,7 @@
     margin-top: 1rem !important;
     background-color: #FFFFFF !important;
     color: black !important;
+    margin-bottom: 1rem !important
 }
 
 .paypalButton span {
@@ -92,3 +93,29 @@
     font-size: 1.5rem !important;
     text-transform: uppercase;
 }
+
+.loader {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+  }
+  .loader {
+    content: " ";
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 3px solid black;
+    border-color: black transparent black transparent;
+    animation: loader 1.2s linear infinite;
+  }
+  @keyframes loader {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

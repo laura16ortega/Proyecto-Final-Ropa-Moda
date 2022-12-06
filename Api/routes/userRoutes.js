@@ -1,13 +1,16 @@
 const router = require("express").Router();
-const { getAllUsers, getUser, deleteUser, updatedUser,updatePassword } = require("../controllers/userController");
-const { verifyTokenAndAdmin, verifyTokenAndAuthorization } = require("../services/JwtServices");
+const { getAllUsers, getUser, deleteUser, updatedUser,updatePassword, forgotPassword, resetPassword } = require("../controllers/userController");
+const { verifyTokenAndAdmin, verifyTokenAndAuthorization, verifyToken } = require("../services/JwtServices");
+
 
 
 router.get("/", verifyTokenAndAdmin, getAllUsers);
 router.get("/:id",verifyTokenAndAdmin, getUser);
+router.post("/forgotPassword", forgotPassword)
 router.delete("/find/:id", verifyTokenAndAuthorization, deleteUser);
-router.patch("/patch/:id", verifyTokenAndAuthorization, updatedUser);
-router.put("/password/update", verifyTokenAndAuthorization, updatePassword)
+router.patch("/updateUser", verifyToken, updatedUser);
+router.patch("/password/update", verifyTokenAndAuthorization, updatePassword)
+router.put("/resetPassword/:resetToken", resetPassword)
 
 
 

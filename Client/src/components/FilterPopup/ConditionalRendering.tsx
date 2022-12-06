@@ -41,7 +41,7 @@ const ConditionalRendering = ({ filterDetails, filters, setFilters }: Filter) =>
     }
 
     const open = Boolean(anchorEl);
-
+    
     if (filters.category.includes(filterDetails.nameValue)) {
         return (
             <Box className={s.container}>
@@ -81,7 +81,6 @@ const ConditionalRendering = ({ filterDetails, filters, setFilters }: Filter) =>
     } else {
         return (
             <Box>
-
             </Box>
         )
     }
