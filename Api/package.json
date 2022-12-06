@@ -9,7 +9,11 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+
+    "express-async-handler": "^1.2.0",
+
     "express-fileupload": "^1.4.0",
+
     "express-openid-connect": "^2.10.0",
     "fs-extra": "^11.1.0",
     "jsonwebtoken": "^8.5.1",
