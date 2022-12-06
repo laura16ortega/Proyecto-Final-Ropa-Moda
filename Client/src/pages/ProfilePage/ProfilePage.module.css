@@ -1,0 +1,39 @@
+.customContainer {
+    width: 100%;
+    margin-left: auto;
+    box-sizing: border-box;
+    margin-right: auto;
+    display: block;
+}
+
+.title {
+    font-size: 2.4vw !important;
+    font-family: "poppins";
+    font-weight: 900 !important;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+
+@media (min-width: 1320px) {
+    .customContainer {
+        max-width: 1320px;
+    }
+}
+
+@media (max-width: 900px) {
+        .title {
+        font-size: 32px !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+@media (min-width: 600px) {
+    .customContainer {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    .agregarAlgo {
+        margin-bottom: 30px !important;
+    }
+}
