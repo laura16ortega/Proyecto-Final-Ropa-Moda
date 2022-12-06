@@ -57,7 +57,9 @@ export default function CreateForm() {
     multiple: false,
   };
 
-  const widgetDisplay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const widgetDisplay = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     let myWidget = window.cloudinary.createUploadWidget(
       widgetConfig,
@@ -90,21 +92,19 @@ export default function CreateForm() {
     setSizeArr([...sizeArr, e.target.name]);
   };
 
-  const handleimage = (e:any) =>{
-      const files = Array.from(e.target.files);
-      setImage([])
-      files.forEach((file:any)=>{
-        const reader = new FileReader();
-        reader.onload =()=>{
-          if(reader.readyState === 2){
-            setImage((old)=>[...old, reader.result]);
-          }
-        };
-        reader.readAsDataURL(file)
-      })
-  }
-
-
+  const handleimage = (e: any) => {
+    const files = Array.from(e.target.files);
+    setImage([]);
+    files.forEach((file: any) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImage((old) => [...old, reader.result]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
 
   return (
     <Box sx={{ backgroundColor: "#3e3e3e" }}>
@@ -158,7 +158,7 @@ export default function CreateForm() {
                 } else {
                   data.tallaCamiseta = sizeArr;
                 }
-                console.log(data)
+                console.log(data);
                 //let allData = { ...data, images: [data.images] };
                 //console.log(allData);
                 //dispatch(createProduct(data));
@@ -244,18 +244,6 @@ export default function CreateForm() {
                   <MenuItem value="Pantalones">Pantalon</MenuItem>
                   <MenuItem value="Pantalones">Pantalon</MenuItem>
                 </Select>
-                <TextField
-                  {...register("images")}
-                  key={4}
-                  label="Imagen"
-                  className={styles.inputInfo}
-                  name="image"
-                  id="filled-basic"
-                  variant="filled"
-                  color="secondary"
-                  type="file"
-                  focused
-                />
                 <Button
                   sx={{
                     marginTop: "3rem",
@@ -330,7 +318,7 @@ export default function CreateForm() {
                     />
                   </FormGroup>
                 )}
-                <input type="file" onChange={handleimage}/>
+
                 <Button
                   type="submit"
                   variant="contained"
