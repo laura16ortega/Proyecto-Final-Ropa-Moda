@@ -65,8 +65,8 @@ const Card = ({ product }: productProps) => {
                 src={
                   !product.images
                     ? ""
-                    : product.images.url
-                    ? product.images.url
+                    : product.images.public_id
+                    ? product.images.public_id
                     : product.images[0]
                 }
                 alt={`${product.name} not found`}
