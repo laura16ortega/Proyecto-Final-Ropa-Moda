@@ -27,6 +27,7 @@ import { useCreateForm } from "../../assets/hooks/useCreateForm";
 import { tallasCamiseta, tallasPantalon } from "./create-form-types";
 import { useAppDispatch } from "../../assets/hooks";
 import { createProduct } from "../../redux/thunk-actions/testActions";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateForm() {
   const { register, handleSubmit, watch, setValue, formState } =
@@ -65,7 +66,6 @@ export default function CreateForm() {
       widgetConfig,
       (error: any, result: any) => {
         if (!error && result && result.event === "success") {
-          console.log(result);
           setFileValue({
             image: result.info.url,
           });
@@ -92,20 +92,9 @@ export default function CreateForm() {
     setSizeArr([...sizeArr, e.target.name]);
   };
 
-  const handleimage = (e: any) => {
-    const files = Array.from(e.target.files);
-    setImage([]);
-    files.forEach((file: any) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImage((old) => [...old, reader.result]);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-  };
+  let navigate = useNavigate();
 
+  console.log(formState.errors);
   return (
     <Box sx={{ backgroundColor: "#3e3e3e" }}>
       <Box className={styles.contactHeader}>
@@ -158,13 +147,13 @@ export default function CreateForm() {
                 } else {
                   data.tallaCamiseta = sizeArr;
                 }
-                console.log(data);
                 //let allData = { ...data, images: [data.images] };
                 //console.log(allData);
                 //dispatch(createProduct(data));
                 let allData = { ...data, images: [fileValue.image] };
-                console.log(allData);
+
                 dispatch(createProduct(allData));
+                navigate("/products");
               })}
             >
               <FormControl>
@@ -224,8 +213,6 @@ export default function CreateForm() {
                   <InputLabel id="label">Genero</InputLabel>
                   <MenuItem value="Hombre">Hombre</MenuItem>
                   <MenuItem value="Mujer">Mujer</MenuItem>
-                  <MenuItem value="Hombre">Hombre</MenuItem>
-                  <MenuItem value="Mujer">Mujer</MenuItem>
                   <MenuItem value="Unisex">Unisex</MenuItem>
                 </Select>
                 <Select
@@ -242,8 +229,8 @@ export default function CreateForm() {
                   <InputLabel id="label">Categoria</InputLabel>
                   <MenuItem value="Camiseta">Camiseta</MenuItem>
                   <MenuItem value="Pantalones">Pantalon</MenuItem>
-                  <MenuItem value="Pantalones">Pantalon</MenuItem>
                 </Select>
+
                 <Button
                   sx={{
                     marginTop: "3rem",
@@ -254,6 +241,7 @@ export default function CreateForm() {
                 >
                   Subir Imagen...
                 </Button>
+
                 <TextField
                   {...register("stock")}
                   key={6}

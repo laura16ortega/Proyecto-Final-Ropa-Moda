@@ -1,8 +1,6 @@
 const Product = require("./../models/productModels");
-const {cloudinaryUploadImg} = require("../services/cloudinaryServices")
+const cloudinary = require("../services/cloudinaryServices");
 const Review = require("../models/ReviewModel");
-const fs = require("fs-extra");
-
 
 //ROUTE HANDLERS
 
@@ -48,13 +46,12 @@ exports.createProduct = async (req, res) => {
       tallaPantalon,
       marca,
       gender,
-      summary
+      summary,
     } = req.body;
-    /*if (!name || !price || !images || !marca || !category) {
+    if (!name || !price || !images || !marca || !category) {
       return res.status(500).json({ message: "Please Provide all Parameters" });
-    }*/
+    }
 
-    
     const newProduct = await Product.create({
       name,
       description,
@@ -63,28 +60,18 @@ exports.createProduct = async (req, res) => {
       stock,
       tallaCamiseta: tallaCamiseta ? tallaCamiseta : [],
       tallaPantalon: tallaPantalon ? tallaPantalon : [],
+      images: {
+        public_id: images[0],
+        url: images[0],
+      },
       gender,
-      summary
+      summary,
     });
-
-    console.log(req.files)
-    if(req.files?.images){
-      const result = await cloudinaryUploadImg(req.files.images.tempFilePath)
-      newProduct.images = {
-        public_id: result.public_id,
-        secure_url: result.secure_url
-      }
-      await fs.unlink(req.files.images.tempFilePath)
-    }
-
-    await newProduct.save()
-    
     res.status(201).json({
       status: "success",
       data: { product: newProduct },
     });
   } catch (err) {
-    console.log(err)
     res.status(400).json({ status: "fail,", message: err });
   }
 };
@@ -114,16 +101,15 @@ exports.deleteProduct = async (req, res) => {
 };
 
 //REVIEW SECTION
-exports.addReveiw = async(req,res)=>{
-
-  const {rating, comment, userId} = req.body;
+exports.addReveiw = async (req, res) => {
+  const { rating, comment, userId } = req.body;
   //if(!rating || !description)return res.status(500).json({message:"Please Provide all Parameters"});
-  
+
   try {
-  const product = await Product.findById(req.params.id);
-  //if(!product) return res.stauts(400).json({message:"Product not found"});
-    
-  /*if(product){
+    const product = await Product.findById(req.params.id);
+    //if(!product) return res.stauts(400).json({message:"Product not found"});
+
+    /*if(product){
       console.log(product)
       if(product.reveiws?.find((x)=>x.userId === req.userId)){
         return res.stauts(400).json({message:"Your Already Submitted a review"})
@@ -134,42 +120,38 @@ exports.addReveiw = async(req,res)=>{
       rating,
       comment,
       userId,
-      productId: req.params.id
-    }
+      productId: req.params.id,
+    };
     //console.log(product.reviews.reduce((a,c)=>c.ratingsAverage + a,0)/product.reviews.length)
     const createdReview = await Review.create(review);
-    product.reviews = [...product.reviews, createdReview._id]
+    product.reviews = [...product.reviews, createdReview._id];
     product.ratingsQuantity = product.reviews.length;
     await product.save();
-    return res.send({message:"Review Created Succesfully"})
+    return res.send({ message: "Review Created Succesfully" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-
-exports.getReview = async(req,res)=>{
+exports.getReview = async (req, res) => {
   //debo encontrar review por id de parametro
   //modificar data para devolver solo el rating, name, comment y la imagen
-    try {
-      const {id} = req.params;
-      const reviews = await Review.findById(id).populate("userId")
-      if(!reviews){
-        return res.status(404).json({message:"Review Not Found"})
-      }
-      console.log(reviews)
-      const review = {
-        rating: reviews.rating,
-        name: reviews.userId.fullName,
-        comment: reviews.comment,
-        picture:"",
-        date: reviews.createdAt
-
-      }
-      res.status(200).json(review)
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({message:error})
+  try {
+    const { id } = req.params;
+    const reviews = await Review.findById(id).populate("userId");
+    if (!reviews) {
+      return res.status(404).json({ message: "Review Not Found" });
     }
-}
-
+    const review = {
+      rating: reviews.rating,
+      name: reviews.userId.fullName,
+      comment: reviews.comment,
+      picture: "",
+      date: reviews.createdAt,
+    };
+    res.status(200).json(review);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+  }
+};
