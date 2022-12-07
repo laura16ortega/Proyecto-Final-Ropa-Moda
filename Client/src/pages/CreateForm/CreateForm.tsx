@@ -27,6 +27,7 @@ import { useCreateForm } from "../../assets/hooks/useCreateForm";
 import { tallasCamiseta, tallasPantalon } from "./create-form-types";
 import { useAppDispatch } from "../../assets/hooks";
 import { createProduct } from "../../redux/thunk-actions/testActions";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateForm() {
   const { register, handleSubmit, watch, setValue, formState } =
@@ -91,6 +92,8 @@ export default function CreateForm() {
     setSizeArr([...sizeArr, e.target.name]);
   };
 
+  let navigate = useNavigate();
+
   console.log(formState.errors);
   return (
     <Box sx={{ backgroundColor: "#3e3e3e" }}>
@@ -149,8 +152,8 @@ export default function CreateForm() {
                 //dispatch(createProduct(data));
                 let allData = { ...data, images: [fileValue.image] };
 
-                console.log(allData, "alldata");
                 dispatch(createProduct(allData));
+                navigate("/products");
               })}
             >
               <FormControl>
