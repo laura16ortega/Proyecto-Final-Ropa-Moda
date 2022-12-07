@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getAllProducts } from "../thunk-actions/testActions";
+import { deleteProduct, getAllProducts } from "../thunk-actions/testActions";
 import { mappedDbProductsType } from "../types/productTypes"
 
 type InitialState = {
@@ -7,6 +7,7 @@ type InitialState = {
   error: null | string;
   allData: mappedDbProductsType[];
   dataBackup: mappedDbProductsType[];
+  deleteLoading: boolean
 };
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
   error: null,
   allData: [],
   dataBackup: [],
+  deleteLoading: false
 } as InitialState;
 
 type FilterTypedState = {
@@ -95,6 +97,12 @@ export const testSlice = createSlice({
       .addCase(getAllProducts.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(deleteProduct.pending, (state, action) => {
+        state.deleteLoading = true
+      })
+      .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<string>) => {
+        state.deleteLoading = false
       });
   },
 });
