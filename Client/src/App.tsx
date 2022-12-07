@@ -20,6 +20,8 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import LoginButton from "./components/LoginButton/LoginButton";
 import BuyConfirmed from "./pages/BuyConfirmed/BuyConfirmed";
 import FavoriteProducts from './pages/FavoriteProducts/FavoriteProducts';
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import ProductsDashboard from "./components/ProductsDashboard/ProductsDashboard";
 
 function App() {
   useEffect(() => {
@@ -54,6 +56,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path='/confirmed' element={<BuyConfirmed />} />
         <Route path='/favoritos' element={<FavoriteProducts /> } />
+        <Route path="/dashboard/products" element={<ProductsDashboard/>}/>
       </Routes>
       <Footer />
     </div>
