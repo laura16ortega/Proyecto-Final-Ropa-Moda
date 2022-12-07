@@ -24,7 +24,9 @@ export const authSlice = createSlice({
             state
         ) =>{
             localStorage.removeItem("jwt");
-            localStorage.removeItem("User")
+            localStorage.removeItem("User");
+            localStorage.removeItem("fav");
+            localStorage.removeItem("cart");
             state.token = ""
         }
     },

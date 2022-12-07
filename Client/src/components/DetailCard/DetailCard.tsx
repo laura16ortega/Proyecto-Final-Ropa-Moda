@@ -47,11 +47,7 @@ export default function DetailCard() {
       dispatch(decreaseCartQuantity(productId));
    };
 
-   const cartProd: mappedDbProductsType[] = JSON.parse(
-      localStorage.getItem("cart") || ""
-   );
-
-   const foundOnCart = cartProd.find((e) => e._id === productDetails?._id);
+   const foundOnCart = cart?.find((e) => e._id === productDetails?._id);
 
    useEffect(() => {
       dispatch(getProductDetail(id))

@@ -23,33 +23,20 @@ const FavoriteProducts = () => {
   const { displayNotification } = useNotification();
 
   const dispatch = useAppDispatch();
-  const { fav, favLoading, favError, checkoutLoad } = useAppSelector(
-    (state) => state.fav
-  );
+  const { fav, favLoading, favError, checkoutLoad } = useAppSelector((state) => state.fav);
   const { allData, loading } = useAppSelector((state) => state.data);
 
-  const favProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('fav') || "")
-  const foundOnCart = favProd.find((e) => e.name === e.name);
-  const userToken: string = localStorage.getItem("jwt") || ""
-  
   useEffect(() => {
     if(lastDeleted.hasOwnProperty('name') && lastDeleted.hasOwnProperty('id')){
       dispatch(removefavItem(lastDeleted.id));
       displayNotification({ message: `Has eliminado ${lastDeleted.name} de tus favoritos `, type: "info", timeout: 10000 });
       setLastDeleted({});
     }
-
   },[lastDeleted])
 
-  useEffect(() => {
-
-  },[])
-
-
-  const itemRes = favProd?.reduce((total, item) => total + item.quantity, 0);
+  const itemRes = fav?.reduce((total, item) => total + item.quantity, 0);
 
   const handleDelete = (productId: string, name: string) => {
-   
     setLastDeleted({name:`${name}`, id:`${productId}`})
   };
 
@@ -66,7 +53,7 @@ const FavoriteProducts = () => {
         <h1>CartLoading</h1>
       ) : favError ? (
         <h1>FavError:{favError}</h1>
-      ) : !favProd?.length ? (
+      ) : !fav?.length ? (
         <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
           <Box sx={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
@@ -108,7 +95,7 @@ const FavoriteProducts = () => {
                     </Typography>
                   </Box>
                   <Box sx={{ marginTop: "2.5rem" }}>
-                    {favProd?.map((e, i) => (
+                    {fav?.map((e, i) => (
                       
                       <Box key={i + 1} className={s.productsContainer}>
                         <Box

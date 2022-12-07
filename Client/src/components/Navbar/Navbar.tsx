@@ -27,20 +27,11 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 export const Navbar = () => {
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.cart); // Actualiza numeros del carro
-  const cartItems = localStorage.getItem("cart")
-    ? JSON.parse(localStorage.getItem("cart")!)
-    : [];
-  const itemRes = cartItems?.reduce(
-    (total: number, item: mappedDbProductsType) => total + item.quantity,
-    0
-  );
+  const { fav } = useAppSelector((state) => state.fav); // Actualiza numeros del carro
 
-
-  const favItems = localStorage.getItem('fav') ? JSON.parse(localStorage.getItem("fav")!) : [];
-  const favAmount = favItems?.reduce(
-    (total: number, item: mappedDbProductsType) => total + item.quantity, 0);
-    console.log(favItems)
-
+  const itemRes = cart?.reduce((total: number, item: mappedDbProductsType) => total + item.quantity,0);
+  const favAmount = fav?.reduce((total: number, item: mappedDbProductsType) => total + item.quantity, 0);
+ 
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     dispatch(logout());
@@ -73,19 +64,21 @@ export const Navbar = () => {
             >
               Inicio
             </Button>
-            <Button
-              component={NavLink}
-              to="/create"
-              sx={{
-                textTransform: "none",
-                "&.active": {
-                  background: "black",
-                },
-              }}
-              color="inherit"
-            >
-              Crea tu prenda
-            </Button>
+            {localStorage.getItem("jwt") ? (
+              <Button
+                component={NavLink}
+                to="/create"
+                sx={{
+                  textTransform: "none",
+                  "&.active": {
+                    background: "black",
+                  },
+                }}
+                color="inherit"
+              >
+                Crea tu prenda
+              </Button>
+            ) : (<></>)}
             {!localStorage.getItem("jwt") ? (
               /*                         <Button 
                         component={NavLink}
