@@ -1,0 +1,27 @@
+.searchbar fieldset {
+    border: none;
+}
+
+.searchbar input {
+    background-color: #f4f5f9;
+    border: 2px solid #f4f5f9;
+    border-radius: 4px;
+}
+
+.selector {
+    width: 100% !important;
+}
+
+.selector fieldset {
+    border: none;
+}
+
+.selector div[role="button"] {
+    background-color: #f4f5f9;
+}
+
+@media (max-width: 900px) {
+    .searchbar {
+        margin-bottom: 1rem !important;
+    }
+}

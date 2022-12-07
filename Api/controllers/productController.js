@@ -9,12 +9,22 @@ const cloudinary = require("../services/cloudinaryServices");
 exports.getAllProducts = async (req, res) => {
   //La función callback se llama Route Handler
   try {
-    //EXECUTE THE QUERY
-    const keyword = req.query.keyword
-      ? { name: { $regex: req.query.keyword, $options: "i" } }
-      : {};
-    const products = await Product.find({ ...keyword }); //esto va a devolver una promesa, por eso usamos await
+    // const keyword = req.query.keyword
+    //   ? { name: { $regex: req.query.keyword, $options: "i" } }
+    //   : {};
+    //BUILD QUERY
+    //1)Filtering
+    const queryObj = { ...req.query };
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => delete queryObj[el]);
 
+    //2)Advanced filtering
+    let queryStr = JSON.stringify(queryObj); //convertimos queryObj en un string para poder trabajarlo
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    const query = Product.find(JSON.parse(queryStr)); //esto va a devolver una promesa, por eso usamos await y por eso podemos encadenar métodos
+
+    //EXECUTE THE QUERY
+    const products = await query; //le hacemos el await a la variable query para poder encadenar los métidos como sort, limit, page
     //SEND RESPONSE
     res.status(203).json({
       status: "success",
@@ -154,17 +164,3 @@ exports.getReview = async (req, res) => {
     if (!reviews) {
       return res.status(404).json({ message: "Review Not Found" });
     }
-    console.log(reviews);
-    const review = {
-      rating: reviews.rating,
-      name: reviews.userId.fullName,
-      comment: reviews.comment,
-      picture: "",
-      date: reviews.createdAt,
-    };
-    res.status(200).json(review);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
-  }
-};
