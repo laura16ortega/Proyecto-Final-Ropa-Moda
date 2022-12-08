@@ -48,7 +48,7 @@ export const Navbar = () => {
   );
   console.log(favItems);
 
-  const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLogout = (event: any) => {
     event.preventDefault();
     dispatch(logout());
     setTimeout(() => {
@@ -309,7 +309,7 @@ export const Navbar = () => {
                         <LoginIcon />
                       </IconButton>
                     </ListItemIcon>
-                    <ListItemText primary="Login" />
+                    <ListItemText primary="Ingresar" />
                   </ListItemButton>
                 </ListItem>
               ) : (
@@ -338,7 +338,7 @@ export const Navbar = () => {
               </ListItem>
               {window.localStorage.getItem("jwt") ? (
                 <ListItem disablePadding>
-                  <ListItemButton onClick={handleLogout}>
+                  <ListItemButton onClick={(e) => handleLogout(e)}>
                     <ListItemIcon>
                       <IconButton
                         size="large"
