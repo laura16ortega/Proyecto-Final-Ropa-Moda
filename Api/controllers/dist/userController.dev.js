@@ -122,21 +122,22 @@ var updatedUser = function updatedUser(request, response) {
 
         case 2:
           user = _context3.sent;
+          console.log("User to update: ", user);
 
           if (!user) {
-            _context3.next = 21;
+            _context3.next = 22;
             break;
           }
 
-          _context3.prev = 4;
+          _context3.prev = 5;
           fullName = user.fullName, email = user.email, phone_number = user.phone_number;
           user.email = email;
           user.fullName = request.body.fullName || fullName;
           user.phone_number = request.body.phone_number || phone_number;
-          _context3.next = 11;
+          _context3.next = 12;
           return regeneratorRuntime.awrap(user.save());
 
-        case 11:
+        case 12:
           _updatedUser = _context3.sent;
           console.log(user);
           response.status(200).json({
@@ -146,31 +147,31 @@ var updatedUser = function updatedUser(request, response) {
             email: _updatedUser.email,
             phone_number: _updatedUser.phone_number
           });
-          _context3.next = 19;
+          _context3.next = 20;
           break;
 
-        case 16:
-          _context3.prev = 16;
-          _context3.t0 = _context3["catch"](4);
+        case 17:
+          _context3.prev = 17;
+          _context3.t0 = _context3["catch"](5);
           response.status(400).json({
             message: _context3.t0
           });
 
-        case 19:
-          _context3.next = 22;
+        case 20:
+          _context3.next = 23;
           break;
 
-        case 21:
+        case 22:
           response.status(400).json({
             message: "No user"
           });
 
-        case 22:
+        case 23:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[4, 16]]);
+  }, null, null, [[5, 17]]);
 }; //Delete a User
 
 
