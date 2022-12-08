@@ -23,8 +23,13 @@ import { logout } from "../../redux/slices/authSlice";
 import logo from "../../assets/images/logo.png";
 import styles from "./Navbar.module.css";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useAuth0 } from '@auth0/auth0-react';
+import LogoutButton from "../LogoutButton/LogoutButton";
+
 
 export const Navbar = () => {
+
+  const { isAuthenticated } = useAuth0();
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.cart); // Actualiza numeros del carro
   const cartItems = localStorage.getItem("cart")
@@ -34,7 +39,7 @@ export const Navbar = () => {
     (total: number, item: mappedDbProductsType) => total + item.quantity,
     0
   );
-
+    console.log(isAuthenticated)
 
   const favItems = localStorage.getItem('fav') ? JSON.parse(localStorage.getItem("fav")!) : [];
   const favAmount = favItems?.reduce(
@@ -53,9 +58,6 @@ export const Navbar = () => {
       <AppBar position="static">
         <Toolbar>
           <Search />
-          {/*                 <IconButton size='large' edge='start' color='inherit' aria-label='logo'>
-                        <CheckroomIcon />
-                    </IconButton> */}
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             <img src={logo} alt="logo" className={styles.logo} />
           </Typography>
@@ -114,7 +116,7 @@ export const Navbar = () => {
               <div></div>
             )}
 
-            {window.localStorage.getItem("jwt") ? (
+            {window.localStorage.getItem("jwt") || isAuthenticated ? (
               <>
                 <IconButton
                   size="large"
@@ -156,20 +158,54 @@ export const Navbar = () => {
               </Badge>
             </IconButton>
 
-            {window.localStorage.getItem("jwt") ? (
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="logo"
-                onClick={handleLogout}
-              >
-                <LogoutIcon />
-              </IconButton>
-            ) : (
-              <div></div>
-            )}
-          </Stack>
+         
+{/*               {!isAuthenticated && !window.localStorage.getItem('jwt') ? (<div> </div>) : (
+                `${ isAuthenticated || !window.localStorage.getItem("jwt") == null ? (
+                  `${isAuthenticated ? (<IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="logo"
+                    onClick={handleLogout}
+                  >
+                    <LogoutIcon />
+                  </IconButton>) : (<div></div>)
+                                }`
+                                
+                              ) : (
+                                <div>
+                                  <LogoutButton />
+                                </div>
+                              )}`
+              )
+              } */}
+
+              {isAuthenticated ? (                                <div>
+                                  <LogoutButton />
+                                </div>) 
+                                : 
+                                window.localStorage.getItem('jwt') ? 
+                  (
+                    <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="logo"
+                    onClick={handleLogout}
+                  >
+                    <LogoutIcon />
+                  </IconButton>
+
+                   )
+                  : 
+                  (
+                  <div>
+                 </div>
+                  )
+                  
+                  }
+
+                      </Stack>
         </Toolbar>
       </AppBar>
     </div>
