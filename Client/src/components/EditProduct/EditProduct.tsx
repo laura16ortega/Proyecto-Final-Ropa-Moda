@@ -47,10 +47,17 @@ const EditProduct = () => {
     })
 
     const { id } = useParams<keyof ParamTypes>() as ParamTypes;
+    const { updateLoading } = useAppSelector(state => state.data)
 
     useEffect(() => {
         dispatch(getProductDetail(id))
     }, [])
+
+    useEffect(() => {
+        if (updateLoading) {
+            window.location.href = "/dashboard/products"
+        }
+    }, [updateLoading])
 
     const { detailsLoading, productDetails } = useAppSelector(state => state.productDetails)
 

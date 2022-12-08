@@ -102,12 +102,12 @@ export const editProduct = createAsyncThunk(
   "product/edit",
   async (bodyData: SentEdit, thunkApi) => {
      try {
-        const { data } = await axios.post(
+        const { data } = await axios.patch(
           //{/*`${BACKEND_URL}/api/v1/payment/stripe`*/}
-          "http://localhost:3001/api/v1/payment/stripe", 
+          `http://localhost:3001/api/v1/products/${bodyData.productId}`, 
           bodyData
       )
-        return "Producto eliminado"
+        return "Producto actualizado"
      } catch (error: any) {
         return thunkApi.rejectWithValue(error.message)
      }
@@ -115,7 +115,7 @@ export const editProduct = createAsyncThunk(
 )
 
 export const deleteProduct = createAsyncThunk(
-  "product/edit", 
+  "product/delete", 
   async (productId: string, thunkApi) => {
     console.log("productId: ", productId)
      try {
