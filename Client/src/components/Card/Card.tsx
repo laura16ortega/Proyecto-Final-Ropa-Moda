@@ -27,9 +27,9 @@ const Card = ({ product }: productProps) => {
   const { cartLoading, cart } = useAppSelector((state) => state.cart);
   const { favLoading, fav } = useAppSelector((state) => state.fav);
   const { token } = useAppSelector((state) => state.auth);
-  const foundOnCart = cart?.find(({name})=> name === product.name)
-  const foundOnFav  = fav?.find(({name})=> name === product.name)
-  
+  const foundOnCart = cart?.find(({ name }) => name === product.name);
+  const foundOnFav = fav?.find(({ name }) => name === product.name);
+
   const handleCart = (productId: string) => {
     dispatch(addProductToCart(productId));
   };
@@ -40,7 +40,6 @@ const Card = ({ product }: productProps) => {
   const handleRemoveFav = (productId: string) => {
     dispatch(removefavItem(productId));
   };
-
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -54,6 +53,32 @@ const Card = ({ product }: productProps) => {
             flex: 1,
           }}
         >
+          {token ? (
+            !foundOnFav ? (
+              <Button
+                disableElevation
+                size="small"
+                className={s.addButtonFav}
+                onClick={() => handleFav(product._id)}
+                disabled={favLoading}
+                sx={{ position: "absolute" }}
+              >
+                {favLoading ? "♥" : <FavoriteBorderIcon />}
+              </Button>
+            ) : (
+              <Button
+                disableElevation
+                size="small"
+                className={s.addButtonFav}
+                onClick={() => handleRemoveFav(product._id)}
+                sx={{ position: "absolute" }}
+              >
+                <FavoriteIcon style={{ fill: "red" }} />
+              </Button>
+            )
+          ) : (
+            <></>
+          )}
           <Link href={`/products/${product._id}`}>
             <Box>
               <img
@@ -103,50 +128,26 @@ const Card = ({ product }: productProps) => {
                 marginTop: "1rem",
               }}
             >
-             {!foundOnCart ? (
+              {!foundOnCart ? (
                 <Button
-                variant="contained"
-                disableElevation
-                size="small"
-                className={s.addButton}
-                onClick={() => handleCart(product._id)}
-                disabled={cartLoading}
-              >
-                {cartLoading ? "Agregando..." : "Agregar al carro"}
-              </Button>
-              ): (
-                <div style={{ marginLeft: "2rem" }}>
+                  variant="contained"
+                  disableElevation
+                  size="small"
+                  className={s.addButton}
+                  onClick={() => handleCart(product._id)}
+                  disabled={cartLoading}
+                >
+                  {cartLoading ? "Agregando..." : "Agregar al carro"}
+                </Button>
+              ) : (
+                <div>
                   <IncreaseCartButton
                     id={product._id}
                     quantity={foundOnCart.quantity}
                   />
                 </div>
               )}
-            </Box>   
-              {token ? (
-                !foundOnFav ? (
-                  <Button
-                    disableElevation
-                    size="small"
-                    className={s.addButtonFav}
-                    onClick={() => handleFav(product._id)}
-                    disabled={favLoading}
-                  >
-                    {favLoading ? "♥" : <FavoriteBorderIcon />}
-                  </Button>
-                ) : (
-                  <Button
-                    disableElevation
-                    size="small"
-                    className={s.addButtonFav}
-                    onClick={() => handleRemoveFav(product._id)}
-                    >
-                    <FavoriteIcon style={{ fill: "red" }} />
-                  </Button>
-                )
-              ) : (
-                <></>
-              ) }   
+            </Box>
           </Box>
         </Box>
       </Paper>

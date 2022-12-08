@@ -11,6 +11,10 @@ import {
   Collapse,
   Link,
   Skeleton,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControl,
 } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../assets/hooks";
 import { useParams } from "react-router-dom";
@@ -67,7 +71,7 @@ export default function DetailCard() {
     dispatch(decreaseCartQuantity(productId));
   };
 
-   const foundOnCart = cart?.find((e) => e._id === productDetails?._id);
+  const foundOnCart = cart?.find((e) => e._id === productDetails?._id);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
@@ -192,7 +196,7 @@ export default function DetailCard() {
                       {productDetails?.stock > 0 ? (
                         <Typography variant="subtitle1">
                           <CircleIcon
-                            sx={{ fontSize: 18, color: "green" }}
+                            sx={{ fontSize: 15, color: "green" }}
                           ></CircleIcon>{" "}
                           Disponible
                         </Typography>
@@ -211,93 +215,37 @@ export default function DetailCard() {
                         fontFamily: "poppins",
                         fontWeight: "800",
                         width: "100%",
-                        fontSize: "5rem",
+                        fontSize: "3rem",
                       }}
                     >
                       {productDetails?.name}
                     </Typography>
-                    <Typography variant="h5">
-                      {`${productDetails?.stock} en stock`}
-                    </Typography>
                   </Box>
-                  <Box sx={{ marginBottom: "1.4rem" }}>
+                  <Box sx={{ marginBottom: "1rem" }}>
                     <Box
                       sx={{
-                        paddingTop: "1rem",
                         display: "flex",
                         alignItems: "center",
                       }}
                     >
                       <Typography
                         variant="h4"
-                        sx={{ fontFamily: "poppins", fontWeight: "800" }}
+                        sx={{
+                          fontFamily: "poppins",
+                          fontWeight: "800",
+                          color: "green",
+                          marginTop: "10px",
+                        }}
                       >
                         {`$${productDetails?.price}`}
                       </Typography>
                     </Box>
                   </Box>
-                  <Box>
-                    {!foundOnCart ? (
-                      <Button
-                        variant="contained"
-                        disableElevation
-                        fullWidth
-                        size="large"
-                        className={s.addButton}
-                        onClick={() => handleCart(productDetails._id)}
-                        disabled={cartLoading}
-                      >
-                        {cartLoading ? "Agregando..." : "Agregar al carro"}
-                      </Button>
-                    ) : (
-                      <Box
-                        sx={{
-                          border: "2px solid rgb(0, 18, 51)",
-                          paddingX: "20px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          height: "4rem",
-                        }}
-                      >
-                        <Button
-                          disableElevation
-                          className={s.counterButton}
-                          onClick={() => handleDecreaseCart(productDetails._id)}
-                        >
-                          <RemoveIcon
-                            sx={{
-                              color: "rgb(17, 17, 17)",
-                              height: "100%",
-                              width: "100%",
-                              padding: "2px",
-                            }}
-                          />
-                        </Button>
-                        <Typography
-                          variant="h4"
-                          sx={{ fontFamily: "poppins", fontWeight: "700" }}
-                        >
-                          {foundOnCart.quantity}
-                        </Typography>
-                        <Button
-                          disableElevation
-                          className={s.counterButton}
-                          onClick={() => handleIncreaseCart(productDetails._id)}
-                        >
-                          <AddIcon
-                            sx={{
-                              color: "rgb(17, 17, 17)",
-                              height: "100%",
-                              width: "100%",
-                              padding: "2px",
-                            }}
-                          />
-                        </Button>
-                      </Box>
-                    )}
-                  </Box>
-                  <Box sx={{ paddingY: "3rem" }}>
+                  <Typography variant="h5">
+                    {`${productDetails?.stock} en stock`}
+                  </Typography>
+
+                  <Box sx={{ paddingY: "1rem" }}>
                     <Box sx={{ paddingBottom: "1rem" }}>
                       <Typography
                         variant="h5"
@@ -317,24 +265,136 @@ export default function DetailCard() {
                             : "Sin descripcion"}
                         </Typography>
                       </Box>
-                      <Box>
-                        <Box sx={{ fontFamily: "poppins" }}>
-                          <Typography variant="subtitle1">
-                            {`Categoria: ${productDetails?.category}`}
-                          </Typography>
-                          <Typography variant="subtitle1">
-                            {`Marca: ${
-                              productDetails?.marca
-                                ? productDetails.marca
-                                : "No definida"
-                            }`}
-                          </Typography>
-                        </Box>
+                      <Box sx={{ paddingBottom: "10px" }}>
+                        <Typography
+                          variant="h5"
+                          sx={{ fontFamily: "poppins", fontWeight: "700" }}
+                        >
+                          Categoria
+                        </Typography>
                       </Box>
+                      <Box sx={{ marginBottom: ".6rem" }}>
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ fontFamily: "poppins" }}
+                        >
+                          {productDetails?.category}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ paddingBottom: "10px" }}>
+                        <Typography
+                          variant="h5"
+                          sx={{ fontFamily: "poppins", fontWeight: "700" }}
+                        >
+                          Marca
+                        </Typography>
+                      </Box>
+                      <Box sx={{ marginBottom: ".6rem" }}>
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ fontFamily: "poppins" }}
+                        >
+                          {productDetails?.marca
+                            ? productDetails?.marca
+                            : "Sin marca"}
+                        </Typography>
+                      </Box>
+                      <FormControl
+                        sx={{
+                          minWidth: 120,
+                          paddingBottom: "15px",
+                          paddingTop: "15px",
+                        }}
+                        size="small"
+                      >
+                        <InputLabel
+                          id="demo-simple-select-label"
+                          sx={{
+                            paddingTop: "15px",
+                          }}
+                        >
+                          Talla
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          label="Talla"
+                        >
+                          {productDetails?.tallaCamiseta.length > 0
+                            ? productDetails?.tallaCamiseta.map((i) => {
+                                return <MenuItem value={i}>{i}</MenuItem>;
+                              })
+                            : productDetails?.tallaPantalón.map((i) => {
+                                return <MenuItem value={i}>{i}</MenuItem>;
+                              })}
+                        </Select>
+                      </FormControl>
                     </Box>
                   </Box>
                 </Grid>
               </Grid>
+
+              <Box>
+                {!foundOnCart ? (
+                  <Button
+                    variant="contained"
+                    disableElevation
+                    fullWidth
+                    size="large"
+                    className={s.addButton}
+                    onClick={() => handleCart(productDetails._id)}
+                    disabled={cartLoading}
+                  >
+                    {cartLoading ? "Agregando..." : "Agregar al carro"}
+                  </Button>
+                ) : (
+                  <Box
+                    sx={{
+                      border: "2px solid rgb(0, 18, 51)",
+                      paddingX: "20px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      height: "4rem",
+                    }}
+                  >
+                    <Button
+                      disableElevation
+                      className={s.counterButton}
+                      onClick={() => handleDecreaseCart(productDetails._id)}
+                    >
+                      <RemoveIcon
+                        sx={{
+                          color: "rgb(17, 17, 17)",
+                          height: "100%",
+                          width: "100%",
+                          padding: "2px",
+                        }}
+                      />
+                    </Button>
+                    <Typography
+                      variant="h4"
+                      sx={{ fontFamily: "poppins", fontWeight: "700" }}
+                    >
+                      {foundOnCart.quantity}
+                    </Typography>
+                    <Button
+                      disableElevation
+                      className={s.counterButton}
+                      onClick={() => handleIncreaseCart(productDetails._id)}
+                    >
+                      <AddIcon
+                        sx={{
+                          color: "rgb(17, 17, 17)",
+                          height: "100%",
+                          width: "100%",
+                          padding: "2px",
+                        }}
+                      />
+                    </Button>
+                  </Box>
+                )}
+              </Box>
               <Box sx={{ paddingTop: "64px", borderTop: "dotted 3px #e1e2e2" }}>
                 <Box
                   sx={{

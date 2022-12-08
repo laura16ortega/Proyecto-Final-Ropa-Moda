@@ -37,7 +37,13 @@ import ListItemText from "@mui/material/ListItemText";
 export const Navbar = () => {
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.cart); // Actualiza numeros del carro
-  const { fav } = useAppSelector((state) => state.fav); // Actualiza numeros del carro
+  const cartItems = localStorage.getItem("cart")
+    ? JSON.parse(localStorage.getItem("cart")!)
+    : [];
+  const itemRes = cartItems?.reduce(
+    (total: number, item: mappedDbProductsType) => total + item.quantity,
+    0
+  );
 
   const favItems = localStorage.getItem("fav")
     ? JSON.parse(localStorage.getItem("fav")!)
@@ -104,31 +110,35 @@ export const Navbar = () => {
             </IconButton>
           </li>
           {window.localStorage.getItem("jwt") ? (
-            <li className={styles.logos}>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="logo"
-                onClick={() => {
-                  navigate("/profile");
-                }}
-              >
-                <PersonIcon />
-              </IconButton>
-              <IconButton
-                component={NavLink}
-                to="/favoritos"
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="logo"
-              >
-                <Badge badgeContent={favAmount} color="warning" max={99}>
-                  <FavoriteBorderIcon />
-                </Badge>
-              </IconButton>
-            </li>
+            <>
+              <li className={styles.logos}>
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="logo"
+                  onClick={() => {
+                    navigate("/profile");
+                  }}
+                >
+                  <PersonIcon />
+                </IconButton>
+              </li>
+              <li className={styles.logos}>
+                <IconButton
+                  component={NavLink}
+                  to="/favoritos"
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="logo"
+                >
+                  <Badge badgeContent={favAmount} color="warning" max={99}>
+                    <FavoriteBorderIcon />
+                  </Badge>
+                </IconButton>
+              </li>
+            </>
           ) : (
             <div> </div>
           )}
@@ -173,7 +183,7 @@ export const Navbar = () => {
               color="inherit"
               aria-label="logo"
             >
-              <Badge color="warning" max={99}>
+              <Badge badgeContent={itemRes} color="warning" max={99}>
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -328,7 +338,7 @@ export const Navbar = () => {
                       color="inherit"
                       aria-label="logo"
                     >
-                      <Badge color="warning" max={99}>
+                      <Badge badgeContent={itemRes} color="warning" max={99}>
                         <ShoppingCartIcon />
                       </Badge>
                     </IconButton>
