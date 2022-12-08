@@ -6,8 +6,13 @@ import {
   Stack,
   Button,
   Badge,
+  Input,
+  Drawer,
+  List,
 } from "@mui/material";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
+import DehazeIcon from "@mui/icons-material/Dehaze";
+import HomeIcon from "@mui/icons-material/Home";
 import { NavLink, UNSAFE_RouteContext } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
@@ -16,71 +21,120 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Search from "../Search/Search";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAppDispatch } from "../../assets/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../../assets/hooks";
 import type { mappedDbProductsType } from "../../redux/types/productTypes";
 import { logout } from "../../redux/slices/authSlice";
 import logo from "../../assets/images/logo.png";
 import styles from "./Navbar.module.css";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useNavigate } from "react-router-dom";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.cart); // Actualiza numeros del carro
   const { fav } = useAppSelector((state) => state.fav); // Actualiza numeros del carro
 
-  const itemRes = cart?.reduce((total: number, item: mappedDbProductsType) => total + item.quantity,0);
-  const favAmount = fav?.reduce((total: number, item: mappedDbProductsType) => total + item.quantity, 0);
- 
-  const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const favItems = localStorage.getItem("fav")
+    ? JSON.parse(localStorage.getItem("fav")!)
+    : [];
+  const favAmount = favItems?.reduce(
+    (total: number, item: mappedDbProductsType) => total + item.quantity,
+    0
+  );
+  console.log(favItems);
+
+  const handleLogout = (event: any) => {
     event.preventDefault();
     dispatch(logout());
     setTimeout(() => {
       window.location.href = "/";
     }, 500);
   };
+
+  const [check, setCheck] = useState(false);
+
+  const toggleDrawer = () => {
+    setCheck(!check);
+  };
+
+  const navigate = useNavigate();
+
   return (
-    <div>
+    <nav>
       <AppBar position="static">
         <Toolbar>
           <Search />
           {/*                 <IconButton size='large' edge='start' color='inherit' aria-label='logo'>
                         <CheckroomIcon />
-                    </IconButton> */}
+                      </IconButton> */}
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             <img src={logo} alt="logo" className={styles.logo} />
           </Typography>
-          <Stack direction="row" spacing={2}>
-            <Button
-              component={NavLink}
-              to="/products"
-              sx={{
-                textTransform: "none",
-                "&.active": {
-                  background: "black",
-                },
-              }}
+
+          <Button
+            component={NavLink}
+            to="/create"
+            sx={{
+              textTransform: "none",
+              "&.active": {
+                background: "black",
+              },
+            }}
+            color="inherit"
+          >
+            Crea tu prenda
+          </Button>
+
+          <li className={styles.logos}>
+            <IconButton
+              size="large"
+              edge="start"
               color="inherit"
+              aria-label="logo"
+              onClick={() => {
+                navigate("/products");
+              }}
             >
-              Inicio
-            </Button>
-            {localStorage.getItem("jwt") ? (
-              <Button
-                component={NavLink}
-                to="/create"
-                sx={{
-                  textTransform: "none",
-                  "&.active": {
-                    background: "black",
-                  },
-                }}
+              <HomeIcon />
+            </IconButton>
+          </li>
+          {window.localStorage.getItem("jwt") ? (
+            <li className={styles.logos}>
+              <IconButton
+                size="large"
+                edge="start"
                 color="inherit"
+                aria-label="logo"
+                onClick={() => {
+                  navigate("/profile");
+                }}
               >
-                Crea tu prenda
-              </Button>
-            ) : (<></>)}
-            {!localStorage.getItem("jwt") ? (
-              /*                         <Button 
+                <PersonIcon />
+              </IconButton>
+              <IconButton
+                component={NavLink}
+                to="/favoritos"
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="logo"
+              >
+                <Badge badgeContent={favAmount} color="warning" max={99}>
+                  <FavoriteBorderIcon />
+                </Badge>
+              </IconButton>
+            </li>
+          ) : (
+            <div> </div>
+          )}
+
+          {!localStorage.getItem("jwt") ? (
+            /*                         <Button 
                         component={NavLink}
                         to="/login"
                         sx={{
@@ -92,50 +146,25 @@ export const Navbar = () => {
                         color='inherit'
                         >
                         Ingresar
-                        </Button> */ <IconButton
+                        </Button> */
+            <li className={styles.logos}>
+              <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
                 aria-label="logo"
                 onClick={() => {
-                  window.location.href = "/login";
+                  navigate("/login");
                 }}
               >
                 <LoginIcon />
               </IconButton>
-            ) : (
-              <div></div>
-            )}
+            </li>
+          ) : (
+            <div></div>
+          )}
 
-            {window.localStorage.getItem("jwt") ? (
-              <>
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  aria-label="logo"
-                  onClick={() => {
-                    window.location.href = "/profile";
-                  }}
-                >
-                  <PersonIcon />
-                </IconButton>
-                <IconButton
-                  component={NavLink}
-                  to='/favoritos'
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  aria-label="logo"
-                >
-                  <Badge badgeContent={favAmount} color="warning" max={99}>
-                  <FavoriteBorderIcon />
-                  </Badge>
-                </IconButton>
-              </>
-            ) : (
-              <div> </div>
-            )}
+          <li className={styles.logos}>
             <IconButton
               component={NavLink}
               to="/cart"
@@ -144,12 +173,14 @@ export const Navbar = () => {
               color="inherit"
               aria-label="logo"
             >
-              <Badge badgeContent={itemRes} color="warning" max={99}>
+              <Badge color="warning" max={99}>
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
+          </li>
 
-            {window.localStorage.getItem("jwt") ? (
+          {window.localStorage.getItem("jwt") ? (
+            <li className={styles.logos}>
               <IconButton
                 size="large"
                 edge="start"
@@ -159,13 +190,176 @@ export const Navbar = () => {
               >
                 <LogoutIcon />
               </IconButton>
-            ) : (
-              <div></div>
-            )}
-          </Stack>
+            </li>
+          ) : (
+            <div></div>
+          )}
+          <li className={styles.logoResponsive}>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="logo"
+              onClick={toggleDrawer}
+            >
+              <DehazeIcon />
+            </IconButton>
+          </li>
+
+          <Drawer anchor="left" open={check} onClose={toggleDrawer}>
+            <List>
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() => {
+                    navigate("/products");
+                  }}
+                >
+                  <ListItemIcon>
+                    <IconButton
+                      size="large"
+                      edge="start"
+                      color="inherit"
+                      aria-label="logo"
+                    >
+                      <HomeIcon />
+                    </IconButton>
+                  </ListItemIcon>
+                  <ListItemText primary="Inicio" />
+                </ListItemButton>
+              </ListItem>
+
+              {window.localStorage.getItem("jwt") ? (
+                <>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() => {
+                        navigate("/profile");
+                      }}
+                    >
+                      <ListItemIcon>
+                        <IconButton
+                          size="large"
+                          edge="start"
+                          color="inherit"
+                          aria-label="logo"
+                        >
+                          <PersonIcon />
+                        </IconButton>
+                      </ListItemIcon>
+                      <ListItemText primary="Perfil" />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() => {
+                        navigate("/favoritos");
+                      }}
+                    >
+                      <ListItemIcon>
+                        <IconButton
+                          size="large"
+                          edge="start"
+                          color="inherit"
+                          aria-label="logo"
+                        >
+                          <Badge
+                            badgeContent={favAmount}
+                            color="warning"
+                            max={99}
+                          >
+                            <FavoriteBorderIcon />
+                          </Badge>
+                        </IconButton>
+                      </ListItemIcon>
+                      <ListItemText primary="Favoritos" />
+                    </ListItemButton>
+                  </ListItem>
+                </>
+              ) : (
+                <div> </div>
+              )}
+
+              {!localStorage.getItem("jwt") ? (
+                /*                         <Button 
+                        component={NavLink}
+                        to="/login"
+                        sx={{
+                            textTransform: "none",
+                          '&.active': {
+                            background:'black',
+                          }
+                        }}
+                        color='inherit'
+                        >
+                        Ingresar
+                        </Button> */
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={() => {
+                      navigate("/login");
+                    }}
+                  >
+                    <ListItemIcon>
+                      <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="logo"
+                      >
+                        <LoginIcon />
+                      </IconButton>
+                    </ListItemIcon>
+                    <ListItemText primary="Ingresar" />
+                  </ListItemButton>
+                </ListItem>
+              ) : (
+                <div></div>
+              )}
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() => {
+                    navigate("/cart");
+                  }}
+                >
+                  <ListItemIcon>
+                    <IconButton
+                      size="large"
+                      edge="start"
+                      color="inherit"
+                      aria-label="logo"
+                    >
+                      <Badge color="warning" max={99}>
+                        <ShoppingCartIcon />
+                      </Badge>
+                    </IconButton>
+                  </ListItemIcon>
+                  <ListItemText primary="Carrito" />
+                </ListItemButton>
+              </ListItem>
+              {window.localStorage.getItem("jwt") ? (
+                <ListItem disablePadding>
+                  <ListItemButton onClick={(e) => handleLogout(e)}>
+                    <ListItemIcon>
+                      <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="logo"
+                      >
+                        <LogoutIcon />
+                      </IconButton>
+                    </ListItemIcon>
+                    <ListItemText primary="Salir" />
+                  </ListItemButton>
+                </ListItem>
+              ) : (
+                <div></div>
+              )}
+            </List>
+          </Drawer>
         </Toolbar>
       </AppBar>
-    </div>
+    </nav>
   );
 };
 
