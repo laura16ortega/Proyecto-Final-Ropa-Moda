@@ -120,14 +120,15 @@ const loginCtrl = async(request,response)=>{
                 secure:true
             })
             console.log(checkIs)
-            const {isAdmin, fullName,_id} = checkIs;
+            const {isAdmin, fullName,_id, image} = checkIs;
             const loginData = {
                 token,
                 user: {
                     isAdmin,
                     fullName,
                     email,
-                    userId: _id
+                    userId: _id,
+                    image
                 }
             }
             response.status(200).json({loginData})
