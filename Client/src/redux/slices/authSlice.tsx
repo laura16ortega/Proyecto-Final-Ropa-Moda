@@ -38,11 +38,12 @@ export const authSlice = createSlice({
         })
         .addCase(registerUser.fulfilled,(state,action:PayloadAction<any>)=>{
             state.userLoading = false
-            const {userId, fullName, token,email} = action.payload
+            const {userId, fullName, token,email, image} = action.payload
             state.user = {
                 userId,
                 fullName,
                 email,
+                image
             }
             state.token = token
         })
