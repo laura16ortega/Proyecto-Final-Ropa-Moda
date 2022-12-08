@@ -104,7 +104,7 @@ const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormPro
                      <Box sx={{ marginBottom: ".9rem" }}>
                         <Box sx={{ display: "flex" }}>
                            <Box>
-                              <Avatar src={/*user.image*/user?.fullName} sx={{ height: "56px", width: "56px" }}>
+                              <Avatar src={user?.image} sx={{ height: "56px", width: "56px" }}>
                                  {loggedUser > 0 ? user.fullName.slice(0, 1).toUpperCase() : ""}
                               </Avatar>
                            </Box>

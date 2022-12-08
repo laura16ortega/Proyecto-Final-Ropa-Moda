@@ -43,7 +43,6 @@ function Profile(props: any) {
 
   useEffect(() => {
     validateEdit(input);
-
   }, [error, editProfile])
 
   type errorType = {

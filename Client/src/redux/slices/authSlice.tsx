@@ -57,7 +57,16 @@ export const authSlice = createSlice({
         .addCase(getUserInfo.fulfilled, (state, action:PayloadAction<any>) => {
             state.userLoading = false
             
-            state.user = action.payload
+            // state.user = action.payload
+            console.log("get user info: ", action.payload)
+            const {_id, fullName, email, image} = action.payload
+            state.user = {
+                userId: _id,
+                fullName,
+                email,
+                image
+            }
+            //state.token = token
         })
         .addCase(getUserInfo.rejected,(state,action:PayloadAction<any>)=>{
             state.userLoading = false

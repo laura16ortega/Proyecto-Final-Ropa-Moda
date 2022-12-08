@@ -139,6 +139,7 @@ exports.getReview = async (req, res) => {
   try {
     const { id } = req.params;
     const reviews = await Review.findById(id).populate("userId");
+    console.log(id)
     if (!reviews) {
       return res.status(404).json({ message: "Review Not Found" });
     }
@@ -146,7 +147,7 @@ exports.getReview = async (req, res) => {
       rating: reviews.rating,
       name: reviews.userId.fullName,
       comment: reviews.comment,
-      picture: "",
+      picture: reviews.userId.image || "",
       date: reviews.createdAt,
     };
     res.status(200).json(review);
