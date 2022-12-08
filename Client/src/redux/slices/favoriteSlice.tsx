@@ -12,7 +12,7 @@ type InitialState = {
 const initialState = {
     favLoading: false,
     favError: null,
-    fav: [],
+    fav: localStorage.getItem("fav") ? JSON.parse(localStorage.getItem("fav")!) : [],
     checkoutLoad: false
 } as InitialState
 
