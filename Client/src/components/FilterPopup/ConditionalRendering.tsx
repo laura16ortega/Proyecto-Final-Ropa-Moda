@@ -40,9 +40,6 @@ const ConditionalRendering = ({ filterDetails, filters, setFilters }: Filter) =>
         }
     }
 
-    //console.log(filters.category.includes(filterDetails.nameValue)) // true || false
-    console.log(filterDetails.nameValue)
-
     const open = Boolean(anchorEl);
     
     if (filters.category.includes(filterDetails.nameValue)) {

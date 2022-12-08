@@ -96,9 +96,13 @@ const Cart = () => {
   return (
     <div>
       {cartLoading ? (
-        <h1>CartLoading</h1>
+        <Box sx={{ height: "66vh", display: "flex", justifyContent: "center" }}>
+          <Box sx={{ marginTop: "5rem" }} className={s.loader} />
+        </Box>
       ) : cartError ? (
-        <h1>CartError: {cartError}</h1>
+        <Box>
+          <h1>CartError: {cartError}</h1>
+        </Box>
       ) : !cartProd?.length ? (
         <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
           <Box sx={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
@@ -110,8 +114,12 @@ const Cart = () => {
               recomendados abajo
             </Typography>
           </Box>
-          {loading ? <h1>Loading</h1> : allData &&
-            <Box sx={{}}>
+          {loading ?
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+              <Box sx={{ margin: "2rem" }} className={s.loader} />
+            </Box>
+            : allData &&
+            <Box sx={{userSelect: "none"}}>
               <Typography variant="h3" sx={{ textAlign: "left", fontFamily: "poppins", fontWeight: "600", margin: "1.6rem .4rem" }}>
                 RECOMENDAMOS
               </Typography>
@@ -183,13 +191,13 @@ const Cart = () => {
                               }}
                             >
 
-<Link href={`/products/${e._id}`}>
-                              <Typography
-                                variant="h6"
-                                className={s.productName}
-                              >
-                                {e.name}
-                              </Typography>
+                              <Link href={`/products/${e._id}`}>
+                                <Typography
+                                  variant="h6"
+                                  className={s.productName}
+                                >
+                                  {e.name}
+                                </Typography>
                               </Link>
                               <Typography variant="subtitle1">
                                 {`$${e.price}`}
@@ -386,7 +394,7 @@ const Cart = () => {
                             onApprove={async (data, actions) => {
                               const details = await actions.order?.capture()
 
-                              const name = details?.payer.name?.given_name 
+                              const name = details?.payer.name?.given_name
                               console.log(details);
                               displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type: "success" })
 

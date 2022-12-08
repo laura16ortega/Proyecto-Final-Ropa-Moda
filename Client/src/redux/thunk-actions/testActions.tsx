@@ -38,7 +38,6 @@ export const getAllProducts = createAsyncThunk<mappedDbProductsType[]>(
       const { data } = await axios.get<DbCall>(
         "http://localhost:3001/api/v1/products"
       );
-      console.log("data: ", data)
       const mappedData = data.data.products.map((e: DbProductType) => {
         return {
           images: e.images,
@@ -79,3 +78,15 @@ export const createProduct = createAsyncThunk(
     }
   }
 );
+
+export const getCheckoutSessions = createAsyncThunk(
+  "test/getStripeData",
+  async(data, thunkApi) => {
+    try {
+      const { data } = await axios.get("http://localhost:3001/api/v1/payment/stripe")
+      return data
+    } catch (e) {
+      return thunkApi.rejectWithValue(e)
+    }
+  }
+)

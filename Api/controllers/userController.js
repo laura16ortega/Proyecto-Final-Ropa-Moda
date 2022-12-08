@@ -35,23 +35,30 @@ const getUser = async(request,response)=>{
 //Update a User
 const updatedUser = async(request,response)=>{
     const user = await User.findById(request.body.userId);
-
+    console.log("User to update: ", user)
     if(user){
-        const {fullName, email, phone_number} = user;
-        user.email = email;
-        user.fullName = request.body.fullName || fullName;
-        user.phone_number = request.body.phone_number || phone_number;
+        try {
+            const {fullName, email, phone_number} = user;
+            user.email = email;
 
-        const updatedUser = await user.save();
-        response.status(200).json({
-            message:"User Update Succesfully",
-            _id: updatedUser._id,
-            fullName: updatedUser.fullName,
-            email: updatedUser.email,
-            phone_number: updatedUser.phone_number
-        })
+            user.fullName = request.body.fullName || fullName;
+            user.phone_number = request.body.phone_number || phone_number;
+    
+            const updatedUser = await user.save();
+            console.log(user)
+
+            response.status(200).json({
+                message:"User Update Succesfully",
+                _id: updatedUser._id,
+                fullName: updatedUser.fullName,
+                email: updatedUser.email,
+                phone_number: updatedUser.phone_number
+            })
+        } catch (e) {
+            response.status(400).json({message: e})
+        }
     }else{
-        response.status(400).json({message:error})
+        response.status(400).json({message: "No user"})
     }
 }
 

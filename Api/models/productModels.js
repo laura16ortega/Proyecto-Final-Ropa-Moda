@@ -19,18 +19,17 @@ const productSchema = new mongoose.Schema({
   summary: {
     type: String,
     trim: true, //solo funciona para strings y remueve todos los espacios en blanco al inicio y al final del string
-    required: [true, "A product must have a description"],
   },
   description: {
     type: String,
-    trim: true,
+    trim: [true, "A product must have a description"],
   },
   images: {
       public_id:{
         type:String,
  
       },
-      url:{
+      secure_url:{
         type:String,
 
       }

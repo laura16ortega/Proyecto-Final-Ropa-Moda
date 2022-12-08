@@ -31,3 +31,16 @@ exports.stripeCheckout = async(req, res) => {
         res.status(500).json(error)
     }
 }
+
+// https://stripe.com/docs/api/charges/list
+// Fecha de transaccion: new Date(created * 1000)
+exports.stripeGetData = async(req, res) => {
+    try {
+        const charges = await stripe.charges.list({
+            limit: 3,
+          });
+        res.status(200).json(charges)
+    } catch (e) {
+        console.log("stripe get error: ", e)
+    }
+}

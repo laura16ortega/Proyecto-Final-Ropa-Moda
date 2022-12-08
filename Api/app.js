@@ -6,7 +6,9 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const {auth} = require("express-openid-connect");
 const { config } = require("./services/authServices");
+const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser");
+const fileUpload = require('express-fileupload');
 require('./services/googleAuthServices');
 const paymentRoutes = require("./routes/paymentRoutes")
 
@@ -17,8 +19,14 @@ const app = express();
 
 app.use(express.json()); //Middleware para que express pueda leer lo que viene por req.body. El método use se usa para usar middleware
 app.use(cors());
+app.use(bodyParser.json({limit:1024*1024*20, type:'application/json'}));
+app.use(bodyParser.urlencoded({extended:true,limit:1024*1024*20,type:'application/x-www-form-urlencoding' }));
 app.use(cookieParser());
 app.use(auth(config));
+app.use(fileUpload({
+  useTempFiles : true,
+  tempFileDir : './uploads'
+}));
  
 //Routes
 

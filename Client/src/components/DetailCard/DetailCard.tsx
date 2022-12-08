@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react"
-import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse, Link } from "@mui/material";
+import { Box, Typography, Rating, Stack, Chip, Grid, Container, Button, Collapse, Link, Skeleton } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../assets/hooks";
 import { useParams } from "react-router-dom";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -17,7 +17,7 @@ import {
 } from "../../redux/slices/cartSlice";
 import ReviewForm from "../ReviewForm/ReviewForm";
 import Review from "../Review/Review";
-import { getReview } from "../../redux/thunk-actions/reviewActions";
+import { toast } from 'react-toastify';
 
 type ParamTypes = {
    id: string
@@ -95,10 +95,33 @@ export default function DetailCard() {
             <Typography variant="h6" sx={{ textAlign: "left", marginTop: "2rem" }}>
                {`Home/${productDetails?.name}`}
             </Typography>
-            {detailsLoading && !detailsError ? <h1>Load</h1>
-               : detailsError ? <h1>Error: {detailsError}</h1>
+            {detailsLoading && !detailsError ? 
+            <Grid container spacing={6} sx={{marginTop: ".9rem", marginBottom: "64px" }}>
+               <Grid item md={6} sm={12}>
+                  <Skeleton variant="rectangular" height={690} sx={{width: "100%"}}/>
+               </Grid>
+               <Grid item md={6} sm={12}>
+                  <Typography variant="subtitle1"><Skeleton sx={{width: "20%"}} /></Typography>
+                  <Typography variant="h1"><Skeleton /></Typography>
+                  <Typography variant="h5"><Skeleton variant="rounded" sx={{width: "30%"}}/></Typography>
+                  <Box sx={{marginY: 3}}>
+                     <Typography variant="h3"><Skeleton sx={{width: "15%"}}/></Typography>
+                     <Typography variant="h1"><Skeleton /></Typography>
+                  </Box>
+                  <Typography variant="h5"><Skeleton sx={{width: "17%"}}/></Typography>
+                  <Typography variant="subtitle1"><Skeleton variant="rounded" height={200}/></Typography>
+                  <Typography variant="subtitle1"><Skeleton sx={{width: "24%"}}/></Typography>
+                  <Typography variant="subtitle1"><Skeleton sx={{width: "24%"}}/></Typography>
+               </Grid>
+            </Grid>
+               : detailsError ? 
+               <Box sx={{marginTop: "8rem"}}>
+                  <Typography variant="h2">
+                     Error: {detailsError}
+                  </Typography>
+               </Box>
                   : Object.keys(productDetails).length &&
-                  <Box sx={{ marginTop: "3rem" }}>
+                  <Box sx={{ marginTop: "3rem"}}>
                      <Grid container spacing={6} >
                         <Grid item md={6} sm={12}>
                            <Box>
@@ -126,7 +149,6 @@ export default function DetailCard() {
                                  <Typography variant="h4" sx={{ fontFamily: "poppins", fontWeight: "800" }}>
                                     {`$${productDetails?.price}`}
                                  </Typography>
-
                               </Box>
                            </Box>
                            <Box>
@@ -222,18 +244,15 @@ export default function DetailCard() {
                            </Box>
                            <Box sx={{ marginY: "1rem" }}>
                               <Container maxWidth="lg">
-                                 {productDetails.reviews.length <= 0 ?
+                                 {/* PASAR LOS ID QUE ESTAN EN EL ARRAY REVIEWS DE PRODUCTS AL COMPONENTE Review */}
+                                 {productDetails.reviews.length>0 ? productDetails.reviews.map(e =>
+                                    <Box key={e} sx={{ borderBottom: "2px solid #DFDFDF" }} >
+                                       <Review id={e} />
+                                    </Box>)
+                                    :
                                     <Box sx={{ marginY: "7rem" }}>
                                        <Typography variant="h3" sx={{ fontFamily: "poppins", fontWeight: "700" }}>Sin reviews</Typography>
                                     </Box>
-                                    : productDetails ? productDetails?.reviews.map((e, i) =>
-                                       <Box key={i + 1} sx={{ borderBottom: "2px solid #DFDFDF" }} >
-                                          <Review id={e} />
-                                       </Box>)
-                                       :
-                                       <Box sx={{ marginY: "7rem" }}>
-                                          <Typography variant="h3" sx={{ fontFamily: "poppins", fontWeight: "700" }}>Sin reviews</Typography>
-                                       </Box>
                                  }
                               </Container>
                            </Box>

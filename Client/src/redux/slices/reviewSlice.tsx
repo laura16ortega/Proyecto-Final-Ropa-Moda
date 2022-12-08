@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { getReview, postReview } from "../thunk-actions/reviewActions"
+import { postReview,getReview } from "../thunk-actions/reviewActions"
 import type { ReviewType } from "../types/reviewTypes"
 
 type InitialState = {

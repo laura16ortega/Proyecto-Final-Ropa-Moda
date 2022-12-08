@@ -12,13 +12,12 @@ export const postReview = createAsyncThunk(
             postData, // Toda la data, se destructura desde el back
             { headers: { Authorization: `Bearer ${postData.token}` } }
          )
-         console.log("post response", data)
          return data.message
       } catch (error: any) {
-         return thunkApi.rejectWithValue(error.response.data.message)
+         return thunkApi.rejectWithValue(error.message)
       }
    }
-)
+);
 
 export const getReview = createAsyncThunk(
    "reviews/get",
@@ -31,7 +30,6 @@ export const getReview = createAsyncThunk(
       }
    }
 );
-
 
 // /review/:id
 // reviews: ['6388d82432839c23d8df7781']
