@@ -79,12 +79,24 @@ export const createProduct = createAsyncThunk(
   }
 );
 
+type SentEdit = {
+  productId: string
+  category: string
+  gender: string
+  images: {public_id: string} | string
+  marca: string
+  name: string
+  price: number
+  summary: string
+  tallaCamiseta: string[]
+  tallaPantalón: string[]
+}
+
 export const editProduct = createAsyncThunk(
   "product/edit",
-  async (bodyData, thunkApi) => { // pasar id del producto dentro del bodydata
-    console.log("body data edit sent: ", bodyData)
+  async (bodyData: SentEdit, thunkApi) => {
      try {
-        const { data } = await axios.post("http://localhost:3001/api/v1/payment/stripe", bodyData)
+        const { data } = await axios.patch(`http://localhost:3001/api/v1/products/${bodyData.productId}`, bodyData)
         return "Producto eliminado"
      } catch (error: any) {
         return thunkApi.rejectWithValue(error.message)

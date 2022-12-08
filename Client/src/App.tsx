@@ -22,6 +22,7 @@ import BuyConfirmed from "./pages/BuyConfirmed/BuyConfirmed";
 import FavoriteProducts from './pages/FavoriteProducts/FavoriteProducts';
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import ProductsDashboard from "./components/ProductsDashboard/ProductsDashboard";
+import EditProduct from "./components/EditProduct/EditProduct";
 
 function App() {
   useEffect(() => {
@@ -57,6 +58,7 @@ function App() {
         <Route path='/confirmed' element={<BuyConfirmed />} />
         <Route path='/favoritos' element={<FavoriteProducts /> } />
         <Route path="/dashboard/products" element={<ProductsDashboard/>}/>
+        <Route path="/dashboard/editProduct/:id" element={<EditProduct/>}/>
       </Routes>
       <Footer />
     </div>
