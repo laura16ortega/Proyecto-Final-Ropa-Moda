@@ -21,6 +21,7 @@ import { loginUser } from "../../redux/thunk-actions/authActions";
 import { unwrapResult } from '@reduxjs/toolkit'
 import Alert from "@mui/material/Alert"
 import Collapse from "@mui/material/Collapse"
+import { LoginButton } from "../../components";
 
 
 function Copyright(props: any) {
@@ -144,12 +145,7 @@ export default function SignInSide() {/*
                 Ingresar
               </Button>
 
-              <Button href='http://localhost:3001/login' fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}>
-                  Ingresar con google
-                  
-              </Button>
+              <LoginButton/>
 
               <Collapse in={loginErrors}>
                 <Alert severity='error' sx={{ mb: 2, textAlign: "center" }} onClose={() => setLoginErrors(false)}>
@@ -172,6 +168,7 @@ export default function SignInSide() {/*
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
+          
         </Grid>
       </Grid>
     </ThemeProvider>

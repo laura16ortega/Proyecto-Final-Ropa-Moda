@@ -24,6 +24,8 @@ import { PublicRoutes, PrivateRoutes } from "./models/index";
 
 
 function App() {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
   return (
     <div className="App">
       <Navbar />
@@ -55,6 +57,7 @@ function App() {
 
         {/* CREAR RUTA Y PAGINA 404 NOT FOUND */}
       </Routes>
+      
       <Footer />
     </div>
   );

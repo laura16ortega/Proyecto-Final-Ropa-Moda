@@ -23,9 +23,11 @@ import { logout } from "../../redux/slices/authSlice";
 import logo from "../../assets/images/logo.png";
 import styles from "./Navbar.module.css";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {useAuth0} from "@auth0/auth0-react";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
+  const {logout:logoutAuth0} = useAuth0();
   const { cart } = useAppSelector((state) => state.cart); // Actualiza numeros del carro
   const { fav } = useAppSelector((state) => state.fav); // Actualiza numeros del carro
 
@@ -34,11 +36,15 @@ export const Navbar = () => {
  
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    logoutAuth0();
     dispatch(logout());
+    window.localStorage.removeItem("User")
     setTimeout(() => {
       window.location.href = "/";
     }, 500);
   };
+
+  
   return (
     <div>
       <AppBar position="static">

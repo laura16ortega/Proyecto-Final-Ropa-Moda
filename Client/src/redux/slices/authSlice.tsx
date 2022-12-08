@@ -11,7 +11,7 @@ type InitialState = {
 }
 
 const initialState = {
-    user: localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User")!) : {} ,
+    user: localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User") as string) : {} ,
     userLoading: false,
     token: localStorage.getItem("jwt") ? localStorage.getItem("jwt") : ""
 } as InitialState
