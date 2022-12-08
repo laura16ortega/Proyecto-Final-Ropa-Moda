@@ -48,7 +48,7 @@ const ReviewForm = ({ productId, setOpenReviewForm, forceUpdate }: ReviewFormPro
    const initialValue: InitialValue = {
       rating: 0,
       comment: "",
-      userId: user ? user._id : "",
+      userId: user ? user.userId : "",
       token: token ? token : "",
       productId
    }
