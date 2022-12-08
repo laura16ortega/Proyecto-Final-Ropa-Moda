@@ -38,3 +38,45 @@
     background-color: aqua;
     flex: 2;
 }
+
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: #f6f6f6;
+}
+  
+.backgroundImage {
+  position: relative;
+  height: 150px;
+  width: 100%;
+}
+  
+.profilePhoto {
+  position: relative;
+  top: -60px;
+  width: 106;
+  height: 106;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: solid 2px #fff;
+  overflow: hidden;
+}
+  
+.imgFit {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+  
+.profileData {
+  position: relative;
+  top: -55px;
+  margin: 0 auto;
+  line-height: normal;
+  letter-spacing: 1px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

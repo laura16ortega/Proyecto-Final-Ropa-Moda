@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Container, Grid, Typography, Button, TextField, Select, MenuItem, SelectChangeEvent, ButtonGroup, Checkbox } from "@mui/material"
-import { Formik, FormikHelpers, Form, Field, ErrorMessage } from "formik";
+import { Box, Container, Grid, Typography, Button, TextField, MenuItem, ButtonGroup, Link } from "@mui/material"
+import { Formik, FormikHelpers, Form, Field } from "formik";
 import s from "./EditProduct.module.css"
 import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { getProductDetail } from '../../redux/thunk-actions/productDetailsActions';
@@ -136,7 +136,6 @@ const EditProduct = () => {
 
     const handleSubmit = (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
         if (file.public_id.length) {
-            console.log("file url lenggt",file.public_id.length)
             value.images = file
         }
         dispatch(editProduct(value))
@@ -300,7 +299,11 @@ const EditProduct = () => {
                                                 </Box>
                                                 <Box sx={{ display: "flex", justifyContent: "space-around", margin: "1rem" }}>
                                                     <Button type="submit" variant="contained">Guardar</Button>
-                                                    <Button variant="outlined">Cancelar</Button>
+                                                    <Button variant="outlined">
+                                                        <Link href="/dashboard/products">
+                                                            Cancelar
+                                                        </Link>
+                                                    </Button>
                                                 </Box>
                                             </Box>
                                         </Box>
