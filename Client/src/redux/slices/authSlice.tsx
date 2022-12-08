@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { RootState } from '../store';
-import { loginUser, registerUser } from '../thunk-actions/authActions';
+import { loginUser, registerUser, getUserInfo } from '../thunk-actions/authActions';
 import type { UserType } from "../types/userTypes"
 
 type InitialState = {
@@ -45,6 +45,18 @@ export const authSlice = createSlice({
             state.token = token
         })
         .addCase(registerUser.rejected,(state,action:PayloadAction<any>)=>{
+            state.userLoading = false
+            state.userError = action.payload
+        })
+        .addCase(getUserInfo.pending,(state,action)=> {
+            state.userLoading = true
+        })
+        .addCase(getUserInfo.fulfilled, (state, action:PayloadAction<any>) => {
+            state.userLoading = false
+            
+            state.user = action.payload
+        })
+        .addCase(getUserInfo.rejected,(state,action:PayloadAction<any>)=>{
             state.userLoading = false
             state.userError = action.payload
         })
