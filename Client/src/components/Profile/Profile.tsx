@@ -35,7 +35,7 @@ function Profile(props: any) {
   const [editEmail, setEditEmail] = useState(false);
   const [input, setInput] = React.useState<any>({});
   const token = window.localStorage.getItem('jwt')
-  const userId = user.userId ? user.userId : window.localStorage.getItem('userId');
+  const userId = user._id ? user._id : window.localStorage.getItem('userId');
   const [editProfile, setEditProfile] = useState(false);
 
   const [error, setError] = React.useState<any>({});
