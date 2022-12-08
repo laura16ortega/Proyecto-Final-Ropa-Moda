@@ -11,3 +11,4 @@ export { default as LandingPage } from './LandingPage/LandingPage';
 export { default as SignInSide } from './Login/SignInSide';
 export { default as Register } from './Register/Register';
 export { default as ResetPassword } from './ResetPassword/ResetPassword';
+export { default as Profile } from './ProfilePage/ProfilePage';

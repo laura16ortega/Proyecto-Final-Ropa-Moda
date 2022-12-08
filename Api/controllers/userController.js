@@ -34,7 +34,9 @@ const getUser = async(request,response)=>{
 
 //Update a User
 const updatedUser = async(request,response)=>{
+
     const user = await User.findById(request.body.userId);
+
     console.log("User to update: ", user)
     if(user){
         try {
@@ -60,6 +62,8 @@ const updatedUser = async(request,response)=>{
     }else{
         response.status(400).json({message: "No user"})
     }
+    
+    
 }
 
 //Delete a User

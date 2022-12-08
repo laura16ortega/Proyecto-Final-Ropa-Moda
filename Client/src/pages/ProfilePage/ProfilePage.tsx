@@ -2,22 +2,34 @@ import React from 'react'
 import { Box, Container, Grid, Typography, Button, Link } from "@mui/material"
 import Profile from '../../components/Profile/Profile';
 import s from "./ProfilePage.module.css"
+import { useAppDispatch, useAppSelector } from '../../assets/hooks';
+import { logout } from "../../redux/slices/authSlice";
 
 const ProfilePage = () => {
+   const {user} = useAppSelector(state => state.auth)
+   const dispatch = useAppDispatch()
+
+   const handleLogout = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      event.preventDefault();
+      dispatch(logout());
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
+    };
+
     return (
         <Box>
-         <Link href="/productsdashboard">asdjiashdias</Link>
             <Box className={s.customContainer}>
                 <Box>
                     <Box sx={{ paddingTop: "55px" }}>
                         <Grid container spacing={3} sx={{ alignItems: "center", justifyContent: "space-between", padding: ".4rem" }}>
                             <Grid item md={7} xs={12}>
                                 <Typography variant="h3" className={s.title}>
-                                    {`Bienvenido a fc **user**`}
+                                    {`Bienvenido a fc ${user.fullName}`}
                                 </Typography>
                             </Grid>
                             <Grid item md={3} xs={12} sx={{display: "flex", justifyContent: "flex-end"}}>
-                                <Button variant="outlined">
+                                <Button variant="outlined" onClick={(e) => handleLogout(e)}>
                                     Cerrar sesion
                                 </Button>
                             </Grid>

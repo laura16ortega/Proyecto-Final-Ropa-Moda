@@ -3,8 +3,7 @@ import "./App.css";
 import {
   Footer,
   Navbar,
-  DetailCard,
-  Profile
+  DetailCard
 } from './components/index';
 import {
   Home,
@@ -17,7 +16,8 @@ import {
   ResetPassword,
   ForgotPassword,
   BuyConfirmed,
-  FavoriteProducts
+  FavoriteProducts,
+  Profile
 } from './pages/index';
 import {AuthGuard,RoleGuard} from "./guards/index";
 import { PublicRoutes, PrivateRoutes } from "./models/index";

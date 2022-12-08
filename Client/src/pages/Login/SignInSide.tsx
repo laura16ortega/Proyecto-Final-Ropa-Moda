@@ -59,7 +59,7 @@ export default function SignInSide() {/*
       const user = {
         email: data.get("email"),
         password: data.get("password"),
-      };
+      };  
       const dispatchLogin = await dispatch(loginUser(user));
       unwrapResult(dispatchLogin)
       displayNotification({ message: "Bienvenido", type: "success" });

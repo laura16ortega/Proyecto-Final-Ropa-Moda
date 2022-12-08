@@ -153,7 +153,7 @@ export default function CreateForm() {
                 let allData = { ...data, images: [fileValue.image] };
 
                 dispatch(createProduct(allData));
-                navigate("/products");
+                window.location.href = "/products";
               })}
             >
               <FormControl>
