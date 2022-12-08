@@ -3,6 +3,7 @@ export type UserType = {
     fullName: string
     email: string
     userId: string
+    image: string
 }
 
 export type LoginUserPost = {
