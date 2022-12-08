@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../assets/hooks'
 import { deleteProduct, getAllProducts } from '../../redux/thunk-actions/testActions'
 import { sortProducts } from '../../redux/slices/testSlice'
 import Pagination from '../Pagination/Pagination'
+import { useNotification } from '../UseNotification/UseNotification'
 
 const ProductsDashboard = () => {
     const [filters, setFilters] = useState<any>({
@@ -14,14 +15,15 @@ const ProductsDashboard = () => {
     const [pagina, setPagina] = useState(1)
     const dispatch = useAppDispatch()
     const { allData, deleteLoading } = useAppSelector(state => state.data)
+    const { displayNotification } = useNotification()
 
     useEffect(() => {
         if (deleteLoading) {
             dispatch(getAllProducts())
+            setTimeout(() => {
+                displayNotification({ message: "Producto eliminado con exito", type: "success" })
+            }, 500);
         }
-        /*
-        displayNotification(producto borrado con exito)
-        */
         dispatch(getAllProducts())
     }, [deleteLoading])
 
@@ -48,7 +50,7 @@ const ProductsDashboard = () => {
     }
 
     return (
-        <Box sx={{ backgroundColor: "#f8f9fa" }}>
+        <Box sx={{ backgroundColor: "#EBEFF3" }}>
             <Container maxWidth="lg" sx={{ paddingY: "30px" }}>
                 <Box>
                     <Grid container sx={{ marginBottom: "30px", display: "flex", justifyContent: "space-between", textAlign: "left", alignItems: "center" }}>
@@ -83,7 +85,7 @@ const ProductsDashboard = () => {
                         </Grid>
                     </Box>
                     <Box sx={{ padding: "1.3rem" }}>
-                        <Grid container>
+                        <Grid container alignItems="stretch">
                             {allData.filter((product) => 
                             product.name.toLowerCase().includes(filters.name.toLowerCase())
                             ).slice(
@@ -91,10 +93,10 @@ const ProductsDashboard = () => {
                                 (pagina - 1) * 10 + 10).map((e, i) =>
                                     <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} sx={{ paddingX: "8px" }} key={e._id}>
                                         <Paper>
-                                            <Box sx={{ border: "1px solid #eee", marginBottom: "20px", borderRadius: "10px", overflow: "hidden" }}>
+                                            <Box sx={{ border: "1px solid #eee", marginBottom: "20px", borderRadius: "10px", overflow: "hidden"}}>
                                                 <Box>
                                                     <Link href={`/products/${e._id}`}>
-                                                        <img src={!e.images ? "" : e.images.url ? e.images.url : e.images[0]} alt="" style={{ height: "100%", maxWidth: "100%", objectFit: "cover" }} />
+                                                        <img src={!e.images? "" : e.images.public_id ? e.images.public_id : e.images[0]} alt="" style={{ height: "100%", maxWidth: "100%", objectFit: "cover" }} />
                                                     </Link>
                                                 </Box>
                                                 <Box sx={{ padding: "1rem", textAlign: "left" }}>
@@ -106,7 +108,9 @@ const ProductsDashboard = () => {
                                                     </Typography>
                                                     <Box sx={{ marginTop: "1rem", display: "flex", justifyContent: "space-evenly" }}>
                                                         <Button variant="outlined" disableElevation size="small">
-                                                            Editar
+                                                            <Link href={`/dashboard/editProduct/${e._id}`} >
+                                                                Editar
+                                                            </Link>
                                                         </Button>
                                                         <Button variant="outlined" disableElevation size="small" onClick={() => handleDelete(e._id)}>
                                                             Borrar

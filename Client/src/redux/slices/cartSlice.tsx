@@ -12,7 +12,7 @@ type InitialState = {
 const initialState = {
     cartLoading: false,
     cartError: null,
-    cart: [],
+    cart:localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")!) : [],
     checkoutLoad: false
 } as InitialState
 

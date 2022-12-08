@@ -26,22 +26,16 @@ const Cart = () => {
   const [openPaypal, setOpenPaypal] = useState(false);
   const [checkoutError, setCheckoutError] = useState(false)
   const dispatch = useAppDispatch();
-  const { cart, cartLoading, cartError, checkoutLoad } = useAppSelector(
-    (state) => state.cart
-  );
+  const { cart, cartLoading, cartError, checkoutLoad } = useAppSelector((state) => state.cart);
   const { allData, loading } = useAppSelector((state) => state.data);
 
-  const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
   const userToken: string = localStorage.getItem("jwt") || ""
 
   // console.log("Cart state:", cart) --- []
   // console.log("Cart localstorage: ", cartProd) --- [{...}]
 
-  const subTotalPrice = cartProd?.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-  const itemRes = cartProd?.reduce((total, item) => total + item.quantity, 0);
+  const subTotalPrice = cart?.reduce((total, item) => total + item.price * item.quantity,0);
+  const itemRes = cart?.reduce((total, item) => total + item.quantity, 0);
 
   const priceData = [
     { title: "Subtotal", price: subTotalPrice },
@@ -103,7 +97,7 @@ const Cart = () => {
         <Box>
           <h1>CartError: {cartError}</h1>
         </Box>
-      ) : !cartProd?.length ? (
+      ) : !cart?.length ? (
         <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
           <Box sx={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
@@ -165,7 +159,7 @@ const Cart = () => {
                     </Typography>
                   </Box>
                   <Box sx={{ marginTop: "2.5rem" }}>
-                    {cartProd?.map((e, i) => (
+                    {cart?.map((e, i) => (
                       <Box key={i + 1} className={s.productsContainer}>
                         <Box
                           sx={{
@@ -350,7 +344,7 @@ const Cart = () => {
                           variant="contained"
                           disableElevation
                           className={s.addButton}
-                          onClick={() => handleStripeCheckout(cartProd)}
+                          onClick={() => handleStripeCheckout(cart)}
                           disabled={checkoutLoad}
                         >
                           Checkout

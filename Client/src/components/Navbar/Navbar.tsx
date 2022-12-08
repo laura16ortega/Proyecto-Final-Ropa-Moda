@@ -37,13 +37,7 @@ import ListItemText from "@mui/material/ListItemText";
 export const Navbar = () => {
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.cart); // Actualiza numeros del carro
-  const cartItems = localStorage.getItem("cart")
-    ? JSON.parse(localStorage.getItem("cart")!)
-    : [];
-  const itemRes = cartItems?.reduce(
-    (total: number, item: mappedDbProductsType) => total + item.quantity,
-    0
-  );
+  const { fav } = useAppSelector((state) => state.fav); // Actualiza numeros del carro
 
   const favItems = localStorage.getItem("fav")
     ? JSON.parse(localStorage.getItem("fav")!)

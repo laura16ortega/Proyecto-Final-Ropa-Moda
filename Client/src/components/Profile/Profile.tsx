@@ -4,6 +4,7 @@ import * as React from "react";
 import {Avatar, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Grid, Box,Typography,} from "@mui/material"
 import { getUserInfo } from "../../redux/thunk-actions/authActions";
 import Button, { buttonClasses } from "@mui/material/Button";
+import { useNotification } from "../../components/UseNotification/UseNotification";
 
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -24,61 +25,100 @@ type User = {
 };
 
 function Profile(props: any) {
+  const { displayNotification } = useNotification();
+  const { clearNotification } = useNotification();
   const dispatch = useAppDispatch()
   const theme = createTheme();
   const { user }= useAppSelector((state) => state.auth);
-  const perfil = localStorage.getItem("userInfo");
-
-  
-  console.log(window.localStorage.getItem('jwt'))
-
   const [editName, setEditName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-
   const [input, setInput] = React.useState<any>({});
-
   const token = window.localStorage.getItem('jwt')
-  const userId = user.userId
-/*   const obj1 = {
-    token:{token},
-    userId:{userId}
-  } */
+  const userId = user.userId ? user.userId : window.localStorage.getItem('userId');
+  const [editProfile, setEditProfile] = useState(false);
 
+  const [error, setError] = React.useState<any>({});
+
+
+  useEffect(() => { 
+   validateEdit(input);
+    
+  },[error, editProfile])
+
+  type errorType = {
+    [key: string]: any;
+  }
+  
+  const validateEdit = (input: any) => {
+    const error: errorType = {}
+
+    if(input.fullName?.length < 4) error.fullName = displayNotification({ message: `Ingresar minimo 4 caracteres`, type: "warning" })
+
+   /*  if(filter.test(input.email)) error.email = displayNotification({message: "Ingrese un e-mail valido", type:"warning"})  */
+    return error  
+  }
+  
   const submitHandler = async (event: React.FormEvent<HTMLButtonElement>) => {
+    if (Object.keys(error).length > 0) {
+      return displayNotification({message:"Completa los campos correctamente", type: "warning"})
+    } else {
     try{
+
       event.preventDefault()
+      clearNotification()
+      if(!(input.fullName?.length < 4) || input.email?.length.includes('@')) displayNotification({ message: "*Ingresar minimo 4 caracteres", type: "warning" });
+      
+      const userCredentials = {
+        token: token,
+        userId: userId,
+      };
+      
+    
       const { data } = await axios.patch(`http://localhost:3001/api/v1/users/updateUser`, input, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      console.log(data)
-      
       setEditName(false);
       setEditEmail(false);
+      if(userId) window.localStorage.setItem('userId',userId)
+     
+      const sendUserInfo = await dispatch(getUserInfo(userCredentials))
       
-      return data;
+      displayNotification({message:"Cambio efectuado satisfactoriamente", type: "success"})
+      if(data) return sendUserInfo;
+     
+      
     }catch(err){
       console.log(err)
     }
-
-
+  }
   }
 
-  const inputHandler = () => {
+  const inputHandler = ()  => {
+    
     const target = event?.target as HTMLInputElement;
+
     setInput({
       ...input,
       [`${target.name}`]: target.value,
       userId: userId
     })
+    setError(validateEdit({...input,
+    [`${target.name}`]: target.value,}))
   };
-console.log(input)
+/* console.log(input) */
+  const handleEditProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setEditProfile(!editProfile)
+  }
 
-  return (
+  return (  
     <>
+
+
       <ThemeProvider theme={theme}>
+
         <Grid container component="main" sx={{ height: "100vh" }}>
           <CssBaseline />
+          
 
           <Grid
             item
@@ -89,7 +129,15 @@ console.log(input)
             elevation={6}
             square
           >
-            <Box
+                          { editProfile  ? (
+              <Button  style={{marginBottom:'-6rem', marginLeft:'8rem'}} sx={{ mt: 3, mb: 2 }} onClick={(event) => handleEditProfile(event)} >
+                      <CheckIcon /> Hecho
+                    </Button>) : (                          <Button style={{marginBottom:'-6rem', marginLeft:'6rem'}} sx={{ mt: 3, mb: 2 }} onClick={(event) => handleEditProfile(event)} >
+                      <EditIcon /> Editar datos
+                    </Button>)}
+
+
+            { editProfile ? (<Box
               sx={{
                 my: 5,
                 mx: 0,
@@ -98,6 +146,7 @@ console.log(input)
                 alignItems: "center",
               }}
             >
+              
               <Avatar
                 sx={{
                   m: 7,
@@ -106,15 +155,16 @@ console.log(input)
                   height: 106,
                 }}
               ></Avatar>
-
+              <div>  </div>
               <div
                 style={{ display: "flex", flexDirection: "row" }}
               >
+
                 {editName ? (
                   <div>
                     <TextField
                       margin="normal"
-                      required
+                      required  
                       id="fullName"
                       label="Nuevo nombre"
                       name="fullName"
@@ -144,6 +194,7 @@ console.log(input)
                       variant="h5"
                       style={{ width: "10rem" }}
                     >
+                   
                       {user.fullName}
                     </Typography>
                   </div>
@@ -160,20 +211,6 @@ console.log(input)
                 )}
 
               </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
               <div
                 style={{ display: "flex", flexDirection: "row" }}
@@ -225,8 +262,58 @@ console.log(input)
                 )}
               </div>
 
+              <Box
+                component="form"
+                /* noValidate */
+                sx={{ mt: 1 }}
+              >
+                <Grid container></Grid>
+              </Box>
+            </Box>) 
+            : /* Arriba perfil editable, abajo perfil no editable */
+            (
+              <Box
+              sx={{
+                my: 5,
+                mx: 0,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar
+                sx={{
+                  m: 7,
+                  bgcolor: "secondary.main",
+                  width: 106,
+                  height: 106,
+                }}
+              ></Avatar>
+              <div>  </div>
+              <div
+                style={{ display: "flex", flexDirection: "row" }}
+              >
 
 
+                  <div>
+                    <Typography
+                      component="h1"
+                      variant="h5"
+                      style={{ width: "10rem" }}
+                    >
+                      {user.fullName}
+                    </Typography>
+                  </div>
+              </div>
+              <div
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                  <div>
+              <Typography style={{ marginTop: "1rem" }}>
+                {user.email}
+              </Typography>
+                  </div>
+              </div>
               <Box
                 component="form"
                 /* noValidate */
@@ -235,23 +322,9 @@ console.log(input)
                 <Grid container></Grid>
               </Box>
             </Box>
+            )}
+
           </Grid>
-          {/* <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: "url(https://images.unsplash.com/photo-1665398288056-8da669cc7909?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1635&q=80)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "left",
-          }}
-        /> */}
         </Grid>
       </ThemeProvider>
     </>
