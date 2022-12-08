@@ -173,7 +173,7 @@ export const Navbar = () => {
               color="inherit"
               aria-label="logo"
             >
-              <Badge badgeContent={itemRes} color="warning" max={99}>
+              <Badge color="warning" max={99}>
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -328,7 +328,7 @@ export const Navbar = () => {
                       color="inherit"
                       aria-label="logo"
                     >
-                      <Badge badgeContent={itemRes} color="warning" max={99}>
+                      <Badge color="warning" max={99}>
                         <ShoppingCartIcon />
                       </Badge>
                     </IconButton>
