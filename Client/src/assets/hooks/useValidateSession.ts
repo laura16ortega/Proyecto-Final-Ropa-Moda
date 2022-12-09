@@ -20,8 +20,9 @@ export const useValidateSession = () => {
         fullName:user?.nickname,
         email: user?.email,
         image: user?.picture,
-        userId: uuidv4(),
+        userId: uuidv4.toString()
     }
+    console.log(newUser)
 
     if(user){
         window.localStorage.setItem("User", JSON.stringify(newUser) as string);
