@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@mui/icons-material": "^5.10.15",
     "@mui/material": "^5.10.14",
+    "@mui/x-data-grid": "^5.17.14",
     "@paypal/react-paypal-js": "^7.8.1",
     "@reduxjs/toolkit": "^1.9.0",
     "@stripe/stripe-js": "^1.44.1",
