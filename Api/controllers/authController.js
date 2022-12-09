@@ -26,6 +26,7 @@ const registerCtrl = async(request,response)=>{
             
             const passHash = await encrypt(password);
             const newPhoneNumber = Number(phone_number.replace(/\s/g, ''))
+            const defaultImage = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/"
             
             //Create new User
             const user = await User.create({
@@ -33,7 +34,8 @@ const registerCtrl = async(request,response)=>{
                 password:passHash,
                 email,
                 phone_number: newPhoneNumber,
-                isAdmin
+                isAdmin,
+                image: defaultImage
             });
 
             
@@ -118,14 +120,15 @@ const loginCtrl = async(request,response)=>{
                 secure:true
             })
             console.log(checkIs)
-            const {isAdmin, fullName,_id} = checkIs;
+            const {isAdmin, fullName,_id, image} = checkIs;
             const loginData = {
                 token,
                 user: {
                     isAdmin,
                     fullName,
                     email,
-                    userId: _id
+                    userId: _id,
+                    image
                 }
             }
             response.status(200).json({loginData})

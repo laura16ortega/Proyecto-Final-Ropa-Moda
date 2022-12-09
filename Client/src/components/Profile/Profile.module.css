@@ -80,3 +80,27 @@
   flex-direction: column;
   align-items: center;
 }
+
+.avatarButton {
+  padding: 0 !important;
+  position: relative ;
+}
+
+.avatarButton:hover {
+  z-index: 9999 !important;
+}
+
+.avatarIcon {
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 9999 !important;
+  transition: .3s ease !important;
+  opacity: 0;
+  padding: 1.3rem;
+  background-color: rgba(1, 1, 1, 0.3);
+}
+
+.avatarIcon:hover {
+  opacity: 1;
+}

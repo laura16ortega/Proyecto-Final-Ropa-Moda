@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 export default Profile;
 import * as React from "react";
-import { Avatar, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Grid, Box, Typography, } from "@mui/material"
+import { Avatar, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Grid, Box, Typography, IconButton } from "@mui/material"
 import { getUserInfo } from "../../redux/thunk-actions/authActions";
 import Button, { buttonClasses } from "@mui/material/Button";
 import { useNotification } from "../../components/UseNotification/UseNotification";
@@ -43,7 +43,6 @@ function Profile(props: any) {
 
   useEffect(() => {
     validateEdit(input);
-
   }, [error, editProfile])
 
   type errorType = {
@@ -65,7 +64,6 @@ function Profile(props: any) {
     } else {
       try {
 
-        event.preventDefault()
         clearNotification()
         if (!(input.fullName?.length < 4) || input.email?.length.includes('@')) displayNotification({ message: "*Ingresar minimo 4 caracteres", type: "warning" });
 
@@ -85,8 +83,9 @@ function Profile(props: any) {
         const sendUserInfo = await dispatch(getUserInfo(userCredentials))
 
         displayNotification({ message: "Cambio efectuado satisfactoriamente", type: "success" })
+        setEditProfile(!editProfile)
+        setInput({})
         if (data) return sendUserInfo;
-
 
       } catch (err) {
         console.log(err)
@@ -113,6 +112,41 @@ function Profile(props: any) {
     setEditProfile(!editProfile)
   }
 
+  const widgetConfig = {
+    cloudName: "dayt0wtlk",
+    uploadPreset: "uqat49qi",
+    sources: [
+      "local",
+      "camera",
+      "url",
+      "facebook",
+      "instagram",
+      "google_drive",
+      "image_search",
+      "dropbox",
+    ],
+    showAdvancedOptions: false,
+    cropping: true,
+    multiple: false,
+  };
+
+  const widgetDisplay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    let myWidget = window.cloudinary.createUploadWidget(
+      widgetConfig,
+      (error: any, result: any) => {
+        if (!error && result && result.event === "success") {
+          setInput({
+            ...input,
+            image: result.info.url,
+            userId: userId
+          })
+        }
+      }
+    );
+    myWidget.open();
+  };
+
   return (
     <Box>
       <ThemeProvider theme={theme}>
@@ -130,13 +164,18 @@ function Profile(props: any) {
                 alignItems: "center",
               }}>
               <Box className={s.profilePhoto}>
-                <Avatar
-                  sx={{
-                    bgcolor: "secondary.main",
-                    width: 106,
-                    height: 106,
-                  }}
-                />
+                <Button className={s.avatarButton} onClick={e => widgetDisplay(e)}>
+                  <Avatar
+                    sx={{
+                      bgcolor: "secondary.main",
+                      width: 106,
+                      height: 106,
+                    }}
+                    src={input.image ? input.image : user.image}
+                    className={s.avatarEdit}
+                  />
+                  <EditIcon className={s.avatarIcon} />
+                </Button>
               </Box>
               <Box className={s.profileData}>
                 <div
@@ -188,8 +227,7 @@ function Profile(props: any) {
                     <Button onClick={e => {
                       setEditName(!editName)
                       setEditEmail(false)
-                      setInput({
-                      })
+
                     }}>
                       <EditIcon />
                     </Button>
@@ -239,17 +277,16 @@ function Profile(props: any) {
                     <Button onClick={(e) => {
                       setEditEmail(!editEmail)
                       setEditName(false)
-                      setInput({
-                      })
+
                     }}>
                       <EditIcon />
                     </Button>
                   )}
                 </div>
               </Box>
-                <Button variant="contained" disableElevation color="primary" onClick={(event) => handleEditProfile(event)} fullWidth sx={{width: "95%"}}>
-                  <CheckIcon /> Hecho
-                </Button>
+              <Button variant="contained" disableElevation color="primary" onClick={(event) => submitHandler(input)} fullWidth sx={{ width: "95%" }}>
+                <CheckIcon /> Hecho
+              </Button>
               <Box
                 component="form"
                 /* noValidate */
@@ -273,6 +310,7 @@ function Profile(props: any) {
                     width: 106,
                     height: 106,
                   }}
+                  src={user.image}
                 />
               </Box>
               <Box className={s.profileData}>
@@ -299,7 +337,7 @@ function Profile(props: any) {
                   </div>
                 </div>
               </Box>
-              <Button variant="contained" disableElevation color="primary" onClick={(event) => handleEditProfile(event)} fullWidth sx={{width: "95%"}}>
+              <Button variant="contained" disableElevation color="primary" onClick={(event) => handleEditProfile(event)} fullWidth sx={{ width: "95%" }}>
                 <EditIcon /> Editar datos
               </Button>
               <Box

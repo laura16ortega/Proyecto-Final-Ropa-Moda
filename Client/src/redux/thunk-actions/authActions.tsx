@@ -66,7 +66,14 @@ export const getUserInfo = createAsyncThunk(
                 `${BACKEND_URL}/api/v1/users/${userData.userId}`, {headers: { Authorization: `Bearer ${userData.token}`}}
             );
             window.localStorage.removeItem("User");
-            window.localStorage.setItem("User", JSON.stringify(data));
+            const {_id, fullName, email, image} = data
+            const newUser = {
+                userId: _id,
+                fullName,
+                email,
+                image
+            }
+            window.localStorage.setItem("User", JSON.stringify(newUser));
             
             console.log(data);
             return data

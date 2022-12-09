@@ -38,11 +38,12 @@ export const authSlice = createSlice({
         })
         .addCase(registerUser.fulfilled,(state,action:PayloadAction<any>)=>{
             state.userLoading = false
-            const {userId, fullName, token,email} = action.payload
+            const {userId, fullName, token,email, image} = action.payload
             state.user = {
                 userId,
                 fullName,
                 email,
+                image
             }
             state.token = token
         })
@@ -56,7 +57,16 @@ export const authSlice = createSlice({
         .addCase(getUserInfo.fulfilled, (state, action:PayloadAction<any>) => {
             state.userLoading = false
             
-            state.user = action.payload
+            // state.user = action.payload
+            console.log("get user info: ", action.payload)
+            const {_id, fullName, email, image} = action.payload
+            state.user = {
+                userId: _id,
+                fullName,
+                email,
+                image
+            }
+            //state.token = token
         })
         .addCase(getUserInfo.rejected,(state,action:PayloadAction<any>)=>{
             state.userLoading = false
