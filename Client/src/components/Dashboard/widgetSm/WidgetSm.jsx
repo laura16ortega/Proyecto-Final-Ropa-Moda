@@ -57,7 +57,7 @@ export default function WidgetSm() {
                     <span className="widgetSmUserTitle">software Engineer</span>
                 </div>
                 <button className="widgetSmButton">
-                    <Visibility/>
+                    <Visibility className="widgetSmIcon"/>
                     Display
                 </button>
             </li>
