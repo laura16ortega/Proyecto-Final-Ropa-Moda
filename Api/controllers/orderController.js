@@ -9,12 +9,12 @@ const orderRouter = express.Router();
 exports.createOrder = asyncHandler(async (req, res) => {
   const {
     orderItems,
-    shippingAddress,
     paymentMethod,
     itemsPrice,
     taxPrice,
     shippingPrice,
     totalPrice,
+    userId
   } = req.body;
   if (orderItems && orderItems.length === 0) {
     res.status(400);
@@ -22,8 +22,7 @@ exports.createOrder = asyncHandler(async (req, res) => {
   } else {
     const order = new Order({
       orderItems,
-      user: req.user._id,
-      shippingAddress,
+      user: userId,
       paymentMethod,
       itemsPrice,
       taxPrice,

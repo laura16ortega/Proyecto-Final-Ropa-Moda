@@ -66,6 +66,7 @@ const Cart = () => {
         }
         const dispatchCheckout = await dispatch(stripeCheckout(checkoutData))
         const payloadUrl = unwrapResult(dispatchCheckout)
+        window.localStorage.setItem("paymentMethod", "Credit Card")
         window.location.href = payloadUrl
       }
     } catch (e) {
@@ -77,6 +78,7 @@ const Cart = () => {
     if (!userToken) {
       displayNotification({ message: "Debes estar registrado para poder comprar", type: "info", timeout: 10000 });
     } else {
+      window.localStorage.setItem("paymentMethod", "Paypal")
       setOpenPaypal(!openPaypal);
     }
   }
