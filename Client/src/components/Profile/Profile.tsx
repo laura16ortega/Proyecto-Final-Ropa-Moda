@@ -61,6 +61,8 @@ function Profile(props: any) {
   const submitHandler = async (event: React.FormEvent<HTMLButtonElement>) => {
     if (Object.keys(error).length > 0) {
       return displayNotification({ message: "Completa los campos correctamente", type: "warning" })
+    } else if (!Object.keys(input).length) {
+      setEditProfile(!editProfile)
     } else {
       try {
 
