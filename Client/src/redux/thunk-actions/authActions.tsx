@@ -65,9 +65,18 @@ export const getUserInfo = createAsyncThunk(
             const {data}:any = await axios.get(
                 `${BACKEND_URL}/api/v1/users/${userData.userId}`, {headers: { Authorization: `Bearer ${userData.token}`}}
             );
-            window.localStorage.setItem("jwt", data.loginData.token);
-            window.localStorage.setItem("User", JSON.stringify(data.loginData.user));
-            return data.loginData
+            window.localStorage.removeItem("User");
+            const {_id, fullName, email, image} = data
+            const newUser = {
+                userId: _id,
+                fullName,
+                email,
+                image
+            }
+            window.localStorage.setItem("User", JSON.stringify(newUser));
+            
+            console.log(data);
+            return data
         }catch(error:any){
             console.log(error)
         }

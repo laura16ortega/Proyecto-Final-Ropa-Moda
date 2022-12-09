@@ -11,7 +11,7 @@ import credentials from "./auth_config.json";
 import lightTheme from "./Theme";
 import { Notification } from "./components/Notification/Notification";
 
-const link = 'http://127.0.0.1:5173/'
+const link = 'http://localhost:5173/'
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

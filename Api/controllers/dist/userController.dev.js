@@ -122,7 +122,7 @@ var updatedUser = function updatedUser(request, response) {
 
         case 2:
           user = _context3.sent;
-          console.log(user);
+          console.log("User to update: ", user);
 
           if (!user) {
             _context3.next = 22;

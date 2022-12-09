@@ -1,0 +1,9 @@
+.inputContainer {
+    display: flex;
+}
+
+@media (max-width: 900px) {
+    .inputContainer {
+        flex-direction: column;
+    }
+}
