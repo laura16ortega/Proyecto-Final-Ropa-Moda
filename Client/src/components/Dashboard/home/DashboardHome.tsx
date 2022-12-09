@@ -5,6 +5,7 @@ import {userData} from "../../../dummyData";
 import WidgetSm from "../widgetSm/WidgetSm";
 import WidgetLg from "../widgetLg/WidgetLg";
 
+
 const Home = () => {
     return (
       <div className="home">
@@ -14,6 +15,7 @@ const Home = () => {
             <WidgetSm/>
             <WidgetLg/>
           </div>
+          
       </div>
     )
   }

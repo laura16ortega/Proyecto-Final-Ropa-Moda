@@ -9,7 +9,8 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     image: {
-      type: String,
+      type: String
+      //agregar default value
     },
     email: {
       type: String,

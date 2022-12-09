@@ -7,6 +7,7 @@ import { Grid, Paper } from '@mui/material'
 import { validateEmail, forgotPassword } from '../../redux/thunk-actions/authActions';
 import { Link } from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
+//import {Outlet} from 'react-router-dom'
 
 
 const ForgotPassword = () => {
@@ -60,6 +61,7 @@ const ForgotPassword = () => {
       </Paper>
       <button onClick={()=>loginWithRedirect()}>Login</button>
     </Grid>
+    
   )
 }
 

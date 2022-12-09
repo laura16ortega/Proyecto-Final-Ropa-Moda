@@ -21,6 +21,8 @@ import LoginButton from "./components/LoginButton/LoginButton";
 import BuyConfirmed from "./pages/BuyConfirmed/BuyConfirmed";
 import FavoriteProducts from './pages/FavoriteProducts/FavoriteProducts';
 import Dashboard from './components/Dashboard/MainDashboard/MainDashboard';
+import AdminUser from './components/dashboardUser/AdminUser';
+import DashboardHome from './components/Dashboard/home/DashboardHome';
 
 function App() {
   useEffect(() => {
@@ -42,7 +44,14 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/products" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route index element={<DashboardHome/>} />
+          <Route path="users" element={<AdminUser/>} />
+          {/*<Route path="products" element={'componente productos'} /> */}
+          {/*<Route path="alguna ruta" element={'componente de alguna ruta'} /> */}
+          {/*<Route path="alguna ruta" element={'componente de alguna ruta'} /> */}
+          {/*<Route path="alguna ruta" element={'componente de alguna ruta'} /> */}
+        </Route>
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<SignInSide />} />

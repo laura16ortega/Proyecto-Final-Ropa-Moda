@@ -3,7 +3,7 @@ const User = require("../models/UserModel");
 const { generateToken } = require("../services/JwtServices");
 const passport = require("passport");
 const sendEmail = require("../services/sendMailServices")
-
+const {cloudinaryUploadImg} = require("../services/cloudinaryServices")
 
 
 //User Register
@@ -13,30 +13,28 @@ const registerCtrl = async(request,response)=>{
             password,
             email,
             phone_number,
-            isAdmin
+            isAdmin,
+            image
         } = request.body;
 
         /*if(!fullName || !password || !email || !phone_number){
             return response.status(500).json({message:"Faltan Datos del Usuario2"})
         }*/
 
+
         try{
             const checkIs = await User.findOne({email});
             if(checkIs) return response.status(500).json({message:"El email ya esta en uso!"})    
             
-            const passHash = await encrypt(password);
-            const newPhoneNumber = Number(phone_number.replace(/\s/g, ''))
-            
-            //Create new User
+            const passHash = await encrypt(password);  
             const user = await User.create({
                 fullName,
                 password:passHash,
                 email,
-                phone_number: newPhoneNumber,
-                isAdmin
+                phone_number,
+                isAdmin,
+                image
             });
-
-            
             //Generate Token
             const token = generateToken(user);
 
@@ -75,7 +73,8 @@ const registerCtrl = async(request,response)=>{
                     email,
                     isAdmin,
                     token,
-                    userId: user._id
+                    userId: user._id,
+                    image
                 }
             })
         } catch (error) {
