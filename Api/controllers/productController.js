@@ -139,7 +139,7 @@ exports.getReview = async (req, res) => {
   try {
     const { id } = req.params;
     const reviews = await Review.findById(id).populate("userId");
-    console.log(id)
+    console.log(reviews)
     if (!reviews) {
       return res.status(404).json({ message: "Review Not Found" });
     }
@@ -154,5 +154,27 @@ exports.getReview = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
+
   }
 };
+
+
+exports.deleteReview = async(req,res)=>{
+  try {
+      await Review.findByIdAndDelete(req.params.id);
+      res.status(200).json({message:"Review has been deleted successfully"})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message:error})
+  }
+}
+
+exports.getReviewById = async(req,res)=>{
+  try {
+    const review = await Review.find()
+    res.status(200).json(review)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message:error})
+  }
+}

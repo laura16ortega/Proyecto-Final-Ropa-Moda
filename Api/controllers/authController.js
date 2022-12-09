@@ -13,7 +13,8 @@ const registerCtrl = async(request,response)=>{
             password,
             email,
             phone_number,
-            isAdmin
+            isAdmin,
+            image
         } = request.body;
 
         /*if(!fullName || !password || !email || !phone_number){
@@ -35,7 +36,7 @@ const registerCtrl = async(request,response)=>{
                 email,
                 phone_number: newPhoneNumber,
                 isAdmin,
-                image: defaultImage
+                image: image || defaultImage
             });
 
             
@@ -77,7 +78,8 @@ const registerCtrl = async(request,response)=>{
                     email,
                     isAdmin,
                     token,
-                    userId: user._id
+                    userId: user._id,
+                    image
                 }
             })
         } catch (error) {
