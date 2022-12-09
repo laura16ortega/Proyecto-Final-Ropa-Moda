@@ -54,36 +54,11 @@ export default function Sidebar() {
                 </ul>
             </div>
             <div className="sidebarMenu">
-                <h3 className="sidebarTitle">Notificaciones</h3>
-                <ul className="sidebarList">
-                    <li className="sidebarListItem">
-                        <Mail className="sidebarIcon"/>
-                        Correo
-                    </li>
-                    <li className="sidebarListItem">
-                        <Feedback className="sidebarIcon"/>
-                        Retroalimentación
-                    </li>
-                    <li className="sidebarListItem">
-                        <Message className="sidebarIcon"/>
-                        Mensajes
-                    </li>
-                </ul>
-            </div>
-            <div className="sidebarMenu">
                 <h3 className="sidebarTitle">Personal</h3>
                 <ul className="sidebarList">
                     <li className="sidebarListItem ">
                         <ManageAccounts className="sidebarIcon"/>
-                        Administrador
-                    </li>
-                    <li className="sidebarListItem">
-                        <Timeline className="sidebarIcon"/>
-                        Analítica
-                    </li>
-                    <li className="sidebarListItem">
-                        <Report className="sidebarIcon"/>
-                        Informes
+                        Perfil
                     </li>
                 </ul>
             </div>
