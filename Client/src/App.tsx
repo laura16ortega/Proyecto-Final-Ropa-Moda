@@ -21,7 +21,7 @@ import LoginButton from "./components/LoginButton/LoginButton";
 import BuyConfirmed from "./pages/BuyConfirmed/BuyConfirmed";
 import FavoriteProducts from './pages/FavoriteProducts/FavoriteProducts';
 import Dashboard from './components/Dashboard/MainDashboard/MainDashboard';
-import NewUser from './components/Dashboard/newUser/NewUser';
+
 
 function App() {
   useEffect(() => {
@@ -44,7 +44,6 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/products" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="newUser" element={<NewUser />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<SignInSide />} />
