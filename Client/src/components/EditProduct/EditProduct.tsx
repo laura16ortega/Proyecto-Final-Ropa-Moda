@@ -155,7 +155,7 @@ const EditProduct = () => {
     const tallescamiseta = ["XS", "S", "M", "L", "XL", "XXL"]
 
     return (
-        <Box sx={{ backgroundColor: "#EBEFF3" }}>
+        <Box sx={{ backgroundColor: "#EBEFF3", display: "flex", flex: 1 }}>
             {detailsLoading ? <h1> load </h1> : <Container maxWidth="lg" sx={{ paddingY: "30px" }}>
                 <Box sx={{ backgroundColor: "white" }}>
                     <Formik

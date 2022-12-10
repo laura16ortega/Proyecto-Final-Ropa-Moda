@@ -50,8 +50,8 @@ const ProductsDashboard = () => {
     }
 
     return (
-        <Box sx={{ backgroundColor: "#EBEFF3" }}>
-            <Container maxWidth="lg" sx={{ paddingY: "30px" }}>
+        <Box sx={{ backgroundColor: "#EBEFF3", display: "flex", flex: 1 }}>
+            <Container maxWidth="xl" sx={{ paddingY: "30px" }}>
                 <Box>
                     <Grid container sx={{ marginBottom: "30px", display: "flex", justifyContent: "space-between", textAlign: "left", alignItems: "center" }}>
                         <Grid item md={4} xs={12}>
