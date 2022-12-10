@@ -21,25 +21,13 @@ import {
 } from './pages/index';
 import {AuthGuard,RoleGuard} from "./guards/index";
 import { PublicRoutes, PrivateRoutes } from "./models/index";
-
-
-import Profile from "./components/Profile/Profile";
-import LandingPage from "./pages/LandingPage/LandingPage";
-import Register from "./pages/Register/Register";
-import Contact from "./pages/ContactUs/Contact";
-import { useEffect } from "react";
-import CreateForm from "./pages/CreateForm/CreateForm";
-import {useAuth0} from '@auth0/auth0-react';
-import ResetPassword from "./pages/ResetPassword/ResetPassword";
-import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
-import LoginButton from "./components/LoginButton/LoginButton";
-import BuyConfirmed from "./pages/BuyConfirmed/BuyConfirmed";
-import FavoriteProducts from './pages/FavoriteProducts/FavoriteProducts';
 import Dashboard from './components/Dashboard/MainDashboard/MainDashboard';
+import Sidebar from "./components/Dashboard/sidebar/Sidebar";
+import DashboardHome from "./components/Dashboard/home/DashboardHome";
 
 
 function App() {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+  //const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
   return (
     <div className="App">
@@ -48,23 +36,6 @@ function App() {
       <Routes>
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<LandingPage />} />
-
-        <Route path="/products" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/login" element={<SignInSide />} />
-        <Route path="/products/:id" element={<DetailCard />} />
-        <Route path="/landingPage" element={<LandingPage />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot" element={<ForgotPassword />} />
-        <Route path="/resetpassword/:resetToken" element={<ResetPassword />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/create" element={<CreateForm />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path='/confirmed' element={<BuyConfirmed />} />
-        <Route path='/favoritos' element={<FavoriteProducts /> } />
-
         <Route path={PublicRoutes.PRODUCTS} element={<Home />} />
         <Route path={PublicRoutes.CART} element={<Cart />} />
         <Route path={PublicRoutes.LOGIN} element={<SignInSide />} />
@@ -84,6 +55,16 @@ function App() {
         {/* ADMIN ROUTES */}
         <Route element={<RoleGuard isAdmin={true}/>}>
           <Route path={PrivateRoutes.CREATE} element={<CreateForm />}/>
+          <Route path="/dashboard" element={<Dashboard/>}>
+              <Route index element={<DashboardHome/>}/>
+              <Route path="users" element={<><h1>Users Page</h1></>}/>
+              <Route path="products" element={<><h1>Products Page</h1></>}/>
+              <Route path="actas" element={<><h1>actas Page</h1></>}/>
+              <Route path="informes" element={<><h1>informes Page</h1></>}/>
+              <Route path="perfil" element={<><h1>perfil Page</h1></>}/>
+              <Route path="analitica" element={<><h1>analitica Page</h1></>}/>
+              <Route path="ventas" element={<><h1>ventas Page</h1></>}/>
+          </Route>
         </Route>
         
 

@@ -54,7 +54,7 @@ export const Navbar = () => {
     (total: number, item: mappedDbProductsType) => total + item.quantity,
     0
   );
-  console.log(favItems);
+
 
   const handleLogout = (event: any) => {
     event.preventDefault();

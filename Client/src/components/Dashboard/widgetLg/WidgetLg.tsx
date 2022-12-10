@@ -2,7 +2,7 @@ import "./widgetLg.css"
 
 export default function WidgetLg() {
 
-  const Button = ({type}) => {
+  const Button = ({type}:any) => {
     return <button className={"widgetLgButton " + type}>{type}</button>
   }
 

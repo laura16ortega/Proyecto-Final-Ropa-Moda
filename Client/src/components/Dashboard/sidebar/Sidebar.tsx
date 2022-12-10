@@ -13,7 +13,7 @@ export default function Sidebar() {
                 <h3 className="sidebarTitle">Dashboard</h3>
                 <ul className="sidebarList">
                     <li >
-                    <NavLink to="/dashboard/home" className="sidebarListItem" >
+                    <NavLink to="/dashboard" className="sidebarListItem" >
                         <LineStyle className="sidebarIcon"/>
                         Home
                     </NavLink>
@@ -41,15 +41,19 @@ export default function Sidebar() {
                     <NavLink to="/dashboard/products" className="sidebarListItem">
                         <Storefront className="sidebarIcon"/>
                         Productos
-                        </NavLink>
+                    </NavLink>
                     </li>
                     <li className="sidebarListItem">
-                        <Paid className="sidebarIcon"/>
+                    <NavLink to="/dashboard/actas" className="sidebarListItem">
+                        <Storefront className="sidebarIcon"/>
                         Actas
+                    </NavLink>
                     </li>
                     <li className="sidebarListItem">
-                        <Assessment className="sidebarIcon"/>
+                    <NavLink to="/dashboard/informes" className="sidebarListItem">
+                        <Storefront className="sidebarIcon"/>
                         Informes
+                    </NavLink>
                     </li>
                 </ul>
             </div>
@@ -58,7 +62,10 @@ export default function Sidebar() {
                 <ul className="sidebarList">
                     <li className="sidebarListItem ">
                         <ManageAccounts className="sidebarIcon"/>
-                        Perfil
+                        <NavLink to="/dashboard/perfil">
+                            Perfil
+
+                        </NavLink>
                     </li>
                 </ul>
             </div>
