@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from "../../assets/hooks"
 import axios from "axios"
 import { createOrder } from '../../redux/thunk-actions/orderActions';
+import { clearCart } from '../../redux/slices/cartSlice';
 
 function BuyConfirmed(props: any) {
     const dispatch = useAppDispatch()
@@ -48,8 +49,7 @@ function BuyConfirmed(props: any) {
 
     useEffect(() => {
         dispatch(createOrder(orderData))
-        window.localStorage.setItem("cart", JSON.stringify([]))
-        // Limpiar state del carro tambien
+        dispatch(clearCart())
         return () => {
             window.localStorage.removeItem("paymentMethod")
         }
