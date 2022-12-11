@@ -4,6 +4,28 @@ const asyncHandler = require("express-async-handler");
 
 const orderRouter = express.Router();
 
+//
+
+exports.getAllOrders = async (req, res) => {
+  //La función callback se llama Route Handler
+  try {
+    //EXECUTE THE QUERY
+    const keyword = req.query.keyword
+      ? { name: { $regex: req.query.keyword, $options: "i" } }
+      : {};
+    const orders = await Order.find({ ...keyword }); //esto va a devolver una promesa, por eso usamos await
+
+    //SEND RESPONSE
+    res.status(203).json({
+      status: "success",
+      results: orders.length,
+      data: { orders },
+    });
+  } catch (err) {
+    res.status(404).json({ status: "fail", message: err });
+  }
+};
+
 //CREATE ORDER
 
 exports.createOrder = asyncHandler(async (req, res) => {

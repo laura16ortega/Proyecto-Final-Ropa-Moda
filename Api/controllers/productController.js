@@ -24,6 +24,32 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
+exports.getFilteredProducts = async (req, res) => {
+  //La función callback se llama Route Handler
+  try {
+    //EXECUTE THE QUERY
+    //1) Filtering
+    const queryObj = { ...req.query };
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => delete queryObj[el]);
+
+    //2) Advanced filtering
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    // this.query = this.query.find(JSON.parse(queryStr));
+    let query = Product.find(JSON.parse(queryStr)); //lo llamamos como query sin el await para poder encadenar métodos como sort, limit, y otros, con await no se puede
+    const products = await query;
+    //SEND RESPONSE
+    res.status(203).json({
+      status: "success",
+      results: products.length,
+      data: { products },
+    });
+  } catch (err) {
+    res.status(404).json({ status: "fail", message: err });
+  }
+};
+
 exports.getProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -139,7 +165,7 @@ exports.getReview = async (req, res) => {
   try {
     const { id } = req.params;
     const reviews = await Review.findById(id).populate("userId");
-    console.log(id)
+    console.log(id);
     if (!reviews) {
       return res.status(404).json({ message: "Review Not Found" });
     }
