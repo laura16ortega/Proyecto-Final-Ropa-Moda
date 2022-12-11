@@ -30,21 +30,10 @@ export const testSlice = createSlice({
   initialState,
   reducers: {
     filterSearch: (state, action: PayloadAction<string>) => {
-      
-      const filteredCards =
-        state.allData &&
-        state.allData.filter((card) => {
-          
-          return card.name
-            .toLowerCase()
-            .includes(action.payload.toLowerCase());
-        });
-
-
+      const filterBackup = state.dataBackup.filter((card)=>card.name.toLowerCase().includes(action.payload.toLowerCase()));
       return {
         ...state,
-
-        allData: filteredCards
+        allData: filterBackup
       };
     },
     filterElements: (state, action: PayloadAction<FilterTypedState>) => {

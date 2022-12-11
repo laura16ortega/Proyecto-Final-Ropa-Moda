@@ -12,6 +12,7 @@ import {
   increaseCartQuantity,
   decreaseCartQuantity,
   removeCartItem,
+  clearCart
 } from "../../redux/slices/cartSlice";
 
 import { useNotification } from '../../components/UseNotification/UseNotification';
@@ -20,6 +21,7 @@ import { getAllProducts } from "../../redux/thunk-actions/testActions";
 import CartSlider from "../../components/CartSlider/CartSlider";
 import { stripeCheckout } from "../../redux/thunk-actions/cartActions";
 import { unwrapResult } from '@reduxjs/toolkit'
+import { createOrder } from "../../redux/thunk-actions/orderActions";
 
 const Cart = () => {
   const { displayNotification } = useNotification();
@@ -28,6 +30,7 @@ const Cart = () => {
   const dispatch = useAppDispatch();
   const { cart, cartLoading, cartError, checkoutLoad } = useAppSelector((state) => state.cart);
   const { allData, loading } = useAppSelector((state) => state.data);
+  const { user } = useAppSelector(state => state.auth)
 
   const userToken: string = localStorage.getItem("jwt") || ""
 
@@ -66,6 +69,7 @@ const Cart = () => {
         }
         const dispatchCheckout = await dispatch(stripeCheckout(checkoutData))
         const payloadUrl = unwrapResult(dispatchCheckout)
+        window.localStorage.setItem("paymentMethod", "Credit Card")
         window.location.href = payloadUrl
       }
     } catch (e) {
@@ -77,8 +81,40 @@ const Cart = () => {
     if (!userToken) {
       displayNotification({ message: "Debes estar registrado para poder comprar", type: "info", timeout: 10000 });
     } else {
+      window.localStorage.setItem("paymentMethod", "Paypal")
       setOpenPaypal(!openPaypal);
     }
+  }
+
+  const orderItems = cart?.map((e) => {
+    return {
+        name: e.name,
+        qty: e.quantity,
+        image: e.images[0],
+        price: e.price,
+        product: e._id
+    }
+})
+
+  const onPaypalApprove = async (data: any, actions: any) => {
+    const details = await actions.order?.capture()
+
+    const name = details?.payer.name?.given_name
+
+    const orderData = {
+      orderItems, 
+      paymentMethod: "Paypal",
+      itemsPrice: subTotalPrice,
+      taxPrice: 0,
+      shippingPrice: 0,
+      totalPrice: subTotalPrice,
+      userId: user.userId
+    }
+
+    dispatch(createOrder(orderData))
+    dispatch(clearCart())
+    window.localStorage.removeItem("paymentMethod")
+    displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type: "success" })
   }
 
   useEffect(() => {
@@ -385,15 +421,7 @@ const Cart = () => {
                               ],
                             });
                           }}
-                            onApprove={async (data, actions) => {
-                              const details = await actions.order?.capture()
-
-                              const name = details?.payer.name?.given_name
-                              console.log(details);
-                              displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type: "success" })
-
-
-                            }}
+                            onApprove={(data, actions) => onPaypalApprove(data, actions)}
                           />
                         </PayPalScriptProvider> : <div></div>}
                       </Box>

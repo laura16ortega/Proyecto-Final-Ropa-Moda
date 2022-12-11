@@ -21,10 +21,15 @@ import {
 } from './pages/index';
 import {AuthGuard,RoleGuard} from "./guards/index";
 import { PublicRoutes, PrivateRoutes } from "./models/index";
+import Dashboard from './components/Dashboard/MainDashboard/MainDashboard';
+import Sidebar from "./components/Dashboard/sidebar/Sidebar";
+import DashboardHome from "./components/Dashboard/home/DashboardHome";
+import ProductsDashboard from "./components/ProductsDashboard/ProductsDashboard";
+import EditProduct from "./components/EditProduct/EditProduct";
 
 
 function App() {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+  //const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
   return (
     <div className="App">
@@ -52,10 +57,22 @@ function App() {
         {/* ADMIN ROUTES */}
         <Route element={<RoleGuard isAdmin={true}/>}>
           <Route path={PrivateRoutes.CREATE} element={<CreateForm />}/>
+          <Route path="/dashboard" element={<Dashboard/>}>
+              <Route index element={<DashboardHome/>}/>
+              <Route path="users" element={<><h1>Users Page</h1></>}/>
+              <Route path="products" element={<ProductsDashboard/>}/>
+              <Route path="editProduct/:id" element={<EditProduct/>}/>
+              <Route path="actas" element={<><h1>actas Page</h1></>}/>
+              <Route path="informes" element={<><h1>informes Page</h1></>}/>
+              <Route path="perfil" element={<><h1>perfil Page</h1></>}/>
+              <Route path="analitica" element={<><h1>analitica Page</h1></>}/>
+              <Route path="ventas" element={<><h1>ventas Page</h1></>}/>
+          </Route>
         </Route>
         
 
         {/* CREAR RUTA Y PAGINA 404 NOT FOUND */}
+
       </Routes>
       
       <Footer />

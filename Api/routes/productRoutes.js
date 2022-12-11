@@ -24,7 +24,12 @@ router
 
 router
   .route("/review/:id")
-  .post(verifyToken, uploadPhoto.single("file"), productController.addReveiw)
-  .get(productController.getReview);
+  .post(verifyToken,uploadPhoto.single('file'), productController.addReveiw)
+  .get(productController.getReview)
+  .delete(productController.deleteReview)
+  
+
+
+  
 
 module.exports = router;
