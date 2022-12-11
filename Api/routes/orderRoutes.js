@@ -4,6 +4,10 @@ const router = express.Router();
 
 //ROUTES
 
-router.route("/").post(orderController.createOrder);
+router
+  .route("/")
+  .post(orderController.createOrder)
+  .get(orderController.getAllOrders);
+router.route("/:id").get(orderController.getOrderById);
 
 module.exports = router;
