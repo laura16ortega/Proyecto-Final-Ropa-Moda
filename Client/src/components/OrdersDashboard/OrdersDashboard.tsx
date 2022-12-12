@@ -30,7 +30,9 @@ const OrdersDashboard = () => {
     const { ordersLoading, ordersError, orders } = useAppSelector(state => state.order)
 
     useEffect(() => {
-        dispatch(getOrders())
+        if (!orders.length) {
+            dispatch(getOrders())
+        }
     }, [])
 
     const handlePagination = (event: any, newPage: number) => {
