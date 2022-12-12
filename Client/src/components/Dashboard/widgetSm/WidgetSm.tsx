@@ -16,6 +16,7 @@ export default function WidgetSm() {
                     <Visibility/>
                     Display
                 </button>
+                
             </li>
             <li className="widgetSmListItem">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetSmImg" />
