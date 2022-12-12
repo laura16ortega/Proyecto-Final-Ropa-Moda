@@ -3,7 +3,7 @@ export type OrderItems = {
     name: string
     product: string
     qty: number
-    _id: string
+    price: number
 }
 
 type UserOrderType = {

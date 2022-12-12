@@ -106,7 +106,7 @@ const FavoriteProducts = () => {
                         >
                           <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
                             <img
-                              src={!e.images ? "" : e.images.url ? e.images.url : e.images[0]}
+                              src={e.images.public_id}
                               alt=""
                               className={s.productImage}
                             />

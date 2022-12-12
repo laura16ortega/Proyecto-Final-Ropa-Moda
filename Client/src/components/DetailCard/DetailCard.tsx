@@ -145,13 +145,7 @@ export default function DetailCard() {
                   <Box>
                     <Box>
                       <img
-                        src={
-                          !productDetails.images
-                            ? ""
-                            : productDetails.images.public_id
-                              ? productDetails.images.public_id
-                              : productDetails.images[0]
-                        }
+                        src={productDetails?.images.public_id}
                         alt={`${productDetails?.name} not found`}
                         style={{ width: "100%" }}
                       />
