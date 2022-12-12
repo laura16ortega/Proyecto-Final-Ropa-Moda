@@ -1,10 +1,11 @@
 import "./chart.css"
 import { LineChart, Line, XAxis,  CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Box, Typography } from "@mui/material"
+import { Box, Typography, Paper } from "@mui/material"
 
 export default function Chart({title, data, dataKey, grid}:any) {
 
   return (
+    <Paper elevation={5}>
     <Box className="chart">
         <Typography variant="h5" className="chartTitle">{title}</Typography>
         <ResponsiveContainer width="100%" aspect={4 / 1}>
@@ -16,5 +17,6 @@ export default function Chart({title, data, dataKey, grid}:any) {
             </LineChart>
         </ResponsiveContainer>
     </Box>
+    </Paper>
   )
 }

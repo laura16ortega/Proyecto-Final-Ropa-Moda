@@ -24,7 +24,9 @@ const ProductsDashboard = () => {
                 displayNotification({ message: "Producto eliminado con exito", type: "success" })
             }, 500);
         }
-        dispatch(getAllProducts())
+        else if (!allData.length) {
+            dispatch(getAllProducts())
+        }
     }, [deleteLoading])
 
     let maximo = allData.length / 10

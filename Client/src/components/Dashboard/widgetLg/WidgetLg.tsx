@@ -9,14 +9,18 @@ import {
   TableHead,
   TableRow,
   Grid,
-  Card
+  Card,
+  Avatar
 } from "@mui/material"
+import { OrderType } from "../../../redux/types/orderTypes"
 
-type WidgetProps = {
-  orderData: any //slicear(0, 5) Mapear data 
+type WidgetLgProps = {
+  orderData: OrderType[] //slicear(0, 5) Mapear data 
 }
 
-export default function WidgetLg() {
+export default function WidgetLg({ orderData }: WidgetLgProps) {
+
+  // 2 Jun 2022
 
   const Button = ({ type }: any) => {
     return <button className={"widgetLgButton " + type}>{type}</button>
@@ -37,33 +41,22 @@ export default function WidgetLg() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetLgImg" />
-                  <span className="widgetLgName">Susan Carol</span>
-                </TableCell>
-                <TableCell>2 Jun 2022</TableCell>
-                <TableCell>$122.0</TableCell>
-                <TableCell><Button type="Pendiente" /></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetLgImg" />
-                  <span className="widgetLgName">Susan Carol</span>
-                </TableCell>
-                <TableCell>2 Jun 2022</TableCell>
-                <TableCell>$122.0</TableCell>
-                <TableCell><Button type="Rechazado" /></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetLgImg" />
-                  <span className="widgetLgName">Susan Carol</span>
-                </TableCell>
-                <TableCell>2 Jun 2022</TableCell>
-                <TableCell>$122.0</TableCell>
-                <TableCell><Button type="Aprobado" /></TableCell>
-              </TableRow>
+              {orderData.map((e, i) =>
+                <TableRow key={i}>
+                  <TableCell sx={{display: "flex", alignItems: "center"}}>
+                    <Avatar src={e.user.image} sx={{marginRight: "15px"}}/>
+                    {e.user.fullName}
+                  </TableCell>
+                  <TableCell>{`${new Date(e.createdAt).toLocaleString()}`}</TableCell>
+                  <TableCell>{`$${e.totalPrice}.0`}</TableCell>
+                  <TableCell>
+                    {!e.isDelivered ? <Button type="Pendiente" />
+                      : !e.isPaid ? <Button type="Rechazado" />
+                        : <Button type="Aprobado" />
+                    }
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
