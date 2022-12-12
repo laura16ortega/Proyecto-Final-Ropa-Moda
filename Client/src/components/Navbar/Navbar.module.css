@@ -3,3 +3,40 @@
   height: 50px;
   margin-top: 5px;
 }
+
+.logos {
+  display: inline-block;
+  margin: 6px;
+  list-style-type: none;
+}
+
+.logoResponsive {
+  display: none;
+}
+
+input:checked {
+  margin: 1000px;
+}
+
+input {
+  display: none;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 736px) {
+  .logoResponsive {
+    display: block;
+  }
+
+  .logos {
+    position: fixed;
+    width: 100%;
+    top: 80px;
+    left: -100%;
+    list-style-type: none;
+    list-style: none;
+  }
+
+  .container {
+    width: 100%;
+  }
+}

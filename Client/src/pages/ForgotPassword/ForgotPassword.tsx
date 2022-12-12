@@ -6,13 +6,13 @@ import { useAppDispatch } from "../../assets/hooks";
 import { Grid, Paper } from '@mui/material'
 import { validateEmail, forgotPassword } from '../../redux/thunk-actions/authActions';
 import { Link } from "react-router-dom";
-import {useAuth0} from "@auth0/auth0-react";
+
 
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const dispatch = useAppDispatch();
-  const {loginWithRedirect} = useAuth0();
+
 
   const forgotSubmit = async(e:any)=>{
     e.preventDefault();
@@ -31,6 +31,8 @@ const ForgotPassword = () => {
       return toast.error("Email not Found")
     }
   }
+
+
 
   return (
     <Grid>
@@ -58,7 +60,6 @@ const ForgotPassword = () => {
               theme="light"/>
         </form>
       </Paper>
-      <button onClick={()=>loginWithRedirect()}>Login</button>
     </Grid>
   )
 }

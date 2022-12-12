@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import {useState} from "react";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -31,9 +31,30 @@ interface FormValues{
   password: string;
   confirmPassword: string;
   termsAndConditions?: boolean;
+  image: string
 }
+const widgetConfig = {
+  cloudName: "dayt0wtlk",
+  uploadPreset: "gmykq3nv",
+  sources: [
+    "local",
+    "camera",
+    "url",
+    "facebook",
+    "instagram",
+    "google_drive",
+    "image_search",
+    "dropbox",
+  ],
+  showAdvancedOptions: false,
+  cropping: true,
+  multiple: false,
+};
 
 const Register = () => {
+  const [fileValue, setFileValue] = useState({
+    image: "",
+  });
   const { displayNotification } = useNotification();
   const dispatch = useAppDispatch();
   const paperStyle = { padding: "30px 20px", width: 500, margin: "20px auto" };
@@ -49,8 +70,23 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     termsAndConditions: false,
+    image:""
   };
-
+  const widgetDisplay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    let myWidget = window.cloudinary.createUploadWidget(
+      widgetConfig,
+      (error: any, result: any) => {
+        if (!error && result && result.event === "success") {
+          console.log(result);
+          setFileValue({
+            image: result.info.url,
+          });
+        }
+      }
+    );
+    myWidget.open();
+  };
   const validationSchema = Yup.object().shape({
     fullName: Yup.string().min(3, "Es Demasiado Corto").required("Required "),
     email: Yup.string().email("Ingrese un email valido").required("Required"),
@@ -72,11 +108,17 @@ const Register = () => {
     ),
   });
 
- 
   const onSubmit = async(values: FormValues) => {
     try {
       const {fullName, password, email, phone_number} = values 
-      const registerDispatch = await dispatch(registerUser({fullName, password, email, phone_number}));
+      const newUser = {
+        image:fileValue.image,
+        fullName,
+        password,
+        email,
+        phone_number
+      }
+      const registerDispatch = await dispatch(registerUser(newUser));
       unwrapResult(registerDispatch)
       displayNotification({
         message: "Se registró satisfactoriamente ! ",
@@ -93,6 +135,9 @@ const Register = () => {
     }
   };
 
+  
+  
+  
   return (
     <Grid>
       <Paper elevation={20} style={paperStyle}>
@@ -164,7 +209,16 @@ const Register = () => {
                 placeholder="Enter you phone number"
                 helperText={<ErrorMessage name="phone_number" />}
               />
-
+              <Button
+                  sx={{
+                    marginTop: "3rem",
+                    border: "solid 2px #ced4da",
+                    color: "#ced4da",
+                  }}
+                  onClick={(e) => widgetDisplay(e)}
+                >
+                  Subir Imagen...
+                </Button>
               <Field
                 as={TextField}
                 fullWidth
@@ -193,7 +247,7 @@ const Register = () => {
               <FormHelperText>
                 <ErrorMessage name="termsAndConditions" />
               </FormHelperText>
-
+              
               <Button
                 type="submit"
                 variant="contained"

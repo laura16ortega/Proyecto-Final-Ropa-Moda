@@ -13,7 +13,7 @@ export default function Sidebar() {
                 <h3 className="sidebarTitle">Dashboard</h3>
                 <ul className="sidebarList">
                     <li >
-                    <NavLink to="/dashboard/home" className="sidebarListItem" >
+                    <NavLink to="/dashboard" className="sidebarListItem" >
                         <LineStyle className="sidebarIcon"/>
                         Home
                     </NavLink>
@@ -41,32 +41,19 @@ export default function Sidebar() {
                     <NavLink to="/dashboard/products" className="sidebarListItem">
                         <Storefront className="sidebarIcon"/>
                         Productos
-                        </NavLink>
+                    </NavLink>
                     </li>
                     <li className="sidebarListItem">
-                        <Paid className="sidebarIcon"/>
+                    <NavLink to="/dashboard/actas" className="sidebarListItem">
+                        <Storefront className="sidebarIcon"/>
                         Actas
+                    </NavLink>
                     </li>
                     <li className="sidebarListItem">
-                        <Assessment className="sidebarIcon"/>
+                    <NavLink to="/dashboard/informes" className="sidebarListItem">
+                        <Storefront className="sidebarIcon"/>
                         Informes
-                    </li>
-                </ul>
-            </div>
-            <div className="sidebarMenu">
-                <h3 className="sidebarTitle">Notificaciones</h3>
-                <ul className="sidebarList">
-                    <li className="sidebarListItem">
-                        <Mail className="sidebarIcon"/>
-                        Correo
-                    </li>
-                    <li className="sidebarListItem">
-                        <Feedback className="sidebarIcon"/>
-                        Retroalimentación
-                    </li>
-                    <li className="sidebarListItem">
-                        <Message className="sidebarIcon"/>
-                        Mensajes
+                    </NavLink>
                     </li>
                 </ul>
             </div>
@@ -75,15 +62,10 @@ export default function Sidebar() {
                 <ul className="sidebarList">
                     <li className="sidebarListItem ">
                         <ManageAccounts className="sidebarIcon"/>
-                        Administrador
-                    </li>
-                    <li className="sidebarListItem">
-                        <Timeline className="sidebarIcon"/>
-                        Analítica
-                    </li>
-                    <li className="sidebarListItem">
-                        <Report className="sidebarIcon"/>
-                        Informes
+                        <NavLink to="/dashboard/perfil">
+                            Perfil
+
+                        </NavLink>
                     </li>
                 </ul>
             </div>

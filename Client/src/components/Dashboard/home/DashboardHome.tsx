@@ -6,7 +6,7 @@ import WidgetSm from "../widgetSm/WidgetSm";
 import WidgetLg from "../widgetLg/WidgetLg";
 import AllUsers from '../AllUsers/AllUsers';
 
-const Home = () => {
+const DashboardHome = () => {
     return (
       <div className="home">
           <FeaturedInfo/> 
@@ -22,6 +22,6 @@ const Home = () => {
     )
   }
   
-export default Home
+export default DashboardHome
 
 

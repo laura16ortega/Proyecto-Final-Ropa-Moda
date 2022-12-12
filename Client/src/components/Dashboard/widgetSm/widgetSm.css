@@ -52,4 +52,10 @@
     padding: 7px 10px;
     background-color: #eeeef7;
     color: #555;
+    cursor: pointer;
+}
+
+.widgetSmIcon{
+    font-size: 16px !important;
+    margin-right: 5px;
 }

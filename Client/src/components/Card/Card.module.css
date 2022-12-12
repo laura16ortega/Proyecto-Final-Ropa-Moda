@@ -1,35 +1,33 @@
 .image {
-    width: 100%;
-    border-radius: .5rem;
-    height: 300px;
-    object-fit: cover;
+  width: 100%;
+  border-radius: 0.5rem;
+  height: 300px;
+  object-fit: cover;
 }
 
 .title {
-    font-family: "New-Grotesk-Square" !important;
-    font-size: 2rem;
-    text-transform: uppercase;
-    margin-bottom: .5rem;
+  font-family: "New-Grotesk-Square" !important;
+  font-size: 2rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
 }
 
 .addButton {
-    border-radius: 2rem !important; 
-    padding: .75rem 2rem !important;
-    background-color: rgba(17, 17, 17, 1) !important
+  border-radius: 2rem !important;
+  padding: 0.75rem 2rem !important;
+  background-color: rgba(17, 17, 17, 1) !important;
 }
 .addButtonFav {
-    border-radius: 2rem !important; 
-    padding: .75rem !important;
-    width: 0.2rem !important;
-    
-    
+  border-radius: 2rem !important;
+  padding: 0.75rem !important;
+  width: 0.2rem !important;
 }
 
 .addButton:hover {
-    background-color: #333333 !important;
+  background-color: #333333 !important;
 }
 
 .addButton:disabled {
-    background-color: #E0E0E0 !important;
-    color: rgba(119, 119, 122, 1) !important;
+  background-color: #e0e0e0 !important;
+  color: rgba(119, 119, 122, 1) !important;
 }
