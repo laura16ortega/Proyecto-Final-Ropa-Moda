@@ -50,6 +50,7 @@ app.use("/", (req,res)=>{
     res.send(" ")
   }
 })
+
 // app.use("/api/v1/users", userRouter); //middleware
 app.use(express.static(`${__dirname}/public`));
 
