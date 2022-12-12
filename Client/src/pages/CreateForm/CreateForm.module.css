@@ -82,6 +82,23 @@
 
 .inputInfo {
   border-color: white;
+  color: white !important;
+}
+
+.inputInfo input {
+  color: white !important
+}
+
+.inputInfo textarea {
+  color: white !important;
+}
+
+.inputInfo label {
+  color: white !important;
+}
+
+.inputInfo div {
+  color: white !important;
 }
 
 .inputInfo div::before {
