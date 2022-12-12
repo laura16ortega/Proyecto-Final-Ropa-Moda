@@ -122,7 +122,7 @@ var updatedUser = function updatedUser(request, response) {
 
         case 2:
           user = _context3.sent;
-          console.log(user);
+          console.log("User to update: ", user);
 
           if (!user) {
             _context3.next = 22;
@@ -176,6 +176,7 @@ var updatedUser = function updatedUser(request, response) {
 
 
 var deleteUser = function deleteUser(request, response) {
+  var allUsers;
   return regeneratorRuntime.async(function deleteUser$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
@@ -185,25 +186,42 @@ var deleteUser = function deleteUser(request, response) {
           return regeneratorRuntime.awrap(User.findByIdAndDelete(request.params.id));
 
         case 3:
+          if (!request.body.returnUsers) {
+            _context4.next = 10;
+            break;
+          }
+
+          _context4.next = 6;
+          return regeneratorRuntime.awrap(getAllUsers());
+
+        case 6:
+          allUsers = _context4.sent;
+          response.status(200).send(allUsers);
+          _context4.next = 11;
+          break;
+
+        case 10:
           response.status(200).json({
             message: "User has been deleted succesfully"
           });
-          _context4.next = 9;
+
+        case 11:
+          _context4.next = 16;
           break;
 
-        case 6:
-          _context4.prev = 6;
+        case 13:
+          _context4.prev = 13;
           _context4.t0 = _context4["catch"](0);
           response.status(500).json({
             message: _context4.t0
           });
 
-        case 9:
+        case 16:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 6]]);
+  }, null, null, [[0, 13]]);
 }; //Update User Password
 
 
