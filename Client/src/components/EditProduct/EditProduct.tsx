@@ -277,7 +277,7 @@ const EditProduct = () => {
                                     <Grid item md={6} xs={12}>
                                         <Box sx={{ padding: "10px", display: "flex", flexDirection: "column" }}>
                                             <Box>
-                                                <img src={file.public_id ? file.public_id : productDetails?.images.public_id}
+                                                <img src={file.public_id ? file.public_id : productDetails?.images?.public_id}
                                                 alt={`${productDetails.name}`}
                                                 style={{ height: "auto", width: "100%", objectFit: "cover", border: "1px solid rgba(1, 1, 1, 0.3)" }} />
                                             </Box>

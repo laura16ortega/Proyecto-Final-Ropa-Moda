@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { deleteProduct, editProduct, getAllProducts } from "../thunk-actions/testActions";
+import { deleteProduct, editProduct, getAllBrands, getAllProducts } from "../thunk-actions/testActions";
 import { mappedDbProductsType } from "../types/productTypes"
 
 type InitialState = {
@@ -9,6 +9,7 @@ type InitialState = {
   dataBackup: mappedDbProductsType[];
   deleteLoading: boolean
   updateLoading: boolean
+  brands: string[]
 };
 
 const initialState = {
@@ -17,7 +18,8 @@ const initialState = {
   allData: [],
   dataBackup: [],
   deleteLoading: false,
-  updateLoading: false
+  updateLoading: false,
+  brands: []
 } as InitialState;
 
 type FilterTypedState = {
@@ -38,6 +40,7 @@ export const testSlice = createSlice({
     },
     filterElements: (state, action: PayloadAction<FilterTypedState>) => {
       const filters = action.payload;
+      console.log("filters state: ", filters)
       const cleanFilters = Object.fromEntries(Object.entries(filters).filter(([_, val]) => val.length > 0)) // Elimina objetos del filtrado que esten vacios
       const filteredCards =
         state.dataBackup &&
@@ -100,7 +103,11 @@ export const testSlice = createSlice({
       })
       .addCase(editProduct.fulfilled, (state, action) => {
         state.updateLoading = false
-      });
+      })
+      .addCase(getAllBrands.fulfilled, (state, action: PayloadAction<string[]>) => {
+        state.brands = action.payload
+      })
+      ;
   },
 });
 
