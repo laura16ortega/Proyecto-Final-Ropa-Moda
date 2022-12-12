@@ -14,6 +14,7 @@ import {
   Checkbox,
   FormGroup,
   Input,
+  ButtonGroup
 } from "@mui/material";
 import { Formik, FormikHelpers, Form, Field } from "formik";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -28,14 +29,37 @@ import { tallasCamiseta, tallasPantalon } from "./create-form-types";
 import { useAppDispatch } from "../../assets/hooks";
 import { createProduct } from "../../redux/thunk-actions/testActions";
 import { useNavigate } from "react-router-dom";
+import { PRODUCT_FORM_VALIDATOR_SCHEMA } from "../../assets/hooks/useCreateForm"
+
+type InitialValue = {
+  category: string,
+  gender: string,
+  images: string,
+  marca: string,
+  name: string,
+  price: number,
+  summary: string,
+  stock: number
+  tallaCamiseta: string[],
+  tallaPantalón: string[],
+  [index: string]: any // :s
+}
+
+type FieldType = {
+  title: string
+  label: string
+}
+
+type FieldProps = {
+  field: FieldType
+  form: any
+}
 
 export default function CreateForm() {
   const { register, handleSubmit, watch, setValue, formState } =
     useCreateForm();
 
   const dispatch = useAppDispatch();
-  const [sizeArr, setSizeArr] = useState<Array<string>>([]);
-  const [image, setImage] = useState<Array<any>>([]);
   const [fileValue, setFileValue] = useState({
     image: "",
   });
@@ -75,24 +99,44 @@ export default function CreateForm() {
     myWidget.open();
   };
 
-  const handleInputSelector = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    //setFileValue(e.currentTarget.value)
-    setTimeout(() => {
-      console.log(typeof e.target.value);
-    }, 5005);
+  const handleCategory = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, values: any, setFieldValue: any) => {
+    if (e.target.value === "Camiseta") {
+        setFieldValue("tallaPantalón", [])
+    } else if (e.target.value === "Pantalones") {
+        setFieldValue("tallaCamiseta", [])
+    }
+    setFieldValue(`${e.target.name}`, e.target.value)
+}
 
-    setTimeout(() => {
-      console.log("filevalue state: ", fileValue);
-    }, 5000);
-  };
+  const handleButtonGroup = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, values: string[], setFieldValue: any) => {
+    if (!values.includes(e.currentTarget.value)) {
+      setFieldValue(`${e.currentTarget.name}`, [...values, e.currentTarget.value])
+    } else {
+      setFieldValue(`${e.currentTarget.name}`, values.filter(v => v !== e.currentTarget.value))
+    }
+  }
 
-  const onChange = (e: any) => {
-    setSizeArr([...sizeArr, e.target.name]);
-  };
+  const handleFormikSubmit = (value: InitialValue) => {
+    let allData = { ...value, images: [fileValue.image] };
+    dispatch(createProduct(allData));
+    window.location.href = "/products";
+  }
 
-  let navigate = useNavigate();
+  const initialValues: InitialValue = {
+    category: "",
+    gender: "",
+    images: "",
+    marca: "",
+    name: "",
+    price: 0,
+    summary: "",
+    stock: 0,
+    tallaCamiseta: [],
+    tallaPantalón: []
+  }
+
+  const tallespantalon = ["28", "30", "32", "34"]
+  const tallescamiseta = ["XS", "S", "M", "L", "XL", "XXL"]
 
   console.log(formState.errors);
   return (
@@ -117,7 +161,7 @@ export default function CreateForm() {
               <Typography variant="h3">Precio</Typography>
             </Box>
             <Box className={styles.leftContainer}>
-              <Typography variant="h3">Descripcion</Typography>
+              <Typography variant="h3" sx={{ marginBottom: "9rem" }}>Descripcion</Typography>
             </Box>
             <Box className={styles.leftContainer}>
               <Typography variant="h3">Genero</Typography>
@@ -126,7 +170,7 @@ export default function CreateForm() {
               <Typography variant="h3">Categoria</Typography>
             </Box>
             <Box className={styles.leftContainer}>
-              <Typography variant="h3">Imagen</Typography>
+              <Typography variant="h3" sx={{marginBottom: `${fileValue.image? "6rem" : "1rem"}`}}>Imagen</Typography>
             </Box>
             <Box className={styles.leftContainer}>
               <Typography variant="h3">Stock</Typography>
@@ -139,6 +183,207 @@ export default function CreateForm() {
             </Box>
           </Grid>
           <Grid item md={6}>
+            <Formik
+              enableReinitialize
+              initialValues={initialValues}
+              validationSchema={PRODUCT_FORM_VALIDATOR_SCHEMA}
+              onSubmit={(value) => handleFormikSubmit(value)}>
+              {({ setFieldValue, values }) => (
+                <Form>
+                  <Field name="name" label="name">
+                    {({ field, form }: FieldProps) =>
+                      <TextField
+                        {...field}
+                        variant="filled"
+                        label="Nombre"
+                        fullWidth
+                        sx={{ marginX: "5px" }}
+                        color="secondary"
+                        margin='normal'
+                        className={styles.inputInfo}
+                        error={Boolean(form.errors.name)}
+                        helperText={form.errors.name && String(form.errors.name)}
+                        focused
+                      />
+                    }
+                  </Field>
+                  <Field name="price" label="price">
+                    {({ field, form }: FieldProps) =>
+                      <TextField
+                        {...field}
+                        label="Precio"
+                        className={styles.inputInfo}
+                        fullWidth
+                        id="outlined-number"
+                        variant="filled"
+                        color="secondary"
+                        type="number"
+                        error={Boolean(form.errors.price)}
+                        helperText={form.errors.price && String(form.errors.price)}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        focused
+                      />
+                    }
+                  </Field>
+                  <Field name="summary" label="summary">
+                    {({ field, form }: FieldProps) =>
+                      <TextField
+                        {...field}
+                        key={2}
+                        label="Descripcion"
+                        className={styles.inputInfo}
+                        fullWidth
+                        id="filled-basic"
+                        variant="filled"
+                        color="secondary"
+                        multiline
+                        rows={5}
+                        helperText={form.errors.summary && String(form.errors.summary)}
+                        error={Boolean(form.errors.summary)}
+                        focused
+                      />
+                    }
+                  </Field>
+                  <Field name="gender" label="gender">
+                    {({ field, form }: FieldProps) =>
+                      <TextField
+                        {...field}
+                        variant="filled"
+                        fullWidth
+                        select
+                        label="Genero"
+                        className={styles.inputInfo}
+                        defaultValue=""
+                        error={Boolean(form.errors.gender)}
+                        helperText={form.errors.gender && String(form.errors.gender)}
+                      >
+                        <MenuItem value="Hombre">Hombre</MenuItem>
+                        <MenuItem value="Mujer">Mujer</MenuItem>
+                        <MenuItem value="Unisex">Unisex</MenuItem>
+                      </TextField>
+                    }
+                  </Field>
+                  <Field name="category" label="category">
+                    {({ field, form }: FieldProps) =>
+                      <TextField
+                        {...field}
+                        variant="filled"
+                        fullWidth
+                        select
+                        label="Categoria"
+                        className={styles.inputInfo}
+                        defaultValue=""
+                        onChange={(event) => handleCategory(event, values.category, setFieldValue)}
+                        error={Boolean(form.errors.category)}
+                        helperText={form.errors.category && String(form.errors.category)}
+                      >
+                        <MenuItem value="Camiseta">Camiseta</MenuItem>
+                        <MenuItem value="Pantalones">Pantalon</MenuItem>
+                      </TextField>
+                    }
+                  </Field>
+                  <Box>
+                  <Button
+                    sx={{
+                      marginTop: "3rem",
+                      border: "solid 2px #ced4da",
+                      color: "#ced4da",
+                      width: "100%"
+                    }}
+                    onClick={(e) => widgetDisplay(e)}
+                  >
+                    Subir Imagen...
+                  </Button>
+                  {!fileValue.image ? "" : <Typography variant="subtitle1" sx={{padding: "10px", color: "white"}}>Imagen seleccionada</Typography>}
+                  </Box>
+                  <Field name="stock" label="stock">
+                    {({ field, form }: FieldProps) =>
+                      <TextField
+                        {...field}
+                        id="outlined-number"
+                        variant="filled"
+                        label="Stock"
+                        color="secondary"
+                        fullWidth
+                        margin='normal'
+                        type="number"
+                        className={styles.inputInfo}
+                        error={Boolean(form.errors.stock)}
+                        helperText={form.errors.stock && String(form.errors.stock)}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        focused
+                      />
+                    }
+                  </Field>
+                  <Field name="marca" label="marca">
+                    {({ field, form }: FieldProps) =>
+                      <TextField
+                        {...field}
+                        id="filled-basic"
+                        variant="filled"
+                        label="Marca"
+                        color="secondary"
+                        fullWidth
+                        margin='normal'
+                        className={styles.inputInfo}
+                        error={Boolean(form.errors.marca)}
+                        helperText={form.errors.marca && String(form.errors.marca)}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        focused
+                      />
+                    }
+                  </Field>
+                  <Box className={styles.inputInfo}>
+                    {values.category === "Camiseta" &&
+                      <Field name="tallaCamiseta" label="tallaCamiseta">
+                        {({ field, form }: FieldProps) =>
+                          <ButtonGroup fullWidth>
+                            {tallescamiseta.map(t =>
+                              <Button {...field} key={t} onClick={(e) => handleButtonGroup(e, values.tallaCamiseta, setFieldValue)} value={t} color={values.tallaCamiseta.includes(t) ? "info" : "secondary"}>{t}</Button>
+                            )}
+                          </ButtonGroup>
+                        }
+                      </Field>
+                    }
+                    {values.category === "Pantalones" &&
+                      <Field name="tallaPantalón" label="tallaPantalón">
+                        {({ field, form }: FieldProps) =>
+                          <ButtonGroup fullWidth>
+                            {tallespantalon.map(t =>
+                              <Button {...field} key={t} onClick={(e) => handleButtonGroup(e, values.tallaPantalón, setFieldValue)} value={t} color={values.tallaPantalón.includes(t) ? "info" : "secondary"}>{t}</Button>
+                            )}
+                          </ButtonGroup>
+                        }
+                      </Field>
+                    }
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      fullWidth
+                      sx={{ marginBottom: "2rem", marginTop: "2rem" }}
+                    >
+                      CREAR
+                    </Button>
+                  </Box>
+                </Form>
+              )}
+            </Formik>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  );
+}
+
+
+/*
+
             <Box
               component="form"
               onSubmit={handleSubmit((data) => {
@@ -316,9 +561,5 @@ export default function CreateForm() {
                 </Button>
               </FormControl>
             </Box>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-  );
-}
+
+*/

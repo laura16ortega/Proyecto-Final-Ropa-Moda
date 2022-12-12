@@ -69,7 +69,7 @@ exports.createProduct = async (req, res) => {
       images,
       stock,
       tallaCamiseta,
-      tallaPantalon,
+      tallaPantalón,
       marca,
       gender,
       summary,
@@ -85,7 +85,7 @@ exports.createProduct = async (req, res) => {
       category,
       stock,
       tallaCamiseta: tallaCamiseta ? tallaCamiseta : [],
-      tallaPantalon: tallaPantalon ? tallaPantalon : [],
+      tallaPantalón: tallaPantalón ? tallaPantalón : [],
       images: {
         public_id: images[0],
         url: images[0],
