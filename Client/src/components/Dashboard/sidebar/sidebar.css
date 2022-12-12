@@ -23,14 +23,15 @@
 
 .sidebarTitle{
     font-size: 13px;
-    color: rgb(192, 187, 187);
+    color: rgb(20, 11, 11);
     display: flex;
+    font-weight: 600 !important;
 }
 
 .sidebarList{
     list-style: none;
     padding: 5px;
-    
+
 }
 
 .sidebarListItem{
@@ -39,6 +40,7 @@
     display: flex;
     align-items: center;
     border-radius: 10px;
+    text-decoration: none;
 }
 
 .sidebarListItem.active, 

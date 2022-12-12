@@ -11,7 +11,7 @@ import FilterPopup from "../FilterPopup/FilterPopup";
 import s from "./Filters.module.css";
 import ClearIcon from "@mui/icons-material/Clear";
 import { filterElements, sortProducts } from "../../redux/slices/testSlice";
-import { useAppDispatch } from "../../assets/hooks";
+import { useAppDispatch, useAppSelector } from "../../assets/hooks";
 import ConditionalRendering from "../FilterPopup/ConditionalRendering";
 
 export type FilterTypedState = {
@@ -40,6 +40,8 @@ const SortFilter = () => {
     marca: [],
   });
 
+  const { brands } = useAppSelector(state => state.data)
+
   const filterTypes = [
     {
       nameToDisplay: "Genero",
@@ -54,7 +56,7 @@ const SortFilter = () => {
     {
       nameToDisplay: "Marca",
       name: "marca",
-      options: ["quechua", "x-warm", "forclaz", "adidas", "urb", "le coq"],
+      options: brands ? brands : ["Adidas"],
     },
   ];
 

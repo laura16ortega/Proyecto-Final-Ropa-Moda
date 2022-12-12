@@ -90,6 +90,7 @@ exports.createProduct = async (req, res) => {
         public_id: images[0],
         url: images[0],
       },
+      marca,
       gender,
       summary,
     });

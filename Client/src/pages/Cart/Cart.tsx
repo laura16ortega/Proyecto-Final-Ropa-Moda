@@ -90,7 +90,7 @@ const Cart = () => {
     return {
         name: e.name,
         qty: e.quantity,
-        image: e.images[0],
+        image: e.images.public_id,
         price: e.price,
         product: e._id
     }
@@ -205,7 +205,7 @@ const Cart = () => {
                         >
                           <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
                             <img
-                              src={!e.images ? "" : e.images.url ? e.images.url : e.images[0]}
+                              src={e.images.public_id}
                               alt=""
                               className={s.productImage}
                             />

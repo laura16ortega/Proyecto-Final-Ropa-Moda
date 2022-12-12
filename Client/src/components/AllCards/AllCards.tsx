@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../assets/hooks";
-import { getAllProducts } from "../../redux/thunk-actions/testActions";
+import { getAllBrands, getAllProducts } from "../../redux/thunk-actions/testActions";
 import Card from "../Card/Card";
 import {
   Container,
@@ -21,6 +21,7 @@ const AllCards = () => {
     if (!allData?.length) {
       dispatch(getAllProducts());
     }
+    dispatch(getAllBrands())
   }, [dispatch]);
 
   let arr = [0, 1, 2, 3, 4, 5, 6, 7];
