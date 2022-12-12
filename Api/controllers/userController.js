@@ -68,8 +68,15 @@ const updatedUser = async(request,response)=>{
 //Delete a User
 const deleteUser = async(request,response)=>{
     try {
+        
         await User.findByIdAndDelete(request.params.id);
-        response.status(200).json({message:"User has been deleted succesfully"})
+        if(request.body.returnUsers) {
+            const allUsers = await getAllUsers();
+            response.status(200).send(allUsers)
+        }else{
+            response.status(200).json({message:"User has been deleted succesfully"})
+        }
+        
     } catch (error) {
         response.status(500).json({message:error})
     }

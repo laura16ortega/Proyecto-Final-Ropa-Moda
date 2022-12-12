@@ -4,6 +4,7 @@ import "./home.css"
 import {userData} from "../../../dummyData";
 import WidgetSm from "../widgetSm/WidgetSm";
 import WidgetLg from "../widgetLg/WidgetLg";
+import AllUsers from '../AllUsers/AllUsers';
 
 const DashboardHome = () => {
     return (
@@ -11,8 +12,11 @@ const DashboardHome = () => {
           <FeaturedInfo/> 
           <Chart data={userData} title="Análisis de Usuarios" grid dataKey="Active User"/>
           <div className="homeWidgets">
+            
+            
             <WidgetSm/>
             <WidgetLg/>
+
           </div>
       </div>
     )
