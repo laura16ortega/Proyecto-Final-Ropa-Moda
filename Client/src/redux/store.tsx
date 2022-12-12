@@ -6,6 +6,7 @@ import { NotificationReducer } from './slices/notificationSlice'
 import productDetailsSlice from './slices/productDetailsSlice'
 import reviewSlice from './slices/reviewSlice'
 import favoriteSlice from './slices/favoriteSlice'
+import orderSlice from './slices/orderSlice'
 
 const store = configureStore({
    reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
       cart: cartSlice,
       fav: favoriteSlice,
       notification: NotificationReducer,
-      review: reviewSlice
+      review: reviewSlice,
+      order: orderSlice
    },
 })
 

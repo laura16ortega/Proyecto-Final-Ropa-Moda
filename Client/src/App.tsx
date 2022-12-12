@@ -26,6 +26,8 @@ import Sidebar from "./components/Dashboard/sidebar/Sidebar";
 import DashboardHome from "./components/Dashboard/home/DashboardHome";
 import ProductsDashboard from "./components/ProductsDashboard/ProductsDashboard";
 import EditProduct from "./components/EditProduct/EditProduct";
+import OrdersDashboard from "./components/OrdersDashboard/OrdersDashboard";
+import OrdersDetail from "./components/OrdersDetail/OrdersDetail";
 
 
 function App() {
@@ -62,7 +64,8 @@ function App() {
               <Route path="users" element={<><h1>Users Page</h1></>}/>
               <Route path="products" element={<ProductsDashboard/>}/>
               <Route path="editProduct/:id" element={<EditProduct/>}/>
-              <Route path="actas" element={<><h1>actas Page</h1></>}/>
+              <Route path="actas" element={<OrdersDashboard/>}/>
+              <Route path="actas/:id" element={<OrdersDetail/>}/>
               <Route path="informes" element={<><h1>informes Page</h1></>}/>
               <Route path="perfil" element={<><h1>perfil Page</h1></>}/>
               <Route path="analitica" element={<><h1>analitica Page</h1></>}/>
