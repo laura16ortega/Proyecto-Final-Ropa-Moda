@@ -3,10 +3,12 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 
 export const BACKEND_URL = 'http://localhost:3001'
 
+
 type User = {
     email: FormDataEntryValue | null;
     password: FormDataEntryValue | null;
 }
+ 
 
 type ResetPass = {
     password: string | undefined,

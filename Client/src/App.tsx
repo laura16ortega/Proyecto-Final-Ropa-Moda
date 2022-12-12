@@ -42,6 +42,7 @@ function App() {
       <Navbar />
 
       <Routes>
+        
         <Route path="/" element={<LandingPage />} />
         <Route path="/products" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />

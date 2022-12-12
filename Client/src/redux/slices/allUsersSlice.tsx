@@ -10,6 +10,7 @@ type InitialState = {
     userError: null | any
 }
 
+
 const initialState = {
     allUsers: [],
     usersLoading: false,

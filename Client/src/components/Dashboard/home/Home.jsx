@@ -13,6 +13,7 @@ const Home = () => {
           <Chart data={userData} title="Análisis de Usuarios" grid dataKey="Active User"/>
           <div className="homeWidgets">
             
+            
             <WidgetSm/>
             <WidgetLg/>
 

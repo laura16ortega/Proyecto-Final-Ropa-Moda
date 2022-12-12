@@ -4,6 +4,7 @@ import AllUsersCard from './AllUsersCard';
 import { getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
 import { usersData } from './usersData/usersData';
 
+
 function AllUsers(props: any) {
     const { allData, error, loading } = useAppSelector((state: any) => state.allUsers);
     const dispatch = useAppDispatch();

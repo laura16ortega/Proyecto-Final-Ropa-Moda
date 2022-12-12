@@ -6,6 +6,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import EditIcon from '@mui/icons-material/Edit';
 
+
 function AllUsersCard({ _id,fullName,email,phone_number,createdAt,updatedAt, moreOptions  }: any) {
  /*    const { allData } = props;
     const d = allData; */
@@ -43,7 +44,7 @@ function AllUsersCard({ _id,fullName,email,phone_number,createdAt,updatedAt, mor
             <div>
                 <DeleteOutlineIcon />
             </div>
-            
+
             <div>
             <EditIcon />
             </div>
