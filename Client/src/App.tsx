@@ -33,8 +33,6 @@ import OrdersDetail from "./components/OrdersDetail/OrdersDetail";
 
 
 function App() {
-  //const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-
   return (
     <div className="App">
       <Navbar />

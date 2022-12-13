@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-
-export const BACKEND_URL = 'http://localhost:3001'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 
 type User = {

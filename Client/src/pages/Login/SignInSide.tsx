@@ -60,12 +60,18 @@ export default function SignInSide() {/*
         email: data.get("email"),
         password: data.get("password"),
       };  
-      const dispatchLogin = await dispatch(loginUser(user));
-      unwrapResult(dispatchLogin)
-      displayNotification({ message: "Bienvenido", type: "success" });
-      setTimeout(()=>{
-        window.location.href = "/";
-      },800)
+      const {meta} = await dispatch(loginUser(user));
+      console.log(meta.requestStatus)
+      if(meta.requestStatus === "rejected"){
+        displayNotification({message:"Error al Ingresar", type:"error"})
+      }
+      if(meta.requestStatus === "fulfilled"){
+        displayNotification({ message: "Bienvenido", type: "success" });
+        setTimeout(()=>{
+          window.location.href = "/";
+        },800)
+      }
+      //unwrapResult([dispatchLogin])
     } catch (error) {
       setLoginErrors(true)
     }

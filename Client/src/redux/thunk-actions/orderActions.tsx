@@ -1,6 +1,7 @@
 import axios from "axios"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import type { OrderType, OrderItems, GetOrdersResponse, OrderDetailsType } from "../types/orderTypes"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 type SentOrder = {
     orderItems: OrderItems[] | undefined
@@ -17,7 +18,7 @@ export const createOrder = createAsyncThunk(
     async(orderData: SentOrder, thunkApi) => {
         console.log("sent order data: ", orderData)
         try {
-            const { data } = await axios.post<any>(`http://localhost:3001/api/v1/orders`, orderData)
+            const { data } = await axios.post<any>(`${BACKEND_URL}/api/v1/orders`, orderData)
             // const createOrder = await order.save();
             // res.status(201).json(createOrder);
             console.log("order data: ", data)
@@ -32,7 +33,7 @@ export const getOrders = createAsyncThunk(
     "order/getAll",
     async(data, thunkApi) => {
         try {
-            const { data } = await axios.get<GetOrdersResponse>(`http://localhost:3001/api/v1/orders`)
+            const { data } = await axios.get<GetOrdersResponse>(`${BACKEND_URL}/api/v1/orders`)
             console.log("order get all: ", data)
             return data.data.orders
         } catch (e) {
@@ -46,7 +47,7 @@ export const orderById = createAsyncThunk(
     "order/byId",
     async(id: string, thunkApi) => {
         try {
-            const { data } = await axios.get<OrderDetailsType>(`http://localhost:3001/api/v1/orders/${id}`)
+            const { data } = await axios.get<OrderDetailsType>(`${BACKEND_URL}/api/v1/orders/${id}`)
             console.log("order get by id data: ", data)
             return data
         } catch (e) {
