@@ -15,16 +15,14 @@ import {
 import { OrderType } from "../../../redux/types/orderTypes"
 
 type WidgetLgProps = {
-  orderData: OrderType[] //slicear(0, 5) Mapear data 
+  orderData: OrderType[]
+}
+
+export const StatusButton = ({ type }: any) => {
+  return <button className={"widgetLgButton " + type}>{type}</button>
 }
 
 export default function WidgetLg({ orderData }: WidgetLgProps) {
-
-  // 2 Jun 2022
-
-  const Button = ({ type }: any) => {
-    return <button className={"widgetLgButton " + type}>{type}</button>
-  }
 
   return (
     <Grid item xs={12} lg={7.5}>
@@ -50,9 +48,8 @@ export default function WidgetLg({ orderData }: WidgetLgProps) {
                   <TableCell>{`${new Date(e.createdAt).toLocaleString()}`}</TableCell>
                   <TableCell>{`$${e.totalPrice}.0`}</TableCell>
                   <TableCell>
-                    {!e.isDelivered ? <Button type="Pendiente" />
-                      : !e.isPaid ? <Button type="Rechazado" />
-                        : <Button type="Aprobado" />
+                    {!e.isDelivered ? <StatusButton type="Pendiente" />
+                      : <StatusButton type="Aprobado" />
                     }
                   </TableCell>
                 </TableRow>
