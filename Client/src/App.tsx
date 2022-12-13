@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import React from 'react';
 import "./App.css";
 import {
   Footer,
@@ -30,6 +31,7 @@ import ProductsDashboard from "./components/ProductsDashboard/ProductsDashboard"
 import EditProduct from "./components/EditProduct/EditProduct";
 import OrdersDashboard from "./components/OrdersDashboard/OrdersDashboard";
 import OrdersDetail from "./components/OrdersDetail/OrdersDetail";
+import { Man } from "@mui/icons-material";
 
 
 function App() {
@@ -39,6 +41,7 @@ function App() {
       {/* SI NECESITAS CREAR NUEVAS RUTAS, CREALAS DE LA MANERA NROMAL/ANTERIOR Y DESPUES YO LAS REFACTORIZO */}
       <Routes>
         {/* PUBLIC ROUTES */}
+        <Route path='/users' element={<ManageUsers />} />
         <Route path="/" element={<LandingPage />} />
         <Route path={PublicRoutes.PRODUCTS} element={<Home />} />
         <Route path={PublicRoutes.CART} element={<Cart />} />
@@ -61,7 +64,7 @@ function App() {
           <Route path={PrivateRoutes.CREATE} element={<CreateForm />}/>
           <Route path="/dashboard" element={<Dashboard/>}>
               <Route index element={<DashboardHome/>}/>
-              <Route path="users" element={<><h1>Users Page</h1></>}/>
+              <Route path="users" element={<ManageUsers />}/>
               <Route path="products" element={<ProductsDashboard/>}/>
               <Route path="editProduct/:id" element={<EditProduct/>}/>
               <Route path="actas" element={<OrdersDashboard/>}/>

@@ -1,31 +1,29 @@
 import React from 'react'
 import "./topbar.css"
 import {NotificationsNone, Language, Settings} from '@mui/icons-material';
+import { Avatar, Box, Typography } from "@mui/material"
+import { useAppSelector } from '../../../assets/hooks';
 
 
 export default function Topbar() {
+
+  const { user } = useAppSelector(state => state.auth) 
+
   return (
-    <div className='topbar'>
-      <div className="topbarWrapper">
-        <div className="topbarLeft">
-          <span className="logo">FASHION CLOTHING</span>
-        </div>
-        <div className="topbarRight">
-          <div className="topbarIconContainer">
-            <NotificationsNone />
-            <span className="topIconBadge">2</span>
-          </div>
-          <div className="topbarIconContainer">
-            <Language />
-            <span className="topIconBadge">2</span>
-          </div>
-          <div className="topbarIconContainer">
-            <Settings />
-            <span className="topIconBadge">2</span>
-          </div>
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNzk38h9SS8YRZZo581yeDgepPuCoENqgc-A&usqp=CAU" alt="" className="topAvatar" />
-        </div>
-      </div>
-    </div>
+    <Box className='topbar'>
+      <Box className="topbarWrapper">
+        <Box className="topbarLeft">
+          <Typography variant="h4" className='logo'>FASHION CLOTHING</Typography>
+        </Box>
+        <Box className="topbarRight">
+          <Box className="topbarIconContainer">
+            <Typography variant="h6">
+            {user.fullName}
+            </Typography>
+          </Box>
+          <Avatar src={user.image} alt=""/>
+        </Box>
+      </Box>
+    </Box>
   )
 }

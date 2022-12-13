@@ -24,7 +24,9 @@ const ProductsDashboard = () => {
                 displayNotification({ message: "Producto eliminado con exito", type: "success" })
             }, 500);
         }
-        dispatch(getAllProducts())
+        else if (!allData.length) {
+            dispatch(getAllProducts())
+        }
     }, [deleteLoading])
 
     let maximo = allData.length / 10
@@ -96,7 +98,7 @@ const ProductsDashboard = () => {
                                             <Box sx={{ border: "1px solid #eee", marginBottom: "20px", borderRadius: "10px", overflow: "hidden"}}>
                                                 <Box>
                                                     <Link href={`/products/${e._id}`}>
-                                                        <img src={!e.images? "" : e.images.public_id ? e.images.public_id : e.images[0]} alt="" style={{ height: "100%", maxWidth: "100%", objectFit: "cover" }} />
+                                                        <img src={e.images.public_id} alt={`${e.name}`} style={{ height: "100%", maxWidth: "100%", objectFit: "cover" }} />
                                                     </Link>
                                                 </Box>
                                                 <Box sx={{ padding: "1rem", textAlign: "left" }}>

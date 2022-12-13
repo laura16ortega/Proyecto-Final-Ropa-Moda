@@ -27,6 +27,7 @@ export const getAllUsers = createAsyncThunk(
                     }
                 }
             )
+            console.log(data)
             return data
         } catch (error: any) {
             return thunkApi.rejectWithValue(error.response.data.message)
@@ -37,10 +38,16 @@ export const getAllUsers = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
     "delete/users",
     async(info: any, thunkApi) => {
+        
         try{
+            console.log(info)
+            const returnUsers = {"returnUsers":'true'}
             const { data }: any = await axios.delete(`${BACKEND_URL}/api/v1/users/find/${info.id}`, {
                 headers:{
                     'Authorization': `token ${info.token}`
+                },
+                data: {
+                  source: returnUsers
                 }
             });
             return data

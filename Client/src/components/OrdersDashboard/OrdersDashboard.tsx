@@ -15,6 +15,7 @@ import {
     TableHead,
     TableRow,
     TablePagination,
+    Avatar
 } from "@mui/material"
 import { useAppDispatch, useAppSelector } from '../../assets/hooks'
 import { getOrders } from '../../redux/thunk-actions/orderActions'
@@ -29,7 +30,9 @@ const OrdersDashboard = () => {
     const { ordersLoading, ordersError, orders } = useAppSelector(state => state.order)
 
     useEffect(() => {
-        dispatch(getOrders())
+        if (!orders.length) {
+            dispatch(getOrders())
+        }
     }, [])
 
     const handlePagination = (event: any, newPage: number) => {
@@ -82,11 +85,14 @@ const OrdersDashboard = () => {
                                     </TableHead>
                                     <TableBody>
                                         {orders
-                                        .filter((order) => order.user.toLowerCase().includes(search.toLowerCase()))
+                                        .filter((order) => order.user.fullName.toLowerCase().includes(search.toLowerCase()))
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map(e =>
                                             <TableRow key={e._id}>
-                                                <TableCell>{e.user}</TableCell>
+                                                <TableCell sx={{display: "flex", alignItems: "center"}}>
+                                                    <Avatar src={e.user.image? e.user.image : ""} sx={{marginRight: "15px"}}/>
+                                                    {e.user.fullName}
+                                                </TableCell>
                                                 <TableCell>{`$${e.totalPrice}`}</TableCell>
                                                 <TableCell>{`${e.paymentMethod === "Credit Card" ? "Tarjeta de credito" : e.paymentMethod}`}</TableCell>
                                                 <TableCell>{`${e.createdAt.split("T")[0].split("-").reverse().join(".")}, ${e.createdAt.split("T")[1].slice(0, 5)}`}</TableCell>
