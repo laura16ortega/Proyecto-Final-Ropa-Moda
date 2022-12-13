@@ -53,8 +53,8 @@ const FilterPopup = ({ filterDetails, filters, setFilters }: Filter) => {
                 <Grow in={open} style={{ transformOrigin: "0 0 0" }} timeout={200}>
                     <Box className={s.optionsContainer}>
                         {/* filterDetails.name es el nombre de donde se ubica en el filters */}
-                        {filterDetails.options.map(op => (
-                            <Box className={s.optionsWrapper} key={op}>
+                        {filterDetails.options.map((op, i) => (
+                            <Box className={s.optionsWrapper} key={i}>
                                 <input
                                     id={op}
                                     name={filterDetails.name}

@@ -24,11 +24,13 @@ import {AuthGuard,RoleGuard} from "./guards/index";
 import { PublicRoutes, PrivateRoutes } from "./models/index";
 import Dashboard from './components/Dashboard/MainDashboard/MainDashboard';
 import AllUsers from "./components/Dashboard/AllUsers/AllUsers";
-import ManageUsers from "./components/Dashboard/ManageUsers/ManageUsers";
+import ManageUsers from "./components/Dashboard/manageusers/ManageUsers";
 import Sidebar from "./components/Dashboard/sidebar/Sidebar";
 import DashboardHome from "./components/Dashboard/home/DashboardHome";
 import ProductsDashboard from "./components/ProductsDashboard/ProductsDashboard";
 import EditProduct from "./components/EditProduct/EditProduct";
+import OrdersDashboard from "./components/OrdersDashboard/OrdersDashboard";
+import OrdersDetail from "./components/OrdersDetail/OrdersDetail";
 import { Man } from "@mui/icons-material";
 
 
@@ -67,7 +69,8 @@ function App() {
               <Route path="users" element={<ManageUsers />}/>
               <Route path="products" element={<ProductsDashboard/>}/>
               <Route path="editProduct/:id" element={<EditProduct/>}/>
-              <Route path="actas" element={<><h1>actas Page</h1></>}/>
+              <Route path="actas" element={<OrdersDashboard/>}/>
+              <Route path="actas/:id" element={<OrdersDetail/>}/>
               <Route path="informes" element={<><h1>informes Page</h1></>}/>
               <Route path="perfil" element={<><h1>perfil Page</h1></>}/>
               <Route path="analitica" element={<><h1>analitica Page</h1></>}/>

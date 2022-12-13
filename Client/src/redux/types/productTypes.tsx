@@ -10,12 +10,11 @@ type DbReviewsType = {
 
 type ImagesType = {
     public_id: string
-    url: string
 }
 
 // Producto en general
 export type DbProductType = {
-    images: any // Pasar a string[] | [] | ImagesType cuando se arregle
+    images: ImagesType
     ratingsAverage: number
     ratingsQuantity: number
     tallaCamiseta: string[] | []

@@ -11,22 +11,18 @@ function BuyConfirmed(props: any) {
 
     const { cart } = useAppSelector(state => state.cart) 
     const { user } = useAppSelector(state => state.auth)
-    console.log("user: ", user)
     const paymethod = window.localStorage.getItem("paymentMethod") // Si se recarga deja de existir
 
     const orderItems = cart?.map((e) => {
         return {
             name: e.name,
             qty: e.quantity,
-            image: e.images[0],
+            image: e.images.public_id,
             price: e.price,
             product: e._id
         }
     })
     const totalPrice = cart?.reduce((total, item) => total + item.price * item.quantity,0);
-
-    // localstorage.setitem("paymethod", visa o paypal -- dependiendo de que boton se toque), limpiar en el return, limpiar en useEffect general
-    //const paymentMethod = 
 
     const orderData = {
         orderItems,
@@ -37,15 +33,6 @@ function BuyConfirmed(props: any) {
         totalPrice,
         userId: user.userId
     }
-
-    // orderItems,
-    // shippingAddress, // no se de donde se saca esto :s
-    // paymentMethod, 
-    // itemsPrice, 
-    // taxPrice, 
-    // shippingPrice, 
-    // totalPrice, 
-    // user -----> req.user._id
 
     useEffect(() => {
         dispatch(createOrder(orderData))

@@ -82,13 +82,7 @@ const Card = ({ product }: productProps) => {
           <Link href={`/products/${product._id}`}>
             <Box>
               <img
-                src={
-                  !product.images
-                    ? ""
-                    : product.images.public_id
-                    ? product.images.public_id
-                    : product.images[0]
-                }
+                src={product.images.public_id}
                 alt={`${product.name} not found`}
                 className={s.image}
                 style={{ marginBottom: ".7rem" }}
