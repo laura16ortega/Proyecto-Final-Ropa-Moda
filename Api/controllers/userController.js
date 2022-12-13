@@ -81,6 +81,8 @@ const deleteUser = async(request,response)=>{
         response.status(500).json({message:error})
     }
 }
+
+
 //Update User Password
 const updatePassword = async(request,response)=>{
     try {

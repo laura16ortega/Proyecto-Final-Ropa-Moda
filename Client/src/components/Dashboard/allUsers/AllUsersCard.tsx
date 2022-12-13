@@ -1,35 +1,66 @@
-import React from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import {Avatar} from '@mui/material'
 import { Link } from 'react-router-dom';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
+import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
+import { Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { deleteUser, getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
+import { Clear } from '@mui/icons-material';
+import { useNotification } from "../../UseNotification/UseNotification";
 
 
-function AllUsersCard({ _id,fullName,email,phone_number,createdAt,updatedAt, moreOptions  }: any) {
+function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedAt, moreOptions  }: any) {
  /*    const { allData } = props;
     const d = allData; */
+    const { displayNotification } = useNotification();
+    const { clearNotification } = useNotification();
+
+    const [confirm, setConfirm ] = useState(false);
+    const dispatch = useAppDispatch();
+    const currentToken = window.localStorage.getItem('jwt');
+    const deleteValidations = {
+        token: currentToken,
+        id:_id
+    }
+    useEffect(() => {
+
+    },[])
+    const handleConfirm = (e: MouseEvent) => {
+        setConfirm(!confirm);
+    }
+    const handleDelete = (e: MouseEvent) => {
+        dispatch(deleteUser(deleteValidations));
+        setConfirm(false);
+        dispatch(getAllUsers(currentToken!))
+        displayNotification({ message: "Usuario eliminado satisfactoriamente", type: "success", timeout:1000 })
+    }
 
     return (
         <>
         { moreOptions === 'true' ? 
         (
-            <div style={{  boxShadow: '0px 2.5px 6px 0px rgba(0,0,0,0.35)',fontFamily:'Trebuchet MS', width:'30vh',height:'35vh', borderRadius:'1.5vh',backgroundColor:'#F5F5F5', display:'flex', flexDirection:'column',alignItems: 'center', justifyContent:'space-between', padding:'1rem 1rem 1rem 1rem',margin:'0.5rem 1rem 1rem 1rem'}}>
+            <div style={{  boxShadow: '0px 2.5px 6px 0px rgba(0,0,0,0.35)',fontFamily:'Trebuchet MS', width:'35vh',height:'40vh', borderRadius:'1.5vh',backgroundColor:'#F5F5F5', display:'flex', flexDirection:'column',alignItems: 'center', justifyContent:'space-between', padding:'1rem 1rem 1rem 1rem',margin:'1rem 1rem 1rem 1rem'}}>
 
 
-                <Avatar sx={{ width: 80, height: 80 }} />
+                <Avatar sx={{ width: 80, height: 80 }} src={image}/>
                 <Link to="/" >
             <h3 style={{marginBottom:'0.3rem', marginTop:'0.5rem'}}>{fullName}</h3>
             </Link>
 
+            <div>
+            <h4>{email}</h4>
+            </div>
             
             <div style={{justifyContent:'space-between', textAlign:'left'}}>
             
 
-            <h4>{email}</h4>
             <div>
-            <h5 style={{marginTop:'0.5rem'}}>Tel:{' ' + phone_number}</h5>
+            <h4 style={{marginTop:'0.5rem'}}>Tel.:</h4>
+            <h5 style={{marginTop:'0.5rem'}}>{phone_number}</h5>
             </div>
             <h4 style={{marginTop:'0.5rem'}}>Creado:</h4>
             <h6>{createdAt}</h6>
@@ -37,20 +68,40 @@ function AllUsersCard({ _id,fullName,email,phone_number,createdAt,updatedAt, mor
             <h5>{updatedAt}</h5>
             </div>
     
-            <div className='buttons' style={{display:'flex', flexDirection:'row', marginRight:'50%', justifyContent:'space-evenly'}}>
-            <div /* style={{marginLeft:'19vh', marginTop:'-2.5rem'}} */>
-            <SettingsApplicationsIcon fontSize="medium"  />
-            </div>
-            <div>
-                <DeleteOutlineIcon />
-            </div>
 
-            <div>
-            <EditIcon />
-            </div>
+            {confirm ? 
+            (
+                <div>
+                    <div>
+                    Estas seguro?
+                    </div>
+                    <Button onClick={(e:any) => handleConfirm(e)}>
+                        <ClearIcon />
+                    </Button>
+                    <Button onClick={(e:any)=> handleDelete(e)} ><CheckIcon /></Button>
+
+                </div>
+            )
+            :
+            (
+                <div className='buttons' style={{display:'flex', flexDirection:'row', marginRight:'50%', justifyContent:'space-evenly'}}>
     
+                <div>
+                    <Button style={{marginTop:'1vh'}} onClick={(e: any) => handleConfirm(e)}>
+                    <DeleteOutlineIcon  />
+                    </Button>
+                </div>
+{/*     
+                <div>
+                <EditIcon />
+                </div> */}
+        
+                
+                </div>
+
+            )}
             
-            </div>
+
 
 
            
@@ -68,7 +119,7 @@ function AllUsersCard({ _id,fullName,email,phone_number,createdAt,updatedAt, mor
         (
             <div style={{width:'29vh',height:'6vh', borderRadius:'0.2vh',backgroundColor:'#F5F5F5', display:'flex', flexDirection:'row', margin:'0.5rem 1rem 1rem 1rem'}}>
             <div style={{display:'flex',flexDirection:'row', margin:'0.5rem 0.5rem 0.5rem 0.5rem', fontFamily:'Trebuchet MS'}}>
-            <Avatar />
+            <Avatar src={image}/>
             
             
             <div style={{display:'flex',flexDirection:'column',textAlign:'left', marginLeft:'1rem'}}>
