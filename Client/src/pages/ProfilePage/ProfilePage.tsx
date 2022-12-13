@@ -81,14 +81,14 @@ const ProfilePage = () => {
                                        </Box>
                                        :
                                        boughtByUser.map(order =>
-                                          <Box sx={{ position: "relative" }}>
+                                          <Box sx={{ position: "relative" }} key={order._id}>
                                              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
                                                 <Box sx={{ height: "2px", width: "30%", backgroundColor: "white" }} />
                                                 <Typography variant="subtitle1" className={s.orderDate}>{`${new Date(order.createdAt).toLocaleString()}`}</Typography>
                                                 <Box sx={{ height: "2px", width: "35%", backgroundColor: "white" }} />
                                              </Box>
-                                             {order.orderItems.map(product =>
-                                                <Box sx={{ paddingY: ".4rem", paddingX: "1rem", display: "flex", alignItems: "center" }}>
+                                             {order.orderItems.map((product, index) =>
+                                                <Box sx={{ paddingY: ".4rem", paddingX: "1rem", display: "flex", alignItems: "center" }} key={index + 1}>
                                                    <Box sx={{ width: "5rem" }}>
                                                       <img src={product.image} alt="" style={{ height: "60px", maxWidth: "100%", borderRadius: "1px", display: "block" }} />
                                                    </Box>

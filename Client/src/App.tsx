@@ -66,8 +66,8 @@ function App() {
               <Route path="users" element={<ManageUsers />}/>
               <Route path="products" element={<ProductsDashboard/>}/>
               <Route path="editProduct/:id" element={<EditProduct/>}/>
-              <Route path="actas" element={<OrdersDashboard/>}/>
-              <Route path="actas/:id" element={<OrdersDetail/>}/>
+              <Route path="orders" element={<OrdersDashboard/>}/>
+              <Route path="orders/:id" element={<OrdersDetail/>}/>
               <Route path="informes" element={<><h1>informes Page</h1></>}/>
               <Route path="perfil" element={<><h1>perfil Page</h1></>}/>
               <Route path="analitica" element={<><h1>analitica Page</h1></>}/>
