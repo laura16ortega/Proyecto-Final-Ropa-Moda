@@ -23,7 +23,6 @@ import {
 import {AuthGuard,RoleGuard} from "./guards/index";
 import { PublicRoutes, PrivateRoutes } from "./models/index";
 import Dashboard from './components/Dashboard/MainDashboard/MainDashboard';
-import AllUsers from "./components/Dashboard/allUsers/AllUsers";
 import ManageUsers from "./components/Dashboard/manageusers/ManageUsers";
 import Sidebar from "./components/Dashboard/sidebar/Sidebar";
 import DashboardHome from "./components/Dashboard/home/DashboardHome";
@@ -35,8 +34,6 @@ import { Man } from "@mui/icons-material";
 
 
 function App() {
-  //const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-
   return (
     <div className="App">
       <Navbar />

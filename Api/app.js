@@ -22,6 +22,14 @@ app.use(bodyParser.json({limit:1024*1024*20, type:'application/json'}));
 app.use(bodyParser.urlencoded({extended:true,limit:1024*1024*20,type:'application/x-www-form-urlencoding' }));
 app.use(cookieParser());
 app.use(auth(config));
+app.use((req,res,next)=>{
+  res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  next();
+})
+
 
 app.use(fileUpload({
   useTempFiles : true,

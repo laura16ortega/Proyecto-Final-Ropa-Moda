@@ -11,7 +11,7 @@ type InitialState = {
 }
 
 const initialState = {
-    user: localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User") as string) : {} ,
+    user:localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User") as string) : {} ,
     userLoading: false,
     token: localStorage.getItem("jwt") ? localStorage.getItem("jwt") : ""
 } as InitialState
@@ -58,14 +58,16 @@ export const authSlice = createSlice({
             state.userLoading = false
             
             // state.user = action.payload
-            console.log("get user info: ", action.payload)
-            const {_id, fullName, email, image} = action.payload
+            //console.log("get user info: ", action.payload)
+            const {_id, fullName, email, image, isAdmin} = action.payload
             state.user = {
                 userId: _id,
                 fullName,
                 email,
-                image
+                image,
+                isAdmin
             }
+            localStorage.setItem("User", JSON.stringify(state.user))
             //state.token = token
         })
         .addCase(getUserInfo.rejected,(state,action:PayloadAction<any>)=>{

@@ -16,7 +16,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
 import axios from "axios";
 import s from "./Profile.module.css"
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 type User = {
   fullName: string;
   email: string;
@@ -75,7 +75,7 @@ function Profile(props: any) {
         };
 
 
-        const { data } = await axios.patch(`http://localhost:3001/api/v1/users/updateUser`, input, {
+        const { data } = await axios.patch(`${BACKEND_URL}/api/v1/users/updateUser`, input, {
           headers: { Authorization: `Bearer ${token}` }
         })
         setEditName(false);
