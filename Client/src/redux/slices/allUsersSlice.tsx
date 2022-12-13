@@ -5,13 +5,13 @@ import { deleteUser, getAllUsers } from "../thunk-actions/allUsersActions";
 
 
 type InitialState = {
-    user: any // here add type by import { user}
+    allUsers: any // here add type by import { user}
     usersLoading: boolean
-    userError: null | any
+    usersError: null | any
 }
 
 
-const initialState = {
+const initialState: InitialState = {
     allUsers: [],
     usersLoading: false,
     usersError: []
@@ -25,18 +25,19 @@ export const allUsersSlice = createSlice({
     },
     extraReducers(builder){
         builder
-        .addCase(getAllUsers.fulfilled,(state,action:PayloadAction<any>) => {
-            state.allUsers = action.payload
-        })
         .addCase(getAllUsers.pending,(state,action:PayloadAction<any>) => {
             state.usersLoading = true;
+        })
+        .addCase(getAllUsers.fulfilled,(state,action:PayloadAction<any>) => {
+            state.usersLoading = false;
+            state.allUsers = action.payload;
         })
         .addCase(getAllUsers.rejected,(state,action:PayloadAction<any>) => {
             state.usersLoading = false;
             state.usersError = action.payload
         })
         .addCase(deleteUser.fulfilled,(state, action:PayloadAction<any>) => {
-            state.allUsers 
+            alert('usuario eliminado')
         })
         
     }

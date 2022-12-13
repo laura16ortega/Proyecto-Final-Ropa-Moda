@@ -3,6 +3,7 @@ import Topbar from "../topbar/Topbar";
 import "../style.css";
 import Home from "../home/DashboardHome";
 import { Outlet } from "react-router-dom";
+import WidgetLg from "../widgetLg/WidgetLg";
 
 
 
@@ -15,6 +16,7 @@ function MainDashboard() {
             <div style={{display: "flex"}}>
                 <Sidebar/>
                 <Outlet/>
+            
             </div>
         </div>
     );
