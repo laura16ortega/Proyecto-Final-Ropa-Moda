@@ -111,7 +111,7 @@ var getUser = function getUser(request, response) {
 
 
 var updatedUser = function updatedUser(request, response) {
-  var user, fullName, email, phone_number, _updatedUser;
+  var user, fullName, email, phone_number, image, _updatedUser;
 
   return regeneratorRuntime.async(function updatedUser$(_context3) {
     while (1) {
@@ -130,16 +130,16 @@ var updatedUser = function updatedUser(request, response) {
           }
 
           _context3.prev = 5;
-          fullName = user.fullName, email = user.email, phone_number = user.phone_number;
+          fullName = user.fullName, email = user.email, phone_number = user.phone_number, image = user.image;
           user.email = email;
+          user.image = request.body.image || image;
           user.fullName = request.body.fullName || fullName;
           user.phone_number = request.body.phone_number || phone_number;
-          _context3.next = 12;
+          _context3.next = 13;
           return regeneratorRuntime.awrap(user.save());
 
-        case 12:
+        case 13:
           _updatedUser = _context3.sent;
-          console.log(user);
           response.status(200).json({
             message: "User Update Succesfully",
             _id: _updatedUser._id,

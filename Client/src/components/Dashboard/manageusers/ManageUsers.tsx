@@ -12,6 +12,10 @@ function ManageUsers(props: any) {
   
     
 
+    useEffect(()=> {
+
+    },[window.localStorage.getItem('refresh')])
+
     useEffect(() => {
         dispatch(getAllUsers(currentToken!))
     }, [])
@@ -27,7 +31,7 @@ function ManageUsers(props: any) {
         <> 
         <div style={{margin:'0 auto'}}>
         
-        <div style={{display:'flex', flexWrap:'wrap', height:'60vh',width:'100rem', marginBottom:'3vh', marginTop:'3rem', marginLeft:'4rem'}}>
+        <div style={{display:'flex', flexWrap:'wrap', height:'max-content',width:'100rem', marginBottom:'3vh', marginTop:'3rem', marginLeft:'4rem'}}>
             
                     {
         allUsers?.map((u: any, index: any) =>{ return (

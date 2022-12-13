@@ -6,7 +6,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
 import { Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { deleteUser } from '../../../redux/thunk-actions/allUsersActions';
+import { deleteUser, getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Clear } from '@mui/icons-material';
@@ -35,6 +35,7 @@ function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedA
     const handleDelete = (e: MouseEvent) => {
         dispatch(deleteUser(deleteValidations));
         setConfirm(false);
+        dispatch(getAllUsers(currentToken!))
         displayNotification({ message: "Usuario eliminado satisfactoriamente", type: "success", timeout:1000 })
     }
 

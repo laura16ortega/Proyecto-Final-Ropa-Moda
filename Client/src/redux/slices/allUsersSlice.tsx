@@ -37,7 +37,7 @@ export const allUsersSlice = createSlice({
             state.usersError = action.payload
         })
         .addCase(deleteUser.fulfilled,(state, action:PayloadAction<any>) => {
-            alert('usuario eliminado')
+            
         })
         
     }

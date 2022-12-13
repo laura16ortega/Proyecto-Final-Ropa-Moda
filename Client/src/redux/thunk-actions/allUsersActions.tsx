@@ -42,9 +42,13 @@ export const deleteUser = createAsyncThunk(
         
         try{
             console.log(info)
+            const returnUsers = {"returnUsers":'true'}
             const { data }: any = await axios.delete(`${BACKEND_URL}/api/v1/users/find/${info.id}`, {
                 headers:{
                     'Authorization': `token ${info.token}`
+                },
+                data: {
+                  source: returnUsers
                 }
             });
             return data
