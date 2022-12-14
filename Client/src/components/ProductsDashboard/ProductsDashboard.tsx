@@ -6,6 +6,7 @@ import { deleteProduct, getAllProducts } from '../../redux/thunk-actions/testAct
 import { sortProducts } from '../../redux/slices/testSlice'
 import Pagination from '../Pagination/Pagination'
 import { useNotification } from '../UseNotification/UseNotification'
+import { formatNumber } from '../../assets/helpers'
 
 const ProductsDashboard = () => {
     const [filters, setFilters] = useState<any>({
@@ -112,7 +113,7 @@ const ProductsDashboard = () => {
                                                         {e.name}
                                                     </Typography>
                                                     <Typography variant="subtitle2" sx={{ marginBottom: ".5rem" }}>
-                                                        {`$${e.price}`}
+                                                        {`$${formatNumber(e.price)}`}
                                                     </Typography>
                                                     <Box sx={{ marginTop: "1rem", display: "flex", justifyContent: "space-evenly" }}>
                                                         <Button variant="outlined" disableElevation size="small">

@@ -5,6 +5,7 @@ import s from "./ProfilePage.module.css"
 import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { logout } from "../../redux/slices/authSlice";
 import { getOrders } from '../../redux/thunk-actions/orderActions';
+import { formatNumber } from "../../assets/helpers"
 
 const ProfilePage = () => {
    const { user } = useAppSelector(state => state.auth)
@@ -101,7 +102,7 @@ const ProfilePage = () => {
                                                                {`${product.qty}u`}
                                                             </Typography>
                                                             <Typography variant="subtitle1">
-                                                               {`$${product.price}`}
+                                                               {`$${product.price ? formatNumber(product?.price) : "???"}`}
                                                             </Typography>
                                                          </Box>
                                                       </Box>
@@ -111,7 +112,7 @@ const ProfilePage = () => {
                                                 </Box>
                                              )}
                                              <Box sx={{ paddingX: "1rem" }}>
-                                                <Typography variant="subtitle1" sx={{ textAlign: "right", fontWeight: "600" }}>{`Total: $${order.totalPrice}`}</Typography>
+                                                <Typography variant="subtitle1" sx={{ textAlign: "right", fontWeight: "600" }}>{`Total: $${formatNumber(order?.totalPrice)}`}</Typography>
                                              </Box>
                                           </Box>
                                        )}

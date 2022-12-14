@@ -13,6 +13,7 @@ import {
   Avatar
 } from "@mui/material"
 import { OrderType } from "../../../redux/types/orderTypes"
+import { formatNumber } from "../../../assets/helpers"
 
 type WidgetLgProps = {
   orderData: OrderType[]
@@ -46,7 +47,7 @@ export default function WidgetLg({ orderData }: WidgetLgProps) {
                     {e.user.fullName}
                   </TableCell>
                   <TableCell>{`${new Date(e.createdAt).toLocaleString()}`}</TableCell>
-                  <TableCell>{`$${e.totalPrice}.0`}</TableCell>
+                  <TableCell>{`$${formatNumber(e.totalPrice)}.0`}</TableCell>
                   <TableCell>
                     {!e.isDelivered ? <StatusButton type="Pendiente" />
                       : <StatusButton type="Aprobado" />

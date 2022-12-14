@@ -20,6 +20,7 @@ import { getOrders } from '../../redux/thunk-actions/orderActions'
 import s from "./OrdersDashboard.module.css"
 import { StatusButton } from '../Dashboard/widgetLg/WidgetLg'
 import DropperButton from './DropperButton'
+import { formatNumber } from '../../assets/helpers'
 
 const OrdersDashboard = () => {
     const dispatch = useAppDispatch()
@@ -100,7 +101,7 @@ const OrdersDashboard = () => {
                                                     <Avatar src={e.user.image ? e.user.image : ""} sx={{ marginRight: "15px" }} />
                                                     {e.user.fullName}
                                                 </TableCell>
-                                                <TableCell>{`$${e.totalPrice}`}</TableCell>
+                                                <TableCell>{`$${formatNumber(e.totalPrice)}`}</TableCell>
                                                 <TableCell>{`${e.paymentMethod === "Credit Card" ? "Tarjeta de credito" : e.paymentMethod}`}</TableCell>
                                                 <TableCell>{`${e.createdAt.split("T")[0].split("-").reverse().join(".")}, ${e.createdAt.split("T")[1].slice(0, 5)}`}</TableCell>
                                                 <TableCell>

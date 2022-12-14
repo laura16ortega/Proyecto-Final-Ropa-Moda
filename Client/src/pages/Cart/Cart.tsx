@@ -22,6 +22,7 @@ import CartSlider from "../../components/CartSlider/CartSlider";
 import { stripeCheckout } from "../../redux/thunk-actions/cartActions";
 import { unwrapResult } from '@reduxjs/toolkit'
 import { createOrder } from "../../redux/thunk-actions/orderActions";
+import { formatNumber } from "../../assets/helpers"
 
 const Cart = () => {
   const { displayNotification } = useNotification();
@@ -335,7 +336,7 @@ console.log(orderItems)
                                 color: "#333333",
                               }}
                             >
-                              {e.price && e.price <= 0 ? "-" : `$${e.price}`}
+                              {e.price && e.price <= 0 ? "-" : `$${formatNumber(e.price as number)}`}
                             </Typography>
                           </Box>
                         ))}
@@ -366,11 +367,11 @@ console.log(orderItems)
                             color: "#333333",
                           }}
                         >
-                          {`$${priceData.reduce(
+                          {`$${formatNumber(priceData.reduce(
                             (total, item) =>
                               total + (item.price ? item.price : 0),
                             0
-                          )}`}
+                          ))}`}
                         </Typography>
                       </Box>
                       <Box sx={{ marginTop: "1.5rem", marginBottom: "2.5rem" }}>
