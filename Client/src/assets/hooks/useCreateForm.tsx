@@ -31,7 +31,7 @@ export const PRODUCT_FORM_VALIDATOR_SCHEMA = yup.object({
   summary: yup.string(),
   category: yup.string().required("La categoria es requerida"),
   gender: yup.string().required("La categoria es requerida"),
-  images: yup.string().required("La imagen es requirida"),
+  images: yup.string(),
   stock: yup.number().required("La cantidad de productos es requerida"),
   tallaPantalon: yup.array(),
   tallaCamiseta: yup.array(),
@@ -43,6 +43,7 @@ export type FormType = typeof PRODUCT_FORM_VALIDATOR_SCHEMA["__outputType"];
 export function useCreateForm() {
   const data = useForm<FormType>({
     resolver: yupResolver(PRODUCT_FORM_VALIDATOR_SCHEMA, {}),
+    defaultValues: {},
   });
 
   return data;

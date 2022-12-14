@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getAllProducts } from "../thunk-actions/testActions";
+import { deleteProduct, editProduct, getAllBrands, getAllProducts } from "../thunk-actions/testActions";
 import { mappedDbProductsType } from "../types/productTypes"
 
 type InitialState = {
@@ -7,6 +7,9 @@ type InitialState = {
   error: null | string;
   allData: mappedDbProductsType[];
   dataBackup: mappedDbProductsType[];
+  deleteLoading: boolean
+  updateLoading: boolean
+  brands: string[]
 };
 
 const initialState = {
@@ -14,6 +17,9 @@ const initialState = {
   error: null,
   allData: [],
   dataBackup: [],
+  deleteLoading: false,
+  updateLoading: false,
+  brands: []
 } as InitialState;
 
 type FilterTypedState = {
@@ -26,25 +32,15 @@ export const testSlice = createSlice({
   initialState,
   reducers: {
     filterSearch: (state, action: PayloadAction<string>) => {
-      
-      const filteredCards =
-        state.allData &&
-        state.allData.filter((card) => {
-          
-          return card.name
-            .toLowerCase()
-            .includes(action.payload.toLowerCase());
-        });
-
-
+      const filterBackup = state.dataBackup.filter((card)=>card.name.toLowerCase().includes(action.payload.toLowerCase()));
       return {
         ...state,
-
-        allData: filteredCards
+        allData: filterBackup
       };
     },
     filterElements: (state, action: PayloadAction<FilterTypedState>) => {
       const filters = action.payload;
+      console.log("filters state: ", filters)
       const cleanFilters = Object.fromEntries(Object.entries(filters).filter(([_, val]) => val.length > 0)) // Elimina objetos del filtrado que esten vacios
       const filteredCards =
         state.dataBackup &&
@@ -95,7 +91,23 @@ export const testSlice = createSlice({
       .addCase(getAllProducts.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(deleteProduct.pending, (state, action) => {
+        state.deleteLoading = true
+      })
+      .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<string>) => {
+        state.deleteLoading = false
+      })
+      .addCase(editProduct.pending, (state, action) => {
+        state.updateLoading = true
+      })
+      .addCase(editProduct.fulfilled, (state, action) => {
+        state.updateLoading = false
+      })
+      .addCase(getAllBrands.fulfilled, (state, action: PayloadAction<string[]>) => {
+        state.brands = action.payload
+      })
+      ;
   },
 });
 

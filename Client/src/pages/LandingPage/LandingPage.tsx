@@ -5,11 +5,20 @@ import React from "react";
 // import Footer from '../../components/Footer/Footer';
 //import Navbar from '../../components/Navbar';
 import { Link } from 'react-router-dom';
-
+import { useAuth0 } from '@auth0/auth0-react';
+import useEffect from 'react';
+import { useValidateSession } from '../../assets/hooks/useValidateSession';
 
 
 const LandingPage = () => {
-    
+    const {isAuthenticated} = useAuth0()
+    useValidateSession()
+    if(isAuthenticated){
+        window.location.href = "/products";
+    }
+  
+
+
     const CustomBox = styled(Box)(({theme}) => ({
         display:"flex",
         justifyContent:"center",
@@ -32,7 +41,7 @@ const LandingPage = () => {
         //     fontSize: "40px",
         // },
     }));
-
+    
     return <Box sx={{backgroundColor:"E6F0FF", minHeight: "80vh"}}>
         <Container>
             {/* <Navbar /> */}
@@ -45,6 +54,7 @@ const LandingPage = () => {
                     <Title variant="h1">
                     ROPA DE MODA
                     </Title>
+                    
                     <Typography
                     variant="body2"
                     sx={{ fontSize: "18px", color: "#5A6473", my: 4}}

@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { RootState } from '../store';
-import { loginUser, registerUser } from '../thunk-actions/authActions';
+import { loginUser, registerUser, getUserInfo } from '../thunk-actions/authActions';
 import type { UserType } from "../types/userTypes"
 
 type InitialState = {
@@ -11,7 +11,7 @@ type InitialState = {
 }
 
 const initialState = {
-    user: localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User")!) : {} ,
+    user:localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User") as string) : {} ,
     userLoading: false,
     token: localStorage.getItem("jwt") ? localStorage.getItem("jwt") : ""
 } as InitialState
@@ -24,7 +24,9 @@ export const authSlice = createSlice({
             state
         ) =>{
             localStorage.removeItem("jwt");
-            localStorage.removeItem("User")
+            localStorage.removeItem("User");
+            localStorage.removeItem("fav");
+            localStorage.removeItem("cart");
             state.token = ""
         }
     },
@@ -36,15 +38,39 @@ export const authSlice = createSlice({
         })
         .addCase(registerUser.fulfilled,(state,action:PayloadAction<any>)=>{
             state.userLoading = false
-            const {userId, fullName, token,email} = action.payload
+            const {userId, fullName, token,email, image} = action.payload
             state.user = {
                 userId,
                 fullName,
                 email,
+                image
             }
             state.token = token
         })
         .addCase(registerUser.rejected,(state,action:PayloadAction<any>)=>{
+            state.userLoading = false
+            state.userError = action.payload
+        })
+        .addCase(getUserInfo.pending,(state,action)=> {
+            state.userLoading = true
+        })
+        .addCase(getUserInfo.fulfilled, (state, action:PayloadAction<any>) => {
+            state.userLoading = false
+            
+            // state.user = action.payload
+            //console.log("get user info: ", action.payload)
+            const {_id, fullName, email, image, isAdmin} = action.payload
+            state.user = {
+                userId: _id,
+                fullName,
+                email,
+                image,
+                isAdmin
+            }
+            localStorage.setItem("User", JSON.stringify(state.user))
+            //state.token = token
+        })
+        .addCase(getUserInfo.rejected,(state,action:PayloadAction<any>)=>{
             state.userLoading = false
             state.userError = action.payload
         })

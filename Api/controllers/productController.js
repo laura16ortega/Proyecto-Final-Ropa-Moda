@@ -1,7 +1,6 @@
 const Product = require("./../models/productModels");
-const cloudinary = require("../services/cloudinaryServices")
-const Review = require("../models/ReviewModel")
-
+const cloudinary = require("../services/cloudinaryServices");
+const Review = require("../models/ReviewModel");
 
 //ROUTE HANDLERS
 
@@ -14,6 +13,32 @@ exports.getAllProducts = async (req, res) => {
       : {};
     const products = await Product.find({ ...keyword }); //esto va a devolver una promesa, por eso usamos await
 
+    //SEND RESPONSE
+    res.status(203).json({
+      status: "success",
+      results: products.length,
+      data: { products },
+    });
+  } catch (err) {
+    res.status(404).json({ status: "fail", message: err });
+  }
+};
+
+exports.getFilteredProducts = async (req, res) => {
+  //La función callback se llama Route Handler
+  try {
+    //EXECUTE THE QUERY
+    //1) Filtering
+    const queryObj = { ...req.query };
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => delete queryObj[el]);
+
+    //2) Advanced filtering
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    // this.query = this.query.find(JSON.parse(queryStr));
+    let query = Product.find(JSON.parse(queryStr)); //lo llamamos como query sin el await para poder encadenar métodos como sort, limit, y otros, con await no se puede
+    const products = await query;
     //SEND RESPONSE
     res.status(203).json({
       status: "success",
@@ -44,19 +69,14 @@ exports.createProduct = async (req, res) => {
       images,
       stock,
       tallaCamiseta,
-      tallaPantalon,
+      tallaPantalón,
       marca,
       gender,
-      summary
+      summary,
     } = req.body;
     if (!name || !price || !images || !marca || !category) {
       return res.status(500).json({ message: "Please Provide all Parameters" });
     }
-
-    const result = await cloudinary.uploader.upload(images[0], {
-      folder: "products",
-    });
-    console.log("CLOUDINARY RESULT", result)
 
     const newProduct = await Product.create({
       name,
@@ -65,13 +85,14 @@ exports.createProduct = async (req, res) => {
       category,
       stock,
       tallaCamiseta: tallaCamiseta ? tallaCamiseta : [],
-      tallaPantalon: tallaPantalon ? tallaPantalon : [],
+      tallaPantalón: tallaPantalón ? tallaPantalón : [],
       images: {
-        public_id: result.public_id,
-        url: result.secure_url,
+        public_id: images[0],
+        url: images[0],
       },
+      marca,
       gender,
-      summary
+      summary,
     });
     res.status(201).json({
       status: "success",
@@ -107,16 +128,15 @@ exports.deleteProduct = async (req, res) => {
 };
 
 //REVIEW SECTION
-exports.addReveiw = async(req,res)=>{
-
-  const {rating, comment, userId} = req.body;
+exports.addReveiw = async (req, res) => {
+  const { rating, comment, userId } = req.body;
   //if(!rating || !description)return res.status(500).json({message:"Please Provide all Parameters"});
-  
+
   try {
-  const product = await Product.findById(req.params.id);
-  //if(!product) return res.stauts(400).json({message:"Product not found"});
-    
-  /*if(product){
+    const product = await Product.findById(req.params.id);
+    //if(!product) return res.stauts(400).json({message:"Product not found"});
+
+    /*if(product){
       console.log(product)
       if(product.reveiws?.find((x)=>x.userId === req.userId)){
         return res.stauts(400).json({message:"Your Already Submitted a review"})
@@ -127,41 +147,64 @@ exports.addReveiw = async(req,res)=>{
       rating,
       comment,
       userId,
-      productId: req.params.id
-    }
+      productId: req.params.id,
+    };
     //console.log(product.reviews.reduce((a,c)=>c.ratingsAverage + a,0)/product.reviews.length)
     const createdReview = await Review.create(review);
-    product.reviews = [...product.reviews, createdReview._id]
+    product.reviews = [...product.reviews, createdReview._id];
     product.ratingsQuantity = product.reviews.length;
     await product.save();
-    return res.send({message:"Review Created Succesfully"})
+    return res.status(201).send({ message: "Review Created Succesfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({message: error})
+  }
+};
+
+exports.getReview = async (req, res) => {
+  //debo encontrar review por id de parametro
+  //modificar data para devolver solo el rating, name, comment y la imagen
+  try {
+    const { id } = req.params;
+    const reviews = await Review.findById(id).populate("userId");
+
+    console.log(reviews)
+
+    if (!reviews) {
+      return res.status(404).json({ message: "Review Not Found" });
+    }
+    const review = {
+      rating: reviews.rating,
+      name: reviews.userId.fullName,
+      comment: reviews.comment,
+      picture: reviews.userId.image || "",
+      date: reviews.createdAt,
+    };
+    res.status(200).json(review);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+
+  }
+};
+
+
+exports.deleteReview = async(req,res)=>{
+  try {
+      await Review.findByIdAndDelete(req.params.id);
+      res.status(200).json({message:"Review has been deleted successfully"})
   } catch (error) {
     console.log(error)
+    res.status(500).json({message:error})
   }
 }
 
-
-exports.getReview = async(req,res)=>{
-  //debo encontrar review por id de parametro
-  //modificar data para devolver solo el rating, name, comment y la imagen
-    try {
-      const {id} = req.params;
-      const reviews = await Review.findById(id).populate("userId")
-      if(!reviews){
-        return res.status(404).json({message:"Review Not Found"})
-      }
-      const review = {
-        rating: reviews.rating,
-        name: reviews.userId.fullName,
-        comment: reviews.comment,
-        picture:"",
-        date: reviews.createdAt
-
-      }
-      res.status(200).json(review)
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({message:error})
-    }
+exports.getReviewById = async(req,res)=>{
+  try {
+    const review = await Review.find()
+    res.status(200).json(review)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message:error})
+  }
 }
-

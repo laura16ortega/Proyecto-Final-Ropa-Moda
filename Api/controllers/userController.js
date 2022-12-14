@@ -34,36 +34,55 @@ const getUser = async(request,response)=>{
 
 //Update a User
 const updatedUser = async(request,response)=>{
+
     const user = await User.findById(request.body.userId);
 
+    console.log("User to update: ", user)
     if(user){
-        const {fullName, email, phone_number} = user;
-        user.email = email;
-        user.fullName = request.body.fullName || fullName;
-        user.phone_number = request.body.phone_number || phone_number;
+        try {
+            const {fullName, email, phone_number, image} = user;
+            user.email = email;
+            user.image = request.body.image || image 
+            user.fullName = request.body.fullName || fullName;
+            user.phone_number = request.body.phone_number || phone_number;
+    
+            const updatedUser = await user.save();
 
-        const updatedUser = await user.save();
-        response.status(200).json({
-            message:"User Update Succesfully",
-            _id: updatedUser._id,
-            fullName: updatedUser.fullName,
-            email: updatedUser.email,
-            phone_number: updatedUser.phone_number
-        })
+            response.status(200).json({
+                message:"User Update Succesfully",
+                _id: updatedUser._id,
+                fullName: updatedUser.fullName,
+                email: updatedUser.email,
+                phone_number: updatedUser.phone_number
+            })
+        } catch (e) {
+            response.status(400).json({message: e})
+        }
     }else{
-        response.status(400).json({message:error})
+        response.status(400).json({message: "No user"})
     }
+    
+    
 }
 
 //Delete a User
 const deleteUser = async(request,response)=>{
     try {
+        
         await User.findByIdAndDelete(request.params.id);
-        response.status(200).json({message:"User has been deleted succesfully"})
+        if(request.body.returnUsers) {
+            const allUsers = await getAllUsers();
+            response.status(200).send(allUsers)
+        }else{
+            response.status(200).json({message:"User has been deleted succesfully"})
+        }
+        
     } catch (error) {
         response.status(500).json({message:error})
     }
 }
+
+
 //Update User Password
 const updatePassword = async(request,response)=>{
     try {

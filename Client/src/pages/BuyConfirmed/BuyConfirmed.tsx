@@ -1,8 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Box, Button, Grid, Typography } from "@mui/material";
 import { Link } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from "../../assets/hooks"
+import axios from "axios"
+import { createOrder } from '../../redux/thunk-actions/orderActions';
+import { clearCart } from '../../redux/slices/cartSlice';
 
 function BuyConfirmed(props: any) {
+    const dispatch = useAppDispatch()
+
+    const { cart } = useAppSelector(state => state.cart) 
+    const { user } = useAppSelector(state => state.auth)
+    const paymethod = window.localStorage.getItem("paymentMethod") // Si se recarga deja de existir
+
+    const orderItems = cart?.map((e) => {
+        return {
+            name: e.name,
+            qty: e.quantity,
+            image: e.images.public_id,
+            price: e.price,
+            product: e._id
+        }
+    })
+    const totalPrice = cart?.reduce((total, item) => total + item.price * item.quantity,0);
+
+    const orderData = {
+        orderItems,
+        paymentMethod: paymethod,
+        itemsPrice: totalPrice,
+        taxPrice: 0,
+        shippingPrice: 0,
+        totalPrice,
+        userId: user.userId
+    }
+
+    useEffect(() => {
+        dispatch(createOrder(orderData))
+        dispatch(clearCart())
+        return () => {
+            window.localStorage.removeItem("paymentMethod")
+        }
+    }, [dispatch])
+    
+    
     return (
         <>
         <Box sx={{ paddingTop: "8rem", paddingBottom: "35rem" }}>

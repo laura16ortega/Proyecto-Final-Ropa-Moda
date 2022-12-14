@@ -1,0 +1,12 @@
+.bottomRow {
+    border: none;
+}
+
+.bottomRow:nth-child(n+1) {
+    border: none;
+}
+
+.row:nth-child(2n) {
+    background-color: #f9f9f9;
+}
+

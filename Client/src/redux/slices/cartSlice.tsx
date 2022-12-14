@@ -12,7 +12,7 @@ type InitialState = {
 const initialState = {
     cartLoading: false,
     cartError: null,
-    cart: [],
+    cart:localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")!) : [],
     checkoutLoad: false
 } as InitialState
 
@@ -24,7 +24,6 @@ export const cartSlice = createSlice({
             const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
             state.cart = cartProd
             const findOnCart = state.cart && state.cart.find(e => e._id === action.payload) // Buscar en localstorage, no funciona al recargar
-            console.log("cart from localstorage - reducer: ", cartProd)
             if (findOnCart) {
                 const newqty = findOnCart.quantity = findOnCart.quantity + 1
                 findOnCart.quantity = newqty
@@ -56,6 +55,10 @@ export const cartSlice = createSlice({
             state.cart = newState
             localStorage.setItem('cart', JSON.stringify(state.cart));
         },
+        clearCart: (state, action: PayloadAction<void>) => {
+            state.cart = []
+            window.localStorage.setItem("cart", JSON.stringify([]))
+        }
     },
     extraReducers(builder) {
         builder
@@ -80,5 +83,5 @@ export const cartSlice = createSlice({
     },
 })
 
-export const { increaseCartQuantity, decreaseCartQuantity, removeCartItem } = cartSlice.actions
+export const { increaseCartQuantity, decreaseCartQuantity, removeCartItem, clearCart } = cartSlice.actions
 export default cartSlice.reducer

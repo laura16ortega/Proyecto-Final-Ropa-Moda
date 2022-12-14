@@ -26,7 +26,6 @@ const userSchema = mongoose.Schema(
     },
     phone_number: {
       type: Number,
-      required: true,
     },
     address: {
       type: String,

@@ -8,9 +8,11 @@ import { validateEmail, forgotPassword } from '../../redux/thunk-actions/authAct
 import { Link } from "react-router-dom";
 
 
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const dispatch = useAppDispatch();
+
 
   const forgotSubmit = async(e:any)=>{
     e.preventDefault();
@@ -29,26 +31,23 @@ const ForgotPassword = () => {
       return toast.error("Email not Found")
     }
   }
- 
+
+
+
   return (
     <Grid>
       <Paper  elevation={20} className={styles.paper}>
-        <h1>Forgot Password</h1>
         <form onSubmit={forgotSubmit} className={styles.form}>
-            <label htmlFor="email">
-              <input
-                 type="email" 
-                 id="email" 
-                 placeholder='Email'
-                 value={email}
-                 onChange={(e)=>setEmail(e.target.value)}
-               />
-            </label>
+               <fieldset className='form-container'>
+                <legend><strong>Forgot Passwords</strong></legend>
+                Email: 
+                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+               </fieldset>
+               <input type="text" />
             <button>Send Email</button>
-            <div className={styles.links}>
-              <Link to="/register">Register</Link>
-              <Link to="/login">Login</Link>
-            </div>
             <ToastContainer
               position="top-right"
               autoClose={5000}
@@ -61,6 +60,10 @@ const ForgotPassword = () => {
               pauseOnHover
               theme="light"/>
         </form>
+            <div className={styles.links}>
+              <Link to="/register">Register</Link>
+              <Link to="/login">Login</Link>
+            </div>
       </Paper>
     </Grid>
   )

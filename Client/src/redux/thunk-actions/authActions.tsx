@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
-export const BACKEND_URL = 'http://localhost:3001'
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 type User = {
     email: FormDataEntryValue | null;
     password: FormDataEntryValue | null;
@@ -58,6 +58,29 @@ export const loginUser = createAsyncThunk(
         }
     }
 );
+export const getUserInfo = createAsyncThunk(
+    "get/user",
+    async(userData:any,thunkApi) => {
+        try{
+            const {data}:any = await axios.get(
+                `${BACKEND_URL}/api/v1/users/${userData.userId}`, {headers: { Authorization: `Bearer ${userData.token}`}}
+            );
+            window.localStorage.removeItem("User");
+            const {_id, fullName, email, image} = data
+            const newUser = {
+                userId: _id,
+                fullName,
+                email,
+                image
+            }
+            window.localStorage.setItem("User", JSON.stringify(newUser));
+            
+            return data
+        }catch(error:any){
+            return thunkApi.rejectWithValue(error)
+        }
+    }
+)
 
 //Forgot Password
 export const forgotPassword = createAsyncThunk(
@@ -80,7 +103,6 @@ export const resetPassword = createAsyncThunk(
     "reset/password",
     async(userData:ResetPass)=>{
         try {
-            console.log(userData)
             const {resetToken} = userData
             const {data}:any = await axios.put(
                 `${BACKEND_URL}/api/v1/users/resetPassword/${resetToken}`,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Typography, Popper, Grow } from "@mui/material"
+import { Box, Button, Typography, Popper, Grow, ClickAwayListener, ButtonGroup } from "@mui/material"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import type { FilterTypedState } from "../Filters/Filters"
 import s from "./FilterPopup.module.css"
@@ -18,11 +18,18 @@ type Filter = {
 
 const FilterPopup = ({ filterDetails, filters, setFilters }: Filter) => {
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    //const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(anchorEl ? null : event.currentTarget);
+    const [open, setOpen] = useState<boolean>(false)
+    const anchorRef = React.useRef<HTMLDivElement>(null)
+
+    const handleToggle = () => {
+        setOpen(!open);
     };
+
+    //const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    //    setAnchorEl(anchorEl ? null : event.currentTarget);
+    //};
 
     const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -39,41 +46,56 @@ const FilterPopup = ({ filterDetails, filters, setFilters }: Filter) => {
         }
     }
 
-    const open = Boolean(anchorEl);
+    const clickAwayHandler = (event: Event) => {
+        if (anchorRef?.current && anchorRef?.current.contains(event.target as HTMLElement)) {
+            return;
+        }
+        setOpen(false);
+    };
+
+    //const open = Boolean(anchorEl);
 
     return (
-        <Box className={s.container}>
-            <Button type="button" sx={{ padding: 0 }} onClick={handleClick}>
+        <Box className={s.container} >
+            <ButtonGroup ref={anchorRef} className={s.buttonGroup}>
+            <Button type="button" sx={{ padding: 0, border: "none" }} onClick={handleToggle} disableRipple>
                 <Typography variant='subtitle1' >
                     {filterDetails.nameToDisplay}
                 </Typography>
                 <KeyboardArrowDownIcon />
             </Button>
-            <Popper open={open} anchorEl={anchorEl} placement="bottom-start" sx={{ zIndex: 9999 }}>
-                <Grow in={open} style={{ transformOrigin: "0 0 0" }} timeout={200}>
-                    <Box className={s.optionsContainer}>
-                        {/* filterDetails.name es el nombre de donde se ubica en el filters */}
-                        {filterDetails.options.map(op => (
-                            <Box className={s.optionsWrapper} key={op}>
-                                <input
-                                    id={op}
-                                    name={filterDetails.name}
-                                    value={op}
-                                    type="checkbox"
-                                    style={{ color: "rgb(17, 17, 17)", border: "2px solid rgb(17, 17, 17)", borderRadius: "0px", width: "1.5rem", height: "1.5rem", cursor: "pointer" }}
-                                    onChange={e => handleFilter(e)}
-                                    checked={filters[filterDetails.name].includes(op)}
-                                />
-                                <label
-                                    htmlFor={op}
-                                    style={{ fontSize: "1rem", fontFamily: "Roboto", paddingLeft: "1rem", cursor: "pointer", userSelect: "none", textTransform: "capitalize" }}>
-                                    {op}
-                                </label>
+            </ButtonGroup>
+                <Popper open={open}  anchorEl={anchorRef.current} placement="bottom-start" sx={{ zIndex: 9999 }}>
+                    <Grow in={open} style={{ transformOrigin: "0 0 0" }} timeout={200}>
+                        <Box className={s.optionsContainer}>
+                        <ClickAwayListener onClickAway={clickAwayHandler}>
+                            <Box>
+                            {filterDetails.options.map((op, i) => (
+                                <Box className={s.optionsWrapper} key={i}>
+                                    <input
+                                        id={op}
+                                        name={filterDetails.name}
+                                        value={op}
+                                        type="checkbox"
+                                        style={{ color: "rgb(17, 17, 17)", border: "2px solid rgb(17, 17, 17)", borderRadius: "0px", width: "1.5rem", height: "1.5rem", cursor: "pointer" }}
+                                        onChange={e => handleFilter(e)}
+                                        checked={filters[filterDetails.name].includes(op)}
+                                    />
+                                    <label
+                                        htmlFor={op}
+                                        style={{ fontSize: "1rem", fontFamily: "Roboto", paddingLeft: "1rem", cursor: "pointer", userSelect: "none", textTransform: "capitalize" }}>
+                                        {op}
+                                    </label>
+                                </Box>
+                            ))}
                             </Box>
-                        ))}
-                    </Box>
-                </Grow>
-            </Popper>
+                                                    </ClickAwayListener>
+                        </Box>
+
+                    </Grow>
+
+                </Popper>
+
         </Box>
     )
 }

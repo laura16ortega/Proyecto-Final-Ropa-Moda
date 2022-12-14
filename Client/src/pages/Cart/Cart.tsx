@@ -12,6 +12,7 @@ import {
   increaseCartQuantity,
   decreaseCartQuantity,
   removeCartItem,
+  clearCart
 } from "../../redux/slices/cartSlice";
 
 import { useNotification } from '../../components/UseNotification/UseNotification';
@@ -20,28 +21,24 @@ import { getAllProducts } from "../../redux/thunk-actions/testActions";
 import CartSlider from "../../components/CartSlider/CartSlider";
 import { stripeCheckout } from "../../redux/thunk-actions/cartActions";
 import { unwrapResult } from '@reduxjs/toolkit'
+import { createOrder } from "../../redux/thunk-actions/orderActions";
 
 const Cart = () => {
   const { displayNotification } = useNotification();
   const [openPaypal, setOpenPaypal] = useState(false);
   const [checkoutError, setCheckoutError] = useState(false)
   const dispatch = useAppDispatch();
-  const { cart, cartLoading, cartError, checkoutLoad } = useAppSelector(
-    (state) => state.cart
-  );
+  const { cart, cartLoading, cartError, checkoutLoad } = useAppSelector((state) => state.cart);
   const { allData, loading } = useAppSelector((state) => state.data);
+  const { user } = useAppSelector(state => state.auth)
 
-  const cartProd: mappedDbProductsType[] = JSON.parse(localStorage.getItem('cart') || "")
   const userToken: string = localStorage.getItem("jwt") || ""
 
   // console.log("Cart state:", cart) --- []
   // console.log("Cart localstorage: ", cartProd) --- [{...}]
 
-  const subTotalPrice = cartProd?.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-  const itemRes = cartProd?.reduce((total, item) => total + item.quantity, 0);
+  const subTotalPrice = cart?.reduce((total, item) => total + item.price * item.quantity,0);
+  const itemRes = cart?.reduce((total, item) => total + item.quantity, 0);
 
   const priceData = [
     { title: "Subtotal", price: subTotalPrice },
@@ -72,6 +69,7 @@ const Cart = () => {
         }
         const dispatchCheckout = await dispatch(stripeCheckout(checkoutData))
         const payloadUrl = unwrapResult(dispatchCheckout)
+        window.localStorage.setItem("paymentMethod", "Credit Card")
         window.location.href = payloadUrl
       }
     } catch (e) {
@@ -83,8 +81,40 @@ const Cart = () => {
     if (!userToken) {
       displayNotification({ message: "Debes estar registrado para poder comprar", type: "info", timeout: 10000 });
     } else {
+      window.localStorage.setItem("paymentMethod", "Paypal")
       setOpenPaypal(!openPaypal);
     }
+  }
+
+  const orderItems = cart?.map((e) => {
+    return {
+        name: e.name,
+        qty: e.quantity,
+        image: e.images.public_id,
+        price: e.price,
+        product: e._id
+    }
+})
+
+  const onPaypalApprove = async (data: any, actions: any) => {
+    const details = await actions.order?.capture()
+
+    const name = details?.payer.name?.given_name
+
+    const orderData = {
+      orderItems, 
+      paymentMethod: "Paypal",
+      itemsPrice: subTotalPrice,
+      taxPrice: 0,
+      shippingPrice: 0,
+      totalPrice: subTotalPrice,
+      userId: user.userId
+    }
+
+    dispatch(createOrder(orderData))
+    dispatch(clearCart())
+    window.localStorage.removeItem("paymentMethod")
+    displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type: "success" })
   }
 
   useEffect(() => {
@@ -96,10 +126,14 @@ const Cart = () => {
   return (
     <div>
       {cartLoading ? (
-        <h1>CartLoading</h1>
+        <Box sx={{ height: "66vh", display: "flex", justifyContent: "center" }}>
+          <Box sx={{ marginTop: "5rem" }} className={s.loader} />
+        </Box>
       ) : cartError ? (
-        <h1>CartError: {cartError}</h1>
-      ) : !cartProd?.length ? (
+        <Box>
+          <h1>CartError: {cartError}</h1>
+        </Box>
+      ) : !cart?.length ? (
         <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
           <Box sx={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
@@ -110,8 +144,12 @@ const Cart = () => {
               recomendados abajo
             </Typography>
           </Box>
-          {loading ? <h1>Loading</h1> : allData &&
-            <Box sx={{}}>
+          {loading ?
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+              <Box sx={{ margin: "2rem" }} className={s.loader} />
+            </Box>
+            : allData &&
+            <Box sx={{userSelect: "none"}}>
               <Typography variant="h3" sx={{ textAlign: "left", fontFamily: "poppins", fontWeight: "600", margin: "1.6rem .4rem" }}>
                 RECOMENDAMOS
               </Typography>
@@ -157,7 +195,7 @@ const Cart = () => {
                     </Typography>
                   </Box>
                   <Box sx={{ marginTop: "2.5rem" }}>
-                    {cartProd?.map((e, i) => (
+                    {cart?.map((e, i) => (
                       <Box key={i + 1} className={s.productsContainer}>
                         <Box
                           sx={{
@@ -167,7 +205,7 @@ const Cart = () => {
                         >
                           <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
                             <img
-                              src={!e.images ? "" : e.images.url ? e.images.url : e.images[0]}
+                              src={e.images.public_id}
                               alt=""
                               className={s.productImage}
                             />
@@ -183,13 +221,13 @@ const Cart = () => {
                               }}
                             >
 
-<Link href={`/products/${e._id}`}>
-                              <Typography
-                                variant="h6"
-                                className={s.productName}
-                              >
-                                {e.name}
-                              </Typography>
+                              <Link href={`/products/${e._id}`}>
+                                <Typography
+                                  variant="h6"
+                                  className={s.productName}
+                                >
+                                  {e.name}
+                                </Typography>
                               </Link>
                               <Typography variant="subtitle1">
                                 {`$${e.price}`}
@@ -342,7 +380,7 @@ const Cart = () => {
                           variant="contained"
                           disableElevation
                           className={s.addButton}
-                          onClick={() => handleStripeCheckout(cartProd)}
+                          onClick={() => handleStripeCheckout(cart)}
                           disabled={checkoutLoad}
                         >
                           Checkout
@@ -383,15 +421,7 @@ const Cart = () => {
                               ],
                             });
                           }}
-                            onApprove={async (data, actions) => {
-                              const details = await actions.order?.capture()
-
-                              const name = details?.payer.name?.given_name 
-                              console.log(details);
-                              displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type: "success" })
-
-
-                            }}
+                            onApprove={(data, actions) => onPaypalApprove(data, actions)}
                           />
                         </PayPalScriptProvider> : <div></div>}
                       </Box>

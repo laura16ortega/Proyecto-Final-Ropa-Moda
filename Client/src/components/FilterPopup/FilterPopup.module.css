@@ -25,3 +25,12 @@
 .optionsWrapper:nth-child(n+2) {
     margin-top: 1rem;
 }
+
+.buttonGroup button {
+    border: none;
+    transition: .2s ease !important;
+}
+
+.buttonGroup:hover button {
+    border: none !important;
+}

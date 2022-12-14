@@ -11,6 +11,8 @@ import credentials from "./auth_config.json";
 import lightTheme from "./Theme";
 import { Notification } from "./components/Notification/Notification";
 
+const link = 'http://localhost:5173/'
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
@@ -19,9 +21,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Auth0Provider
             domain={credentials.domain}
             clientId={credentials.clientId}
-            redirectUri={window.location.href}
-            useRefreshTokens
-            cacheLocation="localstorage"
+            redirectUri={link}
           >
             <App />
             <Notification />
