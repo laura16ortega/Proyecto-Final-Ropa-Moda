@@ -98,9 +98,9 @@ const OrdersDetail = () => {
                                           <TableCell>{i + 1}</TableCell>
                                           <TableCell sx={{ padding: "5px" }}><img style={{ width: "4.5rem", height: "4.5rem" }} src={e.image} alt="caca" /></TableCell>
                                           <TableCell>{e.name}</TableCell>
-                                          <TableCell>unknown</TableCell>
+                                          <TableCell>{`$${e.price}`}</TableCell>
                                           <TableCell>{e.qty}</TableCell>
-                                          <TableCell>unknown</TableCell>
+                                          <TableCell>{`$${e.price * e.qty}`}</TableCell>
                                        </TableRow>
                                     )}
                                     <TableRow className={s.row}>

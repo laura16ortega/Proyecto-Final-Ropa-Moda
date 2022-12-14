@@ -103,7 +103,7 @@ const Card = ({ product }: productProps) => {
               variant="subtitle2"
               sx={{ color: "gray", userSelect: "none", marginLeft: "3px" }}
             >
-              {product.ratingsQuantity} review/s
+              {product.reviews.length} review/s
             </Typography>
           </Box>
           <Box>
