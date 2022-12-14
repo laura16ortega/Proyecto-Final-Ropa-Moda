@@ -368,7 +368,7 @@ export default function DetailCard() {
                       precision={0.5}
                     />
                     <Typography variant="subtitle2" sx={{ marginLeft: "5px" }}>
-                      {`(${productDetails?.ratingsQuantity})`}
+                      {`(${productDetails?.reviews.length})`}
                     </Typography>
                   </Box>
                 </Box>
