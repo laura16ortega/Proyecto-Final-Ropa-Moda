@@ -57,8 +57,8 @@ const Register = () => {
   });
   const { displayNotification } = useNotification();
   const dispatch = useAppDispatch();
-  const paperStyle = { padding: "30px 20px", width: 500, margin: "20px auto" };
-  const headerStyle = { margin: 0 };
+  const paperStyle = { padding: "30px 20px", width: 500, margin: "20px auto", marginBottom:'4rem',marginTop:'3rem' };
+  const headerStyle = { marginTop:'-2rem', marginBottom:'2rem' };
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const marginTop = { marginTop: 5 };
 
@@ -88,20 +88,20 @@ const Register = () => {
     myWidget.open();
   };
   const validationSchema = Yup.object().shape({
-    fullName: Yup.string().min(3, "Es Demasiado Corto").required("Required "),
-    email: Yup.string().email("Ingrese un email valido").required("Required"),
+    fullName: Yup.string().min(3, "Es Demasiado Corto").required("Requerido"),
+    email: Yup.string().email("Ingrese un email valido").required("Requerido"),
     gender: Yup.string()
-      .oneOf(["male", "female"], "Required")
-      .required("Required"),
+      .oneOf(["male", "female"], "Requerido")
+      .required("Requerido"),
     phone_number: Yup.string()
-      .required("Required")
+      .required("Requerido")
       .matches(/(\d|\s|_|@|\.|,)/g, "Introduzca un número válido"),
     password: Yup.string()
       .min(8, "la longitud mínima de la contraseña debe ser 8")
-      .required("Required"),
+      .required("Requerido"),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password")], "Contraseña no coincide")
-      .required("Required"),
+      .required("Requerido"),
     termsAndConditions: Yup.string().oneOf(
       ["true"],
       "Aceptar términos y condiciones"
@@ -145,10 +145,8 @@ const Register = () => {
           <Avatar style={avatarStyle}>
             <AddCircleOutlineOutlinedIcon />
           </Avatar>
-          <h2 style={headerStyle}>Register</h2>
-          <Typography variant="caption" gutterBottom>
-            please fill this form to create an account !
-          </Typography>
+          <h2 style={headerStyle}>Crea tu cuenta en FC</h2>
+          
         </Grid>
         <Formik
           initialValues={initialValues}
@@ -157,27 +155,29 @@ const Register = () => {
         >
           {(props) => (
             <Form>
+              <div style={{marginBottom:'1rem'}}> 
               <Field
                 as={TextField}
                 fullWidth
                 name="fullName"
-                label="FullName"
-                placeholder="Enter you fullName"
-                helperText={<ErrorMessage name="fullName" />}
-              />
-
+                label="Nombre y apellido"
+                placeholder="Ingresa tu nombre"
+                helperText={<ErrorMessage name="fullName"  />} />
+              </div>
               <Field
                 as={TextField}
                 fullWidth
                 name="email"
                 label="Email"
-                placeholder="Enter you email"
-                helperText={<ErrorMessage name="email" />}
+                placeholder="Ingresa tu email"
+                helperText={<ErrorMessage name="email" 
+                
+                />}
               />
 
-              <FormControl component="fieldset" style={marginTop}>
-                <FormLabel component="legend">Gender</FormLabel>
-
+              <FormControl component="fieldset" style={{marginTop:'2rem'}}>
+                <FormLabel component="legend" style={{marginBottom:'1rem'}}>Genero</FormLabel>
+              <div style={{marginBottom:'1rem'}}>
                 <Field
                   as={RadioGroup}
                   aria-label="gender"
@@ -187,14 +187,15 @@ const Register = () => {
                   <FormControlLabel
                     value="female"
                     control={<Radio />}
-                    label="Female"
+                    label="Femenino"
                   />
                   <FormControlLabel
                     value="male"
                     control={<Radio />}
-                    label="Male"
+                    label="Masculino"
                   />
                 </Field>
+                </div>
               </FormControl>
 
               <FormHelperText>
@@ -205,45 +206,48 @@ const Register = () => {
                 as={TextField}
                 fullWidth
                 name="phone_number"
-                label="Phone Number"
-                placeholder="Enter you phone number"
+                label="Numero de telefono"
+                placeholder="Ingresa tu numero de telefono"
                 helperText={<ErrorMessage name="phone_number" />}
               />
               <Button
                   sx={{
-                    marginTop: "3rem",
+                    marginTop: "2rem",marginBottom:'2rem',
                     border: "solid 2px #ced4da",
-                    color: "#ced4da",
+               
                   }}
                   onClick={(e) => widgetDisplay(e)}
                 >
                   Subir Imagen...
                 </Button>
+
+                <div style={{marginBottom:'1rem'}}> 
               <Field
                 as={TextField}
                 fullWidth
                 name="password"
                 type="password"
-                label="Password"
-                placeholder="Enter you Password"
+                label="Contraseña"
+                placeholder="Ingresa tu contraseña"
                 helperText={<ErrorMessage name="password" />}
               />
+              </div>
 
               <Field
                 as={TextField}
                 fullWidth
                 name="confirmPassword"
                 type="password"
-                label="Confirm Password"
-                placeholder="Confirm you password"
+                label="Confirmar contraseña"
+                placeholder="Confirma tu contraseña"
                 helperText={<ErrorMessage name="confirmPassword" />}
               />
-
+              <div style={{marginTop:'1.5rem'}}>
               <FormControlLabel
                 control={<Field as={Checkbox} name="termsAndConditions" />}
-                label="I accept the terms and conditions."
+                label="Acepto los terminos y condiciones."
               />
-
+              </div>
               <FormHelperText>
                 <ErrorMessage name="termsAndConditions" />
               </FormHelperText>
@@ -253,8 +257,9 @@ const Register = () => {
                 variant="contained"
                 disabled={props.isSubmitting}
                 color="primary"
+                style={{marginTop:'1rem'}}
               >
-                {props.isSubmitting ? "loading" : "Register"}
+                {props.isSubmitting ? "loading" : "Registrarse"}
               </Button>
             </Form>
           )}
