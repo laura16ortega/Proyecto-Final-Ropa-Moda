@@ -20,17 +20,12 @@ const ProductsDashboard = () => {
 
     useEffect(() => {
         if (deleteLoading) {
-            console.log("UseEffect - Deleteloading es true")
             dispatch(getAllProducts())
-            setTimeout(() => {
-                displayNotification({ message: "Producto eliminado con exito", type: "success" })
-            }, 500);
         }
         else if (!allData.length) {
             dispatch(getAllProducts())
         }
     }, [deleteLoading])
-    console.log(deleteLoading)
 
     let maximo = allData.length / 10
 
@@ -54,6 +49,7 @@ const ProductsDashboard = () => {
         dispatch(deleteProduct(productId)).then(res => {
             if (res.meta.requestStatus === "fulfilled") {
                 dispatch(getAllProducts())
+                displayNotification({ message: "Producto eliminado con exito", type: "success" })
             }
         })
     }
