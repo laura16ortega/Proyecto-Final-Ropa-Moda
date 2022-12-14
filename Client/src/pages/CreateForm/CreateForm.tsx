@@ -63,6 +63,7 @@ export default function CreateForm() {
   const [fileValue, setFileValue] = useState({
     image: "",
   });
+  const [disabledButton, setDisabledButton] = useState<boolean>(false)
 
   const widgetConfig = {
     cloudName: "dayt0wtlk",
@@ -117,9 +118,15 @@ export default function CreateForm() {
   }
 
   const handleFormikSubmit = (value: InitialValue) => {
+    setDisabledButton(true)
     let allData = { ...value, images: [fileValue.image] };
-    dispatch(createProduct(allData));
-    window.location.href = "/products";
+    dispatch(createProduct(allData)).then(res => {
+      if (typeof res === "object") {
+        setDisabledButton(false)
+        window.location.href = "/dashboard/products"
+      }
+    });
+    
   }
 
   const initialValues: InitialValue = {
@@ -367,6 +374,7 @@ export default function CreateForm() {
                       variant="contained"
                       fullWidth
                       sx={{ marginBottom: "2rem", marginTop: "2rem" }}
+                      disabled={disabledButton}
                     >
                       CREAR
                     </Button>

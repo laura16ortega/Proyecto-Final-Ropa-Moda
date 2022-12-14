@@ -30,8 +30,8 @@ exports.stripeCheckout = async (req, res) => {
                quantity: product.quantity
             }
          }),
-         success_url: `http://127.0.0.1:5173/cart/success`, // Redireccionar a home(front)
-         cancel_url: `http://127.0.0.1:5173/cart` // Redireccionar a cart
+         success_url: `${process.env.FRONTEND_URL}/confirmed`,
+         cancel_url: `${process.env.FRONTEND_URL}/cart`
       })
       res.json({ url: session.url })
    } catch (error) {
