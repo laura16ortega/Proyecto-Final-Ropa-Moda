@@ -2,7 +2,7 @@ import "./widgetSm.css"
 import { Visibility } from '@mui/icons-material'
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
-import AllUsersCard from '../AllUsers/AllUsersCard';
+import AllUsersCard from '../allUsers/AllUsersCard';
 import { getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
 
 import { selectUsers } from '../../../redux/slices/allUsersSlice';
@@ -17,7 +17,7 @@ import {
     TableRow,
     Grid,
 } from "@mui/material"
-import AllUsers from "../AllUsers/AllUsers"
+import AllUsers from "../allUsers/AllUsers"
 
 type UsersData = {
     users: any // users.slice >>> map
