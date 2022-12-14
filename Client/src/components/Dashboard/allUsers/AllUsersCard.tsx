@@ -44,12 +44,13 @@ function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedA
         setConfirm(!confirm);
     }
     const handleDelete = (e: MouseEvent) => {
-        
-
-        dispatch(deleteUser(deleteValidations));
+       
+            dispatch(deleteUser(deleteValidations));
         setConfirm(false);
         dispatch(getAllUsers(currentToken!))
         displayNotification({ message: "Usuario eliminado satisfactoriamente", type: "success", timeout:1000 })
+
+        
     }
 
     return (
