@@ -19,6 +19,7 @@ const ProductsDashboard = () => {
 
     useEffect(() => {
         if (deleteLoading) {
+            console.log("UseEffect - Deleteloading es true")
             dispatch(getAllProducts())
             setTimeout(() => {
                 displayNotification({ message: "Producto eliminado con exito", type: "success" })
@@ -28,6 +29,7 @@ const ProductsDashboard = () => {
             dispatch(getAllProducts())
         }
     }, [deleteLoading])
+    console.log(deleteLoading)
 
     let maximo = allData.length / 10
 
@@ -48,7 +50,11 @@ const ProductsDashboard = () => {
     }
 
     const handleDelete = (productId: string) => {
-        dispatch(deleteProduct(productId))
+        dispatch(deleteProduct(productId)).then(res => {
+            if (res.meta.requestStatus === "fulfilled") {
+                dispatch(getAllProducts())
+            }
+        })
     }
 
     return (
@@ -63,7 +69,7 @@ const ProductsDashboard = () => {
                         </Grid>
                         <Grid item md={4} xs={12} sx={{ textAlign: "right" }}>
                             <Button variant="contained" disableElevation sx={{ padding: 0 }}>
-                                <Link href="/create" color="secondary" sx={{padding: "10px 15px"}}>
+                                <Link href="/create" color="secondary" sx={{ padding: "10px 15px" }}>
                                     Agregar
                                 </Link>
                             </Button>
@@ -88,14 +94,14 @@ const ProductsDashboard = () => {
                     </Box>
                     <Box sx={{ padding: "1.3rem" }}>
                         <Grid container alignItems="stretch">
-                            {allData.filter((product) => 
-                            product.name.toLowerCase().includes(filters.name.toLowerCase())
+                            {allData.filter((product) =>
+                                product.name.toLowerCase().includes(filters.name.toLowerCase())
                             ).slice(
                                 (pagina - 1) * 10,
                                 (pagina - 1) * 10 + 10).map((e, i) =>
                                     <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} sx={{ paddingX: "8px" }} key={e._id}>
                                         <Paper>
-                                            <Box sx={{ border: "1px solid #eee", marginBottom: "20px", borderRadius: "10px", overflow: "hidden"}}>
+                                            <Box sx={{ border: "1px solid #eee", marginBottom: "20px", borderRadius: "10px", overflow: "hidden" }}>
                                                 <Box>
                                                     <Link href={`/products/${e._id}`}>
                                                         <img src={e.images.public_id} alt={`${e.name}`} style={{ height: "100%", maxWidth: "100%", objectFit: "cover" }} />
