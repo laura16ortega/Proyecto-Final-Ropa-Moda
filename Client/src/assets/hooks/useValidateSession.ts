@@ -22,7 +22,6 @@ export const useValidateSession = () => {
         image: user?.picture,
         userId: uuidv4.toString()
     }
-    console.log(newUser)
 
     if(user){
         window.localStorage.setItem("User", JSON.stringify(newUser) as string);

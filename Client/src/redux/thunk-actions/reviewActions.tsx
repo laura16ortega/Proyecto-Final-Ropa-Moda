@@ -1,6 +1,7 @@
 import axios from "axios"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import type { DataProps, PostReviewResponse, ReviewType } from "../types/reviewTypes"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 export const postReview = createAsyncThunk(
    "reviews/post",
@@ -8,7 +9,7 @@ export const postReview = createAsyncThunk(
       try {
          console.log("Sent values: ", postData)
          const { data } = await axios.post<PostReviewResponse>(
-            `http://localhost:3001/api/v1/products/review/${postData.productId}`,
+            `${BACKEND_URL}/api/v1/products/review/${postData.productId}`,
             postData, // Toda la data, se destructura desde el back
             { headers: { Authorization: `Bearer ${postData.token}` } }
          )
@@ -23,7 +24,7 @@ export const getReview = createAsyncThunk(
    "reviews/get",
    async(reviewId: string, thunkApi) => {
       try {
-         const { data } = await axios.get<ReviewType>(`http://localhost:3001/api/v1/products/review/${reviewId}`)
+         const { data } = await axios.get<ReviewType>(`${BACKEND_URL}/api/v1/products/review/${reviewId}`)
          return data
       } catch (error: any) {
          return thunkApi.rejectWithValue(error.message)
