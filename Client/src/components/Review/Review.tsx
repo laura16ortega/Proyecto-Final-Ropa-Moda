@@ -51,11 +51,6 @@ const Review = ({ id }: ReviewProps) => {
                   {fetchReview.name}
                </Typography>
             </Box>
-            <Box>
-               <Button>
-                  <MoreVertIcon />
-               </Button>
-            </Box>
          </Box>
          <Box sx={{ display: "flex", alignItems: "center", marginY: "1rem" }}>
             <Rating value={fetchReview.rating} size="large" readOnly precision={0.5} />
