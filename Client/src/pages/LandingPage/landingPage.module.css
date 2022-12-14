@@ -1,0 +1,109 @@
+
+.bodyContainer {
+    padding-top: 6em;
+    display: flex;
+    flex-direction: column;
+    color: rgb(94, 90, 177);
+}
+
+
+.featuredContainer {
+    display: flex;
+    position: relative;
+}
+
+.featuredWrapper {
+    display: flex;
+    max-height: 86vh;
+}
+
+.featuredLeft {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #5d93b5cb;
+    background-image: none;
+}
+
+.leftContents {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 64px 48px;
+    height: 100%;
+}
+
+.leftContents p {
+    display: flex;
+    margin: 0;
+    letter-spacing: 0px;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: left;
+    color: #04eafa;
+}
+
+.titleContainer {
+    padding: 0;
+    margin-bottom: 8px;
+}
+
+.titleContainer h1 {
+    font-size: 80px;
+    font-weight: 900;
+    letter-spacing: -0.8px;
+    line-height: 96px;
+    color: rgb(13, 54, 199);
+    display: flex;
+    text-align: start;
+    font-family: 'oktaneue-regular';
+    text-transform: uppercase;
+}
+
+.buttonContainer {
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+.buttonContainer a {
+    text-decoration: none;
+
+}
+
+.buttonDesc {
+    height: 64px;
+    font-size: 20px;
+    background-color: hsl(250, 89%, 39%);
+    color: rgb(56, 229, 220);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+}
+
+.img {
+    width: 50%;
+}
+
+.img img {
+    width: -webkit-fill-available; 
+    height: -webkit-fill-available; 
+    object-fit: cover
+}
+
+.categories {
+    background-image:url("https://gifsanimados.de/img-gifsanimados.de/e/estrellas/azul.gif");
+    padding: 80px 0;
+}
+
+.categories h1 {
+    padding-bottom: 2.5rem;
+    color: rgb(94, 90, 177);
+}
+
+.categoriesLink {
+    display: flex;
+    justify-content: center;
+}
