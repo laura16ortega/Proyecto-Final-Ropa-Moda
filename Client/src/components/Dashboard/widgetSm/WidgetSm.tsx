@@ -29,13 +29,10 @@ export default function WidgetSm({users}: UsersData) {
                             <TableBody>
                                 {users?.map((u: any, i: any) =>
                                     <TableRow key={i + 1}>
-                                        <TableCell align="center"><Avatar src={u.image} alt="" className="widgetSmImg" /></TableCell>
-                                        <TableCell align="center">{u.fullName}</TableCell>
+                                        <TableCell align="center"><Avatar src={u.image} alt="" /></TableCell>
+                                        <TableCell>{u.fullName}</TableCell>
                                         <TableCell align="center">
-                                            <Button className="widgetSmButton">
-                                                <Visibility />
-                                                Display
-                                            </Button>
+                                            {`${new Date(u.createdAt).toLocaleString().split(",")[0]}`}
                                         </TableCell>
                                     </TableRow>
                                 )}
