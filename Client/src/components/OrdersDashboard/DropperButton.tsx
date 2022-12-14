@@ -13,7 +13,6 @@ import {
 } from "@mui/material"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const options = ['Marcar como entregado', 'Marcar como realizado'];
 const optionsvalues = [
     { key: 'Marcar como entregado', value: 'isDelivered' },
     { key: 'Marcar como realizado', value: 'isPaid' }
