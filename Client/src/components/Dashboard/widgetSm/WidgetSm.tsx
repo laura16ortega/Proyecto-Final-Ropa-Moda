@@ -27,7 +27,7 @@ export default function WidgetSm() {
     const { allUsers, usersError, usersLoading } = useAppSelector(selectUsers);
     const dispatch = useAppDispatch();
     const currentToken = window.localStorage.getItem('jwt');
-    const lastUsers = allUsers.slice().reverse().slice(0,6)
+    const lastUsers = allUsers.slice().reverse().slice(0,10)
 
     useEffect(() => {
         dispatch(getAllUsers(currentToken!))
@@ -43,13 +43,13 @@ export default function WidgetSm() {
         <>
       
         <Grid item xs={12} lg={4.5}>
-            <Paper elevation={5} sx={{ backgroundColor: "white", padding: "20px", width:'34rem' }}>
+            <Paper elevation={5} sx={{ backgroundColor: "white", padding: "20px", width:'34rem',height:'30.9rem', overflow:'scroll',overflowX:'hidden' }}>
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>Nuevos Miembros</Typography>
 
         {
         lastUsers?.map((u: any, index: any) =>{ return (
         <div /* style={{marginLeft:'1rem',height:'10vh', width:'50vh'}} */ key={index}>
-        <AllUsersCard key={index} _id={u._id} fullName={u.fullName} email={u.email} phone_number={u.phone_number} createdAt={u.createdAt} updatedAt={u.updatedAt} moreOptions='false' />
+        <AllUsersCard key={index} image={u.image} _id={u._id} fullName={u.fullName} email={u.email} phone_number={u.phone_number} createdAt={u.createdAt} updatedAt={u.updatedAt} moreOptions='false' />
         </div>
         )})} 
         </Paper>

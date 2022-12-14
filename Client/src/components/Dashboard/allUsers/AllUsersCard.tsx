@@ -10,6 +10,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Clear } from '@mui/icons-material';
 import { useNotification } from "../../UseNotification/UseNotification";
+import BlockIcon from '@mui/icons-material/Block';
 import {
     Typography,
     Paper,
@@ -43,6 +44,8 @@ function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedA
         setConfirm(!confirm);
     }
     const handleDelete = (e: MouseEvent) => {
+        
+
         dispatch(deleteUser(deleteValidations));
         setConfirm(false);
         dispatch(getAllUsers(currentToken!))
@@ -57,9 +60,9 @@ function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedA
 
 
                 <Avatar sx={{ width: 80, height: 80 }} src={image}/>
-                <Link to="/" >
+                
             <h3 style={{marginBottom:'0.3rem', marginTop:'0.5rem'}}>{fullName}</h3>
-            </Link>
+           
 
             <div>
             <h4>{email}</h4>
@@ -97,8 +100,13 @@ function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedA
                 <div className='buttons' style={{display:'flex', flexDirection:'row', marginRight:'50%', justifyContent:'space-evenly'}}>
     
                 <div>
-                    <Button style={{marginTop:'1vh'}} onClick={(e: any) => handleConfirm(e)}>
+                    <Button name='delete' style={{marginTop:'1vh'}} onClick={(e: any) => handleConfirm(e)}>
                     <DeleteOutlineIcon  />
+                    </Button>
+                </div>
+                <div>
+                    <Button name='block' style={{marginTop:'1vh'}} onClick={(e: any) => handleConfirm(e)}>
+                    <BlockIcon />
                     </Button>
                 </div>
 {/*     
@@ -135,11 +143,8 @@ function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedA
                             <TableRow>
                                 <TableCell align="center"><Avatar src={image} /></TableCell>
                                 <TableCell align="center">{fullName}</TableCell>
-                                <TableCell align="center">
-                                    <Button className="widgetSmButton">
-                                        <Visibility />
-                                        Display
-                                    </Button>
+                                <TableCell align="right">
+                                    {createdAt}
                                 </TableCell>
                             </TableRow>
                             </TableBody>
