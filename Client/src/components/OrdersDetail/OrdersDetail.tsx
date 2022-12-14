@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../assets/hooks'
 import { orderById } from '../../redux/thunk-actions/orderActions'
 import s from "./OrderDetail.module.css"
+import { formatNumber } from '../../assets/helpers'
 
 type ParamsType = {
    id: string
@@ -33,7 +34,7 @@ const OrdersDetail = () => {
 
    const headers = ["#", "Imagen", "Nombre", "Precio", "Cantidad", "Subtotal"]
    const taxes = ["", "", "", "", "Impuestos: ", "N/A"]
-   const total = ["", "", "", "", "Total: ", `$${orderDetails?.totalPrice}`]
+   const total = ["", "", "", "", "Total: ", `$${orderDetails?.totalPrice ? formatNumber(orderDetails?.totalPrice) : "???"}`]
 
 
    return (
@@ -98,9 +99,9 @@ const OrdersDetail = () => {
                                           <TableCell>{i + 1}</TableCell>
                                           <TableCell sx={{ padding: "5px" }}><img style={{ width: "4.5rem", height: "4.5rem" }} src={e.image} alt="caca" /></TableCell>
                                           <TableCell>{e.name}</TableCell>
-                                          <TableCell>{`$${e.price}`}</TableCell>
+                                          <TableCell>{`$${e.price? formatNumber(e.price) : "???"}`}</TableCell>
                                           <TableCell>{e.qty}</TableCell>
-                                          <TableCell>{`$${e.price * e.qty}`}</TableCell>
+                                          <TableCell>{`$${e.price? formatNumber(e.price * e.qty) : "???"}`}</TableCell>
                                        </TableRow>
                                     )}
                                     <TableRow className={s.row}>
