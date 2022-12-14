@@ -93,6 +93,7 @@ const OrdersDashboard = () => {
                                     <TableBody>
                                         {orders
                                             .filter((order) => order.user.fullName.toLowerCase().includes(search.toLowerCase()))
+                                            .reverse()
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                             .map(e =>
                                                 <TableRow key={e._id}>
