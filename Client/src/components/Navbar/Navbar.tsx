@@ -92,7 +92,7 @@ export const Navbar = () => {
               color="inherit"
               aria-label="logo"
               onClick={() => {
-                navigate("/products");
+                navigate("/");
               }}
             >
               <HomeIcon />

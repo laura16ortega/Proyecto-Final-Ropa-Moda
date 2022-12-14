@@ -21,7 +21,7 @@ export const getAllUsers = createAsyncThunk(
         try {
             console.log('ENTERED ACTION')
             const {data}:any = await axios.get(
-                `${BACKEND_URL}/api/v1/users`, {
+                `http://localhost:3001/api/v1/users`, {
                     headers:{
                         'Authorization': `token ${token}`
                     }
@@ -39,15 +39,10 @@ export const deleteUser = createAsyncThunk(
     "delete/users",
     async(info: any, thunkApi) => {
         
-        try{
-            console.log(info)
-            const returnUsers = {"returnUsers":'true'}
-            const { data }: any = await axios.delete(`${BACKEND_URL}/api/v1/users/find/${info.id}`, {
+        try{ 
+            const { data }: any = await axios.delete(`http://localhost:3001/api/v1/users/find/${info.id}`, {
                 headers:{
                     'Authorization': `token ${info.token}`
-                },
-                data: {
-                  source: returnUsers
                 }
             });
             return data
