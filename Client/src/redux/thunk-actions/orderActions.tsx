@@ -56,3 +56,21 @@ export const orderById = createAsyncThunk(
         }
     }
 )
+
+type DadataBody = {
+    orderId: string
+    isDelivered: boolean
+    isPaid: boolean
+}
+
+export const updateOrder = createAsyncThunk(
+    "order/update",
+    async(dataBody: DadataBody, thunkApi) => {
+        try {
+            const { data } = await axios.patch<OrderDetailsType>(`${BACKEND_URL}/api/v1/orders/${dataBody.orderId}`, dataBody)
+            return data
+        } catch (e: any) {
+            return thunkApi.rejectWithValue(e.response.data)
+        }
+    }
+)

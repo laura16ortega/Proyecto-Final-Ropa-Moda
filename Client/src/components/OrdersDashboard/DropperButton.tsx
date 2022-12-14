@@ -12,11 +12,8 @@ import {
     Link
 } from "@mui/material"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
-const optionsvalues = [
-    { key: 'Marcar como entregado', value: 'isDelivered' },
-    { key: 'Marcar como realizado', value: 'isPaid' }
-];
+import { useAppDispatch } from '../../assets/hooks';
+import { updateOrder } from '../../redux/thunk-actions/orderActions';
 
 type DropperButtonProps = {
     orderId: string
@@ -27,13 +24,15 @@ type DropperButtonProps = {
 const DropperButton = ({ orderId, isPaid, forceUpdate }: DropperButtonProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const anchorRef = React.useRef<HTMLDivElement>(null)
+    const dispatch = useAppDispatch()
 
-    const handleMenuItemClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
-        if (index === 0) {
-            console.log("dispatch(updateOrder({isDelivered: true}))")
-        } else if (index === 1) {
-            console.log("dispatch(updateOrder({isDelivered: true, isPaid: true}))")
+    const handleMenuItemClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+        const updateData = {
+            orderId,
+            isPaid: true,
+            isDelivered: true
         }
+        dispatch(updateOrder(updateData))
         forceUpdate()
         setOpen(false);
     };
@@ -63,11 +62,9 @@ const DropperButton = ({ orderId, isPaid, forceUpdate }: DropperButtonProps) => 
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MenuList autoFocusItem>
-                                    {optionsvalues.map((option, index) => (
-                                        <MenuItem key={option.key} onClick={(event) => handleMenuItemClick(event, index)}>
-                                            {option.key}
-                                        </MenuItem>
-                                    ))}
+                                    <MenuItem onClick={(event) => handleMenuItemClick(event)}>
+                                        Marcar como realizado
+                                    </MenuItem>
                                 </MenuList>
                             </ClickAwayListener>
                         </Paper>
