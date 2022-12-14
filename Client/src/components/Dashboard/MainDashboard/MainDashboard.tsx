@@ -29,7 +29,7 @@ function MainDashboard() {
                 <Sidebar />
                 {orders.length && allData.length ? <Outlet/> : <div></div>}
             </div>
-        </div>
+        </div>  
     );
 }
 

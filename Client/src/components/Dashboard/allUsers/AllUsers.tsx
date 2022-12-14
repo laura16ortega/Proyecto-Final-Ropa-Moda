@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
 import AllUsersCard from './AllUsersCard';
 import { getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
-import { usersData } from './usersData/usersData';
+
 import { selectUsers } from '../../../redux/slices/allUsersSlice';
 
 

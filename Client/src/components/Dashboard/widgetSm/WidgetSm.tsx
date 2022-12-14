@@ -1,5 +1,11 @@
 import "./widgetSm.css"
 import { Visibility } from '@mui/icons-material'
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
+import AllUsersCard from '../AllUsers/AllUsersCard';
+import { getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
+
+import { selectUsers } from '../../../redux/slices/allUsersSlice';
 import {
     Typography,
     Paper,
@@ -11,83 +17,44 @@ import {
     TableRow,
     Grid,
 } from "@mui/material"
+import AllUsers from "../AllUsers/AllUsers"
 
 type UsersData = {
     users: any // users.slice >>> map
 }
 
 export default function WidgetSm() {
+    const { allUsers, usersError, usersLoading } = useAppSelector(selectUsers);
+    const dispatch = useAppDispatch();
+    const currentToken = window.localStorage.getItem('jwt');
+    const lastUsers = allUsers.slice().reverse().slice(0,6)
+
+    useEffect(() => {
+        dispatch(getAllUsers(currentToken!))
+    }, [])
+
+    useEffect(() => {
+    if(!allUsers?.lenght){
+        dispatch(getAllUsers(currentToken!))
+    }
+    },[dispatch])
+
     return (
+        <>
+      
         <Grid item xs={12} lg={4.5}>
-            <Paper elevation={5} sx={{ backgroundColor: "white", padding: "20px" }}>
+            <Paper elevation={5} sx={{ backgroundColor: "white", padding: "20px", width:'34rem' }}>
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>Nuevos Miembros</Typography>
-                <TableContainer>
-                    <Table>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell align="center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetSmImg" /></TableCell>
-                                <TableCell align="center">Hellen Keller</TableCell>
-                                <TableCell align="center">
-                                    <Button className="widgetSmButton">
-                                        <Visibility />
-                                        Display
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetSmImg" /></TableCell>
-                                <TableCell align="center">Hellen Keller</TableCell>
-                                <TableCell align="center">
-                                    <Button className="widgetSmButton">
-                                        <Visibility />
-                                        Display
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetSmImg" /></TableCell>
-                                <TableCell align="center">Hellen Keller</TableCell>
-                                <TableCell align="center">
-                                    <Button className="widgetSmButton">
-                                        <Visibility />
-                                        Display
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetSmImg" /></TableCell>
-                                <TableCell align="center">Hellen Keller</TableCell>
-                                <TableCell align="center">
-                                    <Button className="widgetSmButton">
-                                        <Visibility />
-                                        Display
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetSmImg" /></TableCell>
-                                <TableCell align="center">Hellen Keller</TableCell>
-                                <TableCell align="center">
-                                    <Button className="widgetSmButton">
-                                        <Visibility />
-                                        Display
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST5jf6IJvuPMKWml4G6yeIYswrQVIbKRvShg&usqp=CAU" alt="" className="widgetSmImg" /></TableCell>
-                                <TableCell align="center">Hellen Keller</TableCell>
-                                <TableCell align="center">
-                                    <Button className="widgetSmButton">
-                                        <Visibility />
-                                        Display
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+
+        {
+        lastUsers?.map((u: any, index: any) =>{ return (
+        <div /* style={{marginLeft:'1rem',height:'10vh', width:'50vh'}} */ key={index}>
+        <AllUsersCard key={index} _id={u._id} fullName={u.fullName} email={u.email} phone_number={u.phone_number} createdAt={u.createdAt} updatedAt={u.updatedAt} moreOptions='false' />
+        </div>
+        )})} 
+        </Paper>
         </Grid>
+
+        </>
     )
 }

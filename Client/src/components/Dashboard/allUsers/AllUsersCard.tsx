@@ -4,14 +4,24 @@ import { Link } from 'react-router-dom';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
-import { Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { deleteUser, getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Clear } from '@mui/icons-material';
 import { useNotification } from "../../UseNotification/UseNotification";
-
+import {
+    Typography,
+    Paper,
+    Table,
+    TableContainer,
+    TableBody,
+    TableCell,
+    Button,
+    TableRow,
+    Grid,
+} from "@mui/material"
+import { Visibility } from '@mui/icons-material'
 
 function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedAt, moreOptions  }: any) {
  /*    const { allData } = props;
@@ -117,28 +127,29 @@ function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedA
         ) 
         : 
         (
-            <div style={{width:'29vh',height:'6vh', borderRadius:'0.2vh',backgroundColor:'#F5F5F5', display:'flex', flexDirection:'row', margin:'0.5rem 1rem 1rem 1rem'}}>
-            <div style={{display:'flex',flexDirection:'row', margin:'0.5rem 0.5rem 0.5rem 0.5rem', fontFamily:'Trebuchet MS'}}>
-            <Avatar src={image}/>
-            
-            
-            <div style={{display:'flex',flexDirection:'column',textAlign:'left', marginLeft:'1rem'}}>
-            <Link to="/" >
-            <h4 style={{marginBottom:'0.3rem'}}>{fullName}</h4>
-            </Link>
-            <h5>{email}</h5>
-    
-    
-            <div style={{marginLeft:'19vh', marginTop:'-2.5rem'}}>
-            <SettingsApplicationsIcon fontSize="medium"  />
-            </div>
-    
-            </div>
-            
-    
-    {/* //router.get("/:id",verifyTokenAndAdmin, getUser); */}
-            </div>  
-            </div>
+
+           
+                <TableContainer>
+                    <Table>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell align="center"><Avatar src={image} /></TableCell>
+                                <TableCell align="center">{fullName}</TableCell>
+                                <TableCell align="center">
+                                    <Button className="widgetSmButton">
+                                        <Visibility />
+                                        Display
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                            </TableBody>
+                            </Table>
+                            </TableContainer>
+        
+
+
+
+
 
         ) }
         
