@@ -63,7 +63,7 @@ const ProfilePage = () => {
                               !boughtByUser.length ?
                                  <Grid container sx={{ paddingTop: "20px" }}>
                                     <Grid item md={9.5} xs={12} className={s.agregarAlgo}>
-                                       <Typography variant="subtitle1" sx={{ textAlign: "left" }}>Looks like you have not placed any orders yet. Go on why not add something?</Typography>
+                                       <Typography variant="subtitle1" sx={{ textAlign: "left" }}>Al parecer no tienes ordenes en tu historial. ¿Que tal si pruebas agregando algo?</Typography>
                                     </Grid>
                                     <Grid item md={2.5} xs={12}>
                                        <Link href="/cart" sx={{ minWidth: "initial", fontSize: "16px", fontWeight: "normal", fontStyle: "normal", fontStretch: "normal", lineHeight: "normal", letterSpacing: "2px", textAlign: "center", color: "#fff" }}>
