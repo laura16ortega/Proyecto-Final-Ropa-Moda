@@ -8,6 +8,7 @@ import WidgetLg from "../widgetLg/WidgetLg";
 import { Box, Container, Grid } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
 import { OrderType } from "../../../redux/types/orderTypes";
+import { selectUsers } from "../../../redux/slices/allUsersSlice";
 //import { getAllProducts } from "../../../redux/thunk-actions/testActions";
 //import { getOrders } from "../../../redux/thunk-actions/orderActions";
 //import { getAllUsers } from "../../../redux/thunk-actions/allUsersActions";
@@ -27,6 +28,7 @@ const DashboardHome = () => {
    //const dispatch = useAppDispatch()
    const { orders, ordersLoading } = useAppSelector(state => state.order)
    const { allData, loading } = useAppSelector(state => state.data)
+   const { allUsers, usersError, usersLoading } = useAppSelector(state => state.allUsers);
 
    const todayDate = new Date()
 
@@ -132,14 +134,14 @@ const DashboardHome = () => {
 
    return (
       <Box className="home">
-         {loading || ordersLoading ? <Box>skeleton</Box> :
+         {loading || ordersLoading || usersLoading ? <Box>skeleton</Box> :
             <Box>
                <Container maxWidth="xl" sx={{ paddingY: "30px" }}>
                   <FeaturedInfo allData={allData.length} allOrders={orders.length} ingresos={TotalRevenue} monthTotal={thisMonthTotal} /> {/* pasar users length orders length products length y total de ventas */}
                   <Chart data={allDates} title="Ingresos de la ultima semana" grid dataKey="Total" weeklyIncome={thisWeekTotal}/>
                   <Box className="homeWidgets">
                      <Grid container spacing={3}>
-                        <WidgetSm />
+                        <WidgetSm users={allUsers.slice(-5).reverse()}/>
                         <WidgetLg orderData={orders.slice(-5).reverse()} />
                      </Grid>
                   </Box>

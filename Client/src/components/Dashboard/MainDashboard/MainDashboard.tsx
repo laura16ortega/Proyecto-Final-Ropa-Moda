@@ -7,18 +7,23 @@ import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
 import { getAllProducts } from "../../../redux/thunk-actions/testActions";
 import { getOrders } from "../../../redux/thunk-actions/orderActions";
 import { useEffect } from "react";
+import { selectUsers } from "../../../redux/slices/allUsersSlice";
+import { getAllUsers } from "../../../redux/thunk-actions/allUsersActions";
 
 
 
 function MainDashboard() {
     const dispatch = useAppDispatch()
+    const currentToken = window.localStorage.getItem('jwt');
     const { orders } = useAppSelector(state => state.order)
     const { allData } = useAppSelector(state => state.data)
+    const { allUsers } = useAppSelector(selectUsers)
 
     useEffect(() => {
-        if (!allData.length || !orders.length) {
+        if (!allData.length || !orders.length || !allUsers.length) {
             dispatch(getAllProducts())
             dispatch(getOrders())
+            dispatch(getAllUsers(currentToken!))
         }
     }, [])
 
