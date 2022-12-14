@@ -15,9 +15,6 @@ const ProfilePage = () => {
    const handleLogout = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       event.preventDefault();
       dispatch(logout());
-      setTimeout(() => {
-         window.location.href = "/";
-      }, 500);
    };
 
    const boughtByUser = orders.filter(e => e.user._id === user.userId).slice(-10).reverse()
