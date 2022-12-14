@@ -18,7 +18,7 @@ export const createOrder = createAsyncThunk(
     async(orderData: SentOrder, thunkApi) => {
         console.log("sent order data: ", orderData)
         try {
-            const { data } = await axios.post<any>(`${BACKEND_URL}/api/v1/orders`, orderData)
+            const { data } = await axios.post<any>(`http://localhost:3001/api/v1/orders`, orderData)
             // const createOrder = await order.save();
             // res.status(201).json(createOrder);
             console.log("order data: ", data)

@@ -96,6 +96,8 @@ const Cart = () => {
     }
 })
 
+console.log(orderItems)
+
   const onPaypalApprove = async (data: any, actions: any) => {
     const details = await actions.order?.capture()
 
@@ -112,6 +114,7 @@ const Cart = () => {
     }
 
     dispatch(createOrder(orderData))
+    setOpenPaypal(!openPaypal)
     dispatch(clearCart())
     window.localStorage.removeItem("paymentMethod")
     displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type: "success" })
