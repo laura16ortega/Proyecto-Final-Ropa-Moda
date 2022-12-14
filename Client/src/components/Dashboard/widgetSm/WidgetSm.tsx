@@ -1,10 +1,5 @@
 import "./widgetSm.css"
 import { Visibility } from '@mui/icons-material'
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
-import AllUsersCard from '../allUsers/AllUsersCard';
-import { getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
-import { selectUsers } from '../../../redux/slices/allUsersSlice';
 import {
     Typography,
     Paper,
