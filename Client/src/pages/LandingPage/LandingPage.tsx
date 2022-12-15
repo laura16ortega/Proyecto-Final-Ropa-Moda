@@ -1,14 +1,12 @@
 
-import { Box, Button, styled, Typography } from '@mui/material';
-import { Container } from '@mui/system';
-import React from "react";
-// import Footer from '../../components/Footer/Footer';
-//import Navbar from '../../components/Navbar';
+// import React from "react";
+// // import Footer from '../../components/Footer/Footer';
+// //import Navbar from '../../components/Navbar';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import useEffect from 'react';
 import { useValidateSession } from '../../assets/hooks/useValidateSession';
-
+import s from './landingPage.module.css';
 
 const LandingPage = () => {
     const {isAuthenticated} = useAuth0()
@@ -16,64 +14,66 @@ const LandingPage = () => {
     if(isAuthenticated){
         window.location.href = "/products";
     }
+
+    const filterTypes =[
+      {nameToDisplay: "Categoria"},
+      {name: "pantalon y camisetas"},
+      {options: ["Camiseta", "Pantalones"]},
+    ]
   
+    return (
+      <div className={s.bodyContainer}>
+         <div className={s.separator}>
+            <div className={s.featuredContainer}>
+               <div className={s.featuredWrapper}>
+                  <div className={s.featuredLeft}>
+                     <div className={s.leftContents}>
+                        <div className={s.titleContainer}>
+                           <p>Cambiá tu estilo, Cambiá tu vida</p>
+                           <h1>
+                              ROPA DE MODA
+                           </h1>
+                        </div>
+                        <div>
+                           <p>No podés comprar la felicidad, pero podés comprar ropa y es casi lo mismo</p>
+                        </div>
+                        <div className={s.buttonContainer}>
+                           <Link to="/products">
+                              <div className={s.buttonDesc}>
+                                 <div>VER PRODUCTOS</div>
+                              </div>
+                           </Link>
+                        </div>
+                     </div>
+                  </div>
+                  <div className={s.img}>
+                     <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dGllbmRhJTIwZGUlMjByb3BhfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt=""/>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div className={s.categories}>
+                  <h1>ALGUNAS PRENDAS</h1>
+                  <div className={s.categoriesLink}>
+                        {filterTypes.map(e => 
+                           <div key={e.name} style={{padding: "0 15px"}}>
+                              <div>
+                                 <img src="https://i.pinimg.com/236x/09/c5/12/09c5129bfa37c81159ca663555587707.jpg" alt={e.name}  style={{width: "277px", height: "auto"}}/>
+                              </div>
+                              <div>
+                                 <h2>
+                                    {e.name}
+                                 </h2>
+                              </div>
+                           </div>
+                        )}
+                  </div>
+               </div>
+            </div>
+      
+   )
 
-
-    const CustomBox = styled(Box)(({theme}) => ({
-        display:"flex",
-        justifyContent:"center",
-        gap: theme.spacing(5),
-        marginTop: theme.spacing(3),
-        alignItems: "center",
-        textAlign: "center",
-        // [theme.breakpoints.down{"sm"}]: {
-        //     alignItems: "center",
-        //     textAlign: "center",
-        // };
-    }));
-
-    const Title = styled(Typography)(({theme}) => ({
-        fontSize: "64px",
-        color: "#000336",
-        fontWeight:"bold",
-        margin: theme.spacing(4, 0, 4, 0),
-        // [theme.breakpoints.down{"sm"}]: {
-        //     fontSize: "40px",
-        // },
-    }));
-    
-    return <Box sx={{backgroundColor:"E6F0FF", minHeight: "80vh"}}>
-        <Container>
-            {/* <Navbar /> */}
-            <CustomBox>
-                <Box sx={{flex: "1"}}>
-                    <Typography variant="body2" sx={{fontSize: "18px", color:"#687600", fontWeight: "500", mt:10, ab:4
-                }}>
-                    Cambiá tu estilo, Cambiá tu vida
-                    </Typography>
-                    <Title variant="h1">
-                    ROPA DE MODA
-                    </Title>
-                    
-                    <Typography
-                    variant="body2"
-                    sx={{ fontSize: "18px", color: "#5A6473", my: 4}}
-                    >
-                        No podés comprar la felicidad, pero podés comprar ropa y es casi lo mismo
-                    </Typography>
-                </Box>
-                <Box sx={{flex: "1.25"}}>
-                    <img src={"https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dGllbmRhJTIwZGUlMjByb3BhfGVufDB8fDB8fA%3D%3D&w=1000&q=80"}alt="dan" style={{width:"100%", marginBottom: "2rem"}} />
-                </Box>
-            </CustomBox>
-            <Link to="/products">
-            <Button type='submit'  variant='contained' color='primary'>Ver Prendas</Button>
-            </Link>
-        </Container>
-        {/* <Footer /> */}
-    </Box>
-} 
+}
 
 
 export default LandingPage;
-

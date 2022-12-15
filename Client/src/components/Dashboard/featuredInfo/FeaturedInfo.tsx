@@ -5,6 +5,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Precio t
 import LocalShippingIcon from '@mui/icons-material/LocalShipping'; // Cantidad de ordenes
 import CheckroomIcon from '@mui/icons-material/Checkroom'; // Cantidad de productos
 import SellIcon from '@mui/icons-material/Sell'; // Precio del mes
+import { formatNumber, makeFriendly } from "../../../assets/helpers"
 
 type FeaturedProps = {
     allData: number
@@ -14,7 +15,9 @@ type FeaturedProps = {
     monthTotal: number
 }
 
+
 export default function FeaturedInfo({ allData, allOrders, ingresos, monthTotal }: FeaturedProps) {
+
     return (
         <Box className='featured'>
             <Grid container spacing={2}>
@@ -25,8 +28,8 @@ export default function FeaturedInfo({ allData, allOrders, ingresos, monthTotal 
                                 <MonetizationOnIcon sx={{ fontSize: 45, marginRight: "15px", backgroundColor: "rgba(8, 129, 120, 0.2)", padding: "4px", borderRadius: 9999, color: "#088178" }} />
                                 <Box sx={{ textAlign: "left" }}>
                                     <Typography variant="h6" sx={{ marginBottom: ".3rem" }}>Ingresos totales</Typography>
-                                    <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: ".9rem" }}>{`$${ingresos}`}</Typography>
-                                    <Typography variant="subtitle2" sx={{color: "gray"}}>Impuestos de envio no incluidos</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: ".9rem" }}>{`$${makeFriendly(ingresos)}`}</Typography>
+                                    <Typography variant="subtitle2" sx={{ color: "gray" }}>Impuestos de envio no incluidos</Typography>
                                 </Box>
                             </Box>
                         </Box>
@@ -53,7 +56,7 @@ export default function FeaturedInfo({ allData, allOrders, ingresos, monthTotal 
                                 <CheckroomIcon sx={{ fontSize: 45, marginRight: "15px", backgroundColor: "rgba(253, 138, 20, 0.2)", padding: "5px", borderRadius: 9999, color: "#fd8a14" }} />
                                 <Box sx={{ textAlign: "left" }}>
                                     <Typography variant="h6" sx={{ marginBottom: ".3rem" }}>Productos</Typography>
-                                    <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: ".9rem" }}>{allData}</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: ".9rem" }}>{`${formatNumber(allData)}`}</Typography>
                                     <Typography variant="subtitle2"><Link href="products">Ver detalles</Link></Typography>
                                 </Box>
                             </Box>
@@ -67,8 +70,8 @@ export default function FeaturedInfo({ allData, allOrders, ingresos, monthTotal 
                                 <SellIcon sx={{ fontSize: 45, marginRight: "15px", backgroundColor: "rgba(13, 202, 140, 0.2)", padding: "7px", borderRadius: 9999, color: "#0dcaf0" }} />
                                 <Box sx={{ textAlign: "left" }}>
                                     <Typography variant="h6" sx={{ marginBottom: ".3rem" }}>Ingresos del mes</Typography>
-                                    <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: ".9rem" }}>{`$${monthTotal}`}</Typography>
-                                    <Typography variant="subtitle2"><Link>Ver detalles</Link></Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: ".9rem" }}>{`$${formatNumber(monthTotal)}`}</Typography>
+                                    <Typography variant="subtitle2" sx={{ color: "gray" }}>Basado en tu horario local</Typography>
                                 </Box>
                             </Box>
                         </Box>

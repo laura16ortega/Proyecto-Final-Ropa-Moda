@@ -58,7 +58,7 @@ const DashboardHome = () => {
 
    const past7Days = [...Array(7).keys()].map(index => {
       const date = new Date();
-      
+
       date.setDate(date.getDate() - (index));
 
       return date.getDay();
@@ -138,10 +138,10 @@ const DashboardHome = () => {
             <Box>
                <Container maxWidth="xl" sx={{ paddingY: "30px" }}>
                   <FeaturedInfo allData={allData.length} allOrders={orders.length} ingresos={TotalRevenue} monthTotal={thisMonthTotal} /> {/* pasar users length orders length products length y total de ventas */}
-                  <Chart data={allDates} title="Ingresos de la ultima semana" grid dataKey="Total" weeklyIncome={thisWeekTotal}/>
+                  <Chart data={allDates} title="Ingresos de la ultima semana" grid dataKey="Total" weeklyIncome={thisWeekTotal} />
                   <Box className="homeWidgets">
                      <Grid container spacing={3}>
-                        <WidgetSm users={allUsers.slice(-5).reverse()}/>
+                        <WidgetSm users={allUsers.slice(-5).reverse()} />
                         <WidgetLg orderData={orders.slice(-5).reverse()} />
                      </Grid>
                   </Box>

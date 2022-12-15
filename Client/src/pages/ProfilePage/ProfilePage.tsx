@@ -5,6 +5,7 @@ import s from "./ProfilePage.module.css"
 import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { logout } from "../../redux/slices/authSlice";
 import { getOrders } from '../../redux/thunk-actions/orderActions';
+import { formatNumber } from "../../assets/helpers"
 
 const ProfilePage = () => {
    const { user } = useAppSelector(state => state.auth)
@@ -17,8 +18,9 @@ const ProfilePage = () => {
       dispatch(logout());
    };
 
-   const boughtByUser = orders.filter(e => e.user._id === user.userId).slice(-10).reverse()
-  
+
+   const boughtByUser = orders.filter(e => e.user && e.user._id  === user.userId).slice(-10).reverse()
+
    useEffect(() => {
       dispatch(getOrders())
       setTimeout(() => {
@@ -78,7 +80,7 @@ const ProfilePage = () => {
                                        </Box>
                                        :
                                        boughtByUser.map(order =>
-                                          <Box sx={{ position: "relative" }} key={order._id}>
+                                          <Box sx={{ position: "relative" }} key={order?._id}>
                                              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
                                                 <Box sx={{ height: "2px", width: "30%", backgroundColor: "white" }} />
                                                 <Typography variant="subtitle1" className={s.orderDate}>{`${new Date(order.createdAt).toLocaleString()}`}</Typography>
@@ -101,7 +103,7 @@ const ProfilePage = () => {
                                                                {`${product.qty}u`}
                                                             </Typography>
                                                             <Typography variant="subtitle1">
-                                                               {`$${product.price}`}
+                                                               {`$${product.price ? formatNumber(product?.price) : "???"}`}
                                                             </Typography>
                                                          </Box>
                                                       </Box>
@@ -111,7 +113,7 @@ const ProfilePage = () => {
                                                 </Box>
                                              )}
                                              <Box sx={{ paddingX: "1rem" }}>
-                                                <Typography variant="subtitle1" sx={{ textAlign: "right", fontWeight: "600" }}>{`Total: $${order.totalPrice}`}</Typography>
+                                                <Typography variant="subtitle1" sx={{ textAlign: "right", fontWeight: "600" }}>{`Total: $${formatNumber(order?.totalPrice)}`}</Typography>
                                              </Box>
                                           </Box>
                                        )}
