@@ -17,6 +17,8 @@ import IncreaseCartButton from "../IncreaseCartButton/IncreaseCartButton";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { removefavItem } from "../../redux/slices/favoriteSlice";
+import { formatNumber } from '../../assets/helpers'
+
 type productProps = {
   product: mappedDbProductsType;
   margin?: string; // Slider
@@ -113,7 +115,7 @@ const Card = ({ product }: productProps) => {
                 component="p"
                 sx={{ fontWeight: 500, fontFamily: "system-ui" }}
               >
-                {`$${product.price}`}
+                {`$${formatNumber(product.price)}`}
               </Typography>
             </Box>
             <Box

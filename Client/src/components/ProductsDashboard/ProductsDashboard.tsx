@@ -6,6 +6,7 @@ import { deleteProduct, getAllProducts } from '../../redux/thunk-actions/testAct
 import { sortProducts } from '../../redux/slices/testSlice'
 import Pagination from '../Pagination/Pagination'
 import { useNotification } from '../UseNotification/UseNotification'
+import { formatNumber } from '../../assets/helpers'
 
 const ProductsDashboard = () => {
     const [filters, setFilters] = useState<any>({
@@ -19,17 +20,12 @@ const ProductsDashboard = () => {
 
     useEffect(() => {
         if (deleteLoading) {
-            console.log("UseEffect - Deleteloading es true")
             dispatch(getAllProducts())
-            setTimeout(() => {
-                displayNotification({ message: "Producto eliminado con exito", type: "success" })
-            }, 500);
         }
         else if (!allData.length) {
             dispatch(getAllProducts())
         }
     }, [deleteLoading])
-    console.log(deleteLoading)
 
     let maximo = allData.length / 10
 
@@ -53,6 +49,7 @@ const ProductsDashboard = () => {
         dispatch(deleteProduct(productId)).then(res => {
             if (res.meta.requestStatus === "fulfilled") {
                 dispatch(getAllProducts())
+                displayNotification({ message: "Producto eliminado con exito", type: "success" })
             }
         })
     }
@@ -112,7 +109,7 @@ const ProductsDashboard = () => {
                                                         {e.name}
                                                     </Typography>
                                                     <Typography variant="subtitle2" sx={{ marginBottom: ".5rem" }}>
-                                                        {`$${e.price}`}
+                                                        {`$${formatNumber(e.price)}`}
                                                     </Typography>
                                                     <Box sx={{ marginTop: "1rem", display: "flex", justifyContent: "space-evenly" }}>
                                                         <Button variant="outlined" disableElevation size="small">

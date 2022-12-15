@@ -20,6 +20,7 @@ import { getOrders } from '../../redux/thunk-actions/orderActions'
 import s from "./OrdersDashboard.module.css"
 import { StatusButton } from '../Dashboard/widgetLg/WidgetLg'
 import DropperButton from './DropperButton'
+import { formatNumber } from '../../assets/helpers'
 
 const OrdersDashboard = () => {
     const dispatch = useAppDispatch()
@@ -91,16 +92,16 @@ const OrdersDashboard = () => {
                                 </TableHead>
                                 <TableBody>
                                     {orders
-                                        .filter((order) => order.user.fullName.toLowerCase().includes(search.toLowerCase()))
+                                        .filter((order) => order.user?.fullName.toLowerCase().includes(search.toLowerCase()))
                                         .reverse()
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map(e =>
                                             <TableRow key={e._id}>
                                                 <TableCell sx={{ display: "flex", alignItems: "center" }}>
-                                                    <Avatar src={e.user.image ? e.user.image : ""} sx={{ marginRight: "15px" }} />
-                                                    {e.user.fullName}
+                                                    <Avatar src={e.user?.image ? e.user.image : ""} sx={{ marginRight: "15px" }} />
+                                                    {e.user?.fullName ? e.user.fullName : "Usuario eliminado"}
                                                 </TableCell>
-                                                <TableCell>{`$${e.totalPrice}`}</TableCell>
+                                                <TableCell>{`$${formatNumber(e.totalPrice)}`}</TableCell>
                                                 <TableCell>{`${e.paymentMethod === "Credit Card" ? "Tarjeta de credito" : e.paymentMethod}`}</TableCell>
                                                 <TableCell>{`${e.createdAt.split("T")[0].split("-").reverse().join(".")}, ${e.createdAt.split("T")[1].slice(0, 5)}`}</TableCell>
                                                 <TableCell>
