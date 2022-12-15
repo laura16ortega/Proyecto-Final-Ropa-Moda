@@ -16,6 +16,7 @@ type FeaturedProps = {
 }
 
 
+
 export default function FeaturedInfo({ allData, allOrders, ingresos, monthTotal }: FeaturedProps) {
 
     return (
@@ -42,8 +43,8 @@ export default function FeaturedInfo({ allData, allOrders, ingresos, monthTotal 
                                 <LocalShippingIcon sx={{ fontSize: 45, marginRight: "15px", backgroundColor: "rgba(0, 181, 23, 0.2)", padding: "6px", borderRadius: 9999, color: "#00B517" }} />
                                 <Box sx={{ textAlign: "left" }}>
                                     <Typography variant="h6" sx={{ marginBottom: ".3rem" }}>Ordenes</Typography>
-                                    <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: ".9rem" }}>{`${formatNumber(allOrders)}`}</Typography>
-                                    <Typography variant="subtitle2"><Link href="actas">Ver detalles</Link></Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: ".9rem" }}>{allOrders}</Typography>
+                                    <Typography variant="subtitle2"><Link href="orders">Ver detalles</Link></Typography>
                                 </Box>
                             </Box>
                         </Box>
