@@ -140,6 +140,7 @@ const Card = ({ product }: productProps) => {
                   <IncreaseCartButton
                     id={product._id}
                     quantity={foundOnCart.quantity}
+                    stock={foundOnCart.stock}
                   />
                 </div>
               )}

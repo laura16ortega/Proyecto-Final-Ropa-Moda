@@ -64,8 +64,12 @@ export default function DetailCard() {
   };
 
   const handleIncreaseCart = (productId: string) => {
-    // ! if quantity > stock === error
-    dispatch(increaseCartQuantity(productId));
+    const foundOnCart = cart?.find(e => e._id === productId)
+    if (foundOnCart) { 
+      if (productDetails.stock > foundOnCart?.quantity) {
+        dispatch(increaseCartQuantity(productId));
+      } // else display notificacion o directamente deshabilitar el botomn
+    }
   };
 
   const handleDecreaseCart = (productId: string) => {
@@ -263,20 +267,20 @@ export default function DetailCard() {
                       </Box>
                     )}
                   </Box>
-                  <Box sx={{display: "flex", justifyContent: "center", flexDirection: "column", marginTop: "3rem"}}>
-                    <Box sx={{textAlign: "center"}}>
+                  <Box sx={{ display: "flex", justifyContent: "center", flexDirection: "column", marginTop: "3rem" }}>
+                    <Box sx={{ textAlign: "center" }}>
                       <Typography variant="subtitle1" sx={{ fontFamily: "poppins", fontWeight: "700", marginY: ".5rem" }}>Talles disponibles</Typography>
                     </Box>
-                    <Box sx={{display: "flex", justifyContent: "center"}}>
-                    <ButtonGroup fullWidth sx={{width: "50%"}} disableRipple disableFocusRipple>
-                    {productDetails?.tallaCamiseta.length > 0
-                              ? productDetails?.tallaCamiseta.map((e,i) => {
-                                return <Button key={i} value={e}>{e}</Button>;
-                              })
-                              : productDetails?.tallaPantalón.map((e, i) => {
-                                return <Button key={i} value={e}>{e}</Button>;
-                              })}
-                    </ButtonGroup>
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <ButtonGroup fullWidth sx={{ width: "50%" }} disableRipple disableFocusRipple>
+                        {productDetails?.tallaCamiseta.length > 0
+                          ? productDetails?.tallaCamiseta.map((e, i) => {
+                            return <Button key={i} value={e}>{e}</Button>;
+                          })
+                          : productDetails?.tallaPantalón.map((e, i) => {
+                            return <Button key={i} value={e}>{e}</Button>;
+                          })}
+                      </ButtonGroup>
                     </Box>
                   </Box>
                   <Box sx={{ paddingY: "3rem" }}>

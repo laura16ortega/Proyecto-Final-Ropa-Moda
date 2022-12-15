@@ -38,7 +38,7 @@ const Cart = () => {
   // console.log("Cart state:", cart) --- []
   // console.log("Cart localstorage: ", cartProd) --- [{...}]
 
-  const subTotalPrice = cart?.reduce((total, item) => total + item.price * item.quantity,0);
+  const subTotalPrice = cart?.reduce((total, item) => total + item.price * item.quantity, 0);
   const itemRes = cart?.reduce((total, item) => total + item.quantity, 0);
 
   const priceData = [
@@ -48,7 +48,12 @@ const Cart = () => {
   ];
 
   const handleIncreaseCart = (productId: string) => {
-    dispatch(increaseCartQuantity(productId));
+    const foundOnCart = cart?.find(e => e._id === productId)
+    if (foundOnCart) {
+      if (foundOnCart.stock > foundOnCart?.quantity) {
+        dispatch(increaseCartQuantity(productId));
+      }
+    }
   };
 
   const handleDecreaseCart = (productId: string) => {
@@ -89,15 +94,13 @@ const Cart = () => {
 
   const orderItems = cart?.map((e) => {
     return {
-        name: e.name,
-        qty: e.quantity,
-        image: e.images.public_id,
-        price: e.price,
-        product: e._id
+      name: e.name,
+      qty: e.quantity,
+      image: e.images.public_id,
+      price: e.price,
+      product: e._id
     }
-})
-
-console.log(orderItems)
+  })
 
   const onPaypalApprove = async (data: any, actions: any) => {
     const details = await actions.order?.capture()
@@ -105,7 +108,7 @@ console.log(orderItems)
     const name = details?.payer.name?.given_name
 
     const orderData = {
-      orderItems, 
+      orderItems,
       paymentMethod: "Paypal",
       itemsPrice: subTotalPrice,
       taxPrice: 0,
@@ -154,7 +157,7 @@ console.log(orderItems)
               <Box sx={{ margin: "2rem" }} className={s.loader} />
             </Box>
             : allData &&
-            <Box sx={{userSelect: "none"}}>
+            <Box sx={{ userSelect: "none" }}>
               <Typography variant="h3" sx={{ textAlign: "left", fontFamily: "poppins", fontWeight: "600", margin: "1.6rem .4rem" }}>
                 RECOMENDAMOS
               </Typography>

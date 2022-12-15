@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Button } from "@mui/material"
-import { useAppDispatch } from '../../assets/hooks';
+import { useAppDispatch, useAppSelector } from '../../assets/hooks';
 import { addProductToCart } from "../../redux/thunk-actions/cartActions";
 import {
    increaseCartQuantity,
@@ -13,14 +13,20 @@ import s from "./IncreaseCartButton.module.css"
 type IncreaseButtonProps = {
    id: string
    quantity: number
+   stock: number
 }
 
-const IncreaseCartButton = ({ id, quantity }: IncreaseButtonProps) => {
+const IncreaseCartButton = ({ id, quantity, stock }: IncreaseButtonProps) => {
    const dispatch = useAppDispatch()
+   const { cart } = useAppSelector(state => state.cart)
 
    const handleIncreaseCart = (productId: string) => {
-      // ! if quantity > stock === error
-      dispatch(increaseCartQuantity(productId));
+      const foundOnCart = cart?.find(e => e._id === productId)
+      if (foundOnCart) {
+        if (stock > foundOnCart?.quantity) {
+          dispatch(increaseCartQuantity(productId));
+        }
+      }
    };
 
    const handleDecreaseCart = (productId: string) => {
