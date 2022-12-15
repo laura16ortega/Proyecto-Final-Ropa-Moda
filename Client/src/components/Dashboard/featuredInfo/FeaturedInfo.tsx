@@ -16,6 +16,7 @@ type FeaturedProps = {
 }
 
 
+
 export default function FeaturedInfo({ allData, allOrders, ingresos, monthTotal }: FeaturedProps) {
 
     return (
