@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import AllUsersCard from '../AllUsers/AllUsersCard';
+import AllUsersCard from '../allUsers/AllUsersCard';
 import { getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
 import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
 import { selectUsers } from '../../../redux/slices/allUsersSlice';
