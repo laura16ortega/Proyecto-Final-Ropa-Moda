@@ -111,8 +111,9 @@ function AllUsersCard({ isAllowed, image,_id,fullName,email,phone_number,created
             {confirm.confirmation ? 
             (
                 <div>
-                    <div>
-                    Estas seguro?
+                    <div style={{marginTop:'0.6rem'}}>
+                    {confirm.delete ? <>Eliminar usuario?</> : <></> }
+                    {confirm.block ? <>Bloquear usuario?</> : <></> }
                     </div>
                     <Button onClick={() => setConfirm({...confirm, confirmation:!confirm.confirmation})}>
                         <ClearIcon />
