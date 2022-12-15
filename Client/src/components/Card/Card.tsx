@@ -33,7 +33,9 @@ const Card = ({ product }: productProps) => {
   const foundOnFav = fav?.find(({ name }) => name === product.name);
 
   const handleCart = (productId: string) => {
-    dispatch(addProductToCart(productId));
+    if (product.stock !== 0) {
+      dispatch(addProductToCart(productId));
+    }
   };
 
   const handleFav = (productId: string) => {
@@ -124,26 +126,36 @@ const Card = ({ product }: productProps) => {
                 marginTop: "1rem",
               }}
             >
-              {!foundOnCart ? (
+              {product.stock === 0 ?
                 <Button
                   variant="contained"
                   disableElevation
                   size="small"
                   className={s.addButton}
-                  onClick={() => handleCart(product._id)}
-                  disabled={cartLoading}
+                  disabled
                 >
-                  {cartLoading ? "Agregando..." : "Agregar al carro"}
+                  Sin stock disponible
                 </Button>
-              ) : (
-                <div>
-                  <IncreaseCartButton
-                    id={product._id}
-                    quantity={foundOnCart.quantity}
-                    stock={foundOnCart.stock}
-                  />
-                </div>
-              )}
+                : !foundOnCart ? (
+                  <Button
+                    variant="contained"
+                    disableElevation
+                    size="small"
+                    className={s.addButton}
+                    onClick={() => handleCart(product._id)}
+                    disabled={cartLoading}
+                  >
+                    {cartLoading ? "Agregando..." : "Agregar al carro"}
+                  </Button>
+                ) : (
+                  <div>
+                    <IncreaseCartButton
+                      id={product._id}
+                      quantity={foundOnCart.quantity}
+                      stock={foundOnCart.stock}
+                    />
+                  </div>
+                )}
             </Box>
           </Box>
         </Box>
