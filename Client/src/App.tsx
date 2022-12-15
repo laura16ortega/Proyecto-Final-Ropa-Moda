@@ -49,6 +49,18 @@ function App() {
         <Route path={PublicRoutes.FORGOT} element={<ForgotPassword />} />
         <Route path={PublicRoutes.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={PublicRoutes.CONTACT} element={<Contact />} />
+        <Route path="/dashboard" element={<Dashboard/>}>
+              <Route index element={<DashboardHome/>}/>
+              <Route path="users" element={<ManageUsers />}/>
+              <Route path="products" element={<ProductsDashboard/>}/>
+              <Route path="editProduct/:id" element={<EditProduct/>}/>
+              <Route path="orders" element={<OrdersDashboard/>}/>
+              <Route path="orders/:id" element={<OrdersDetail/>}/>
+              <Route path="informes" element={<><h1>informes Page</h1></>}/>
+              <Route path="perfil" element={<><h1>perfil Page</h1></>}/>
+              <Route path="analitica" element={<><h1>analitica Page</h1></>}/>
+              <Route path="ventas" element={<><h1>ventas Page</h1></>}/>
+            </Route>
         
         
         {/* USER ROUTES */}
@@ -61,18 +73,6 @@ function App() {
         {/* ADMIN ROUTES */}
         <Route element={<RoleGuard isAdmin={true}/>}>
           <Route path={PrivateRoutes.CREATE} element={<CreateForm />}/>
-          <Route path="/dashboard" element={<Dashboard/>}>
-              <Route index element={<DashboardHome/>}/>
-              <Route path="users" element={<ManageUsers />}/>
-              <Route path="products" element={<ProductsDashboard/>}/>
-              <Route path="editProduct/:id" element={<EditProduct/>}/>
-              <Route path="orders" element={<OrdersDashboard/>}/>
-              <Route path="orders/:id" element={<OrdersDetail/>}/>
-              <Route path="informes" element={<><h1>informes Page</h1></>}/>
-              <Route path="perfil" element={<><h1>perfil Page</h1></>}/>
-              <Route path="analitica" element={<><h1>analitica Page</h1></>}/>
-              <Route path="ventas" element={<><h1>ventas Page</h1></>}/>
-              </Route>
           
         </Route>
         
