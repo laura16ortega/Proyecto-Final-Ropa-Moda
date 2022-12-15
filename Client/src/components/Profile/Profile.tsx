@@ -153,7 +153,7 @@ function Profile(props: any) {
     <Box>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Box className={s.profileInfo}>
+        <Box className={s.profileInfo} style={{marginBottom:'5rem'}}>
           <Box className={s.backgroundImage}>
             <img className={s.imgFit} src="https://images.unsplash.com/photo-1511207538754-e8555f2bc187?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=88672068827eaeeab540f584b883cc66&auto=format&fit=crop&w=1164&q=80" alt="nada" />
           </Box>
