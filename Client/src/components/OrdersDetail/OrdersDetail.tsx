@@ -39,7 +39,11 @@ const OrdersDetail = () => {
 
    return (
       <Box sx={{ backgroundColor: "#EBEFF3", display: "flex", flex: 1 }}>
-         {orderDetailsLoading ? <h1>Load</h1> :
+         {orderDetailsLoading ?
+          <Box sx={{display: "flex", width: "100%", alignItems: "center", justifyContent: "center"}}>
+            <Box className={s.loader}/>
+          </Box>
+          :
             <Container maxWidth="xl" sx={{ paddingY: "30px" }}>
                <Box sx={{ backgroundColor: "white" }}>
                   <Box sx={{ padding: "10px" }}>

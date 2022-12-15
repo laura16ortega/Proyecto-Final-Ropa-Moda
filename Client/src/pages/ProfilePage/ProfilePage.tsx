@@ -18,7 +18,7 @@ const ProfilePage = () => {
       dispatch(logout());
    };
 
-   const boughtByUser = orders.filter(e => e.user?._id === user.userId).slice(-10).reverse()
+   const boughtByUser = orders.filter(e => e.user && e.user._id  === user.userId).slice(-10).reverse()
 
    useEffect(() => {
       dispatch(getOrders())
@@ -79,7 +79,7 @@ const ProfilePage = () => {
                                        </Box>
                                        :
                                        boughtByUser.map(order =>
-                                          <Box sx={{ position: "relative" }} key={order._id}>
+                                          <Box sx={{ position: "relative" }} key={order?._id}>
                                              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
                                                 <Box sx={{ height: "2px", width: "30%", backgroundColor: "white" }} />
                                                 <Typography variant="subtitle1" className={s.orderDate}>{`${new Date(order.createdAt).toLocaleString()}`}</Typography>

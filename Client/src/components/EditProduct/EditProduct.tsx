@@ -157,7 +157,11 @@ const EditProduct = () => {
 
     return (
         <Box sx={{ backgroundColor: "#EBEFF3", display: "flex", flex: 1 }}>
-            {detailsLoading ? <h1> load </h1> : <Container maxWidth="lg" sx={{ paddingY: "30px" }}>
+            {detailsLoading ? 
+                <Box sx={{display: "flex", width: "100%", alignItems: "center", justifyContent: "center"}}>
+                    <Box className={s.loader}/>
+                </Box>
+            : <Container maxWidth="lg" sx={{ paddingY: "30px" }}>
                 <Box sx={{ backgroundColor: "white" }}>
                     <Formik
                         enableReinitialize
