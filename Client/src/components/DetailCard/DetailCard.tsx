@@ -60,12 +60,18 @@ export default function DetailCard() {
   const [openReviewForm, setOpenReviewForm] = useState<boolean>(false);
 
   const handleCart = (productId: string) => {
-    dispatch(addProductToCart(productId));
+    if (productDetails.stock !== 0) {
+      dispatch(addProductToCart(productId));
+    }
   };
 
   const handleIncreaseCart = (productId: string) => {
-    // ! if quantity > stock === error
-    dispatch(increaseCartQuantity(productId));
+    const foundOnCart = cart?.find(e => e._id === productId)
+    if (foundOnCart) {
+      if (productDetails.stock > foundOnCart?.quantity) {
+        dispatch(increaseCartQuantity(productId));
+      } // else display notificacion o directamente deshabilitar el botomn
+    }
   };
 
   const handleDecreaseCart = (productId: string) => {
@@ -183,7 +189,7 @@ export default function DetailCard() {
                       {productDetails?.name}
                     </Typography>
                     <Typography variant="h5">
-                      {`${productDetails?.stock} en stock`}
+                      {`${productDetails?.stock === 0 ? "Sin stock" : `${productDetails?.stock} en stock`}`}
                     </Typography>
                   </Box>
                   <Box sx={{ marginBottom: "1.4rem" }}>
@@ -203,82 +209,96 @@ export default function DetailCard() {
                     </Box>
                   </Box>
                   <Box>
-                    {!foundOnCart ? (
+                    {productDetails.stock === 0 ?
                       <Button
                         variant="contained"
                         disableElevation
                         fullWidth
                         size="large"
                         className={s.addButton}
-                        onClick={() => handleCart(productDetails._id)}
-                        disabled={cartLoading}
+                        disabled
                       >
-                        {cartLoading ? "Agregando..." : "Agregar al carro"}
+                        Sin stock
                       </Button>
-                    ) : (
-                      <Box
-                        sx={{
-                          border: "2px solid rgb(0, 18, 51)",
-                          paddingX: "20px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          height: "4rem",
-                        }}
-                      >
+                      : !foundOnCart ? (
                         <Button
+                          variant="contained"
                           disableElevation
-                          className={s.counterButton}
-                          onClick={() => handleDecreaseCart(productDetails._id)}
+                          fullWidth
+                          size="large"
+                          className={s.addButton}
+                          onClick={() => handleCart(productDetails._id)}
+                          disabled={cartLoading}
                         >
-                          <RemoveIcon
-                            sx={{
-                              color: "rgb(17, 17, 17)",
-                              height: "100%",
-                              width: "100%",
-                              padding: "2px",
-                            }}
-                          />
+                          {cartLoading ? "Agregando..." : "Agregar al carro"}
                         </Button>
-                        <Typography
-                          variant="h4"
-                          sx={{ fontFamily: "poppins", fontWeight: "700" }}
+                      ) : (
+                        <Box
+                          sx={{
+                            border: "2px solid rgb(0, 18, 51)",
+                            paddingX: "20px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            height: "4rem",
+                          }}
                         >
-                          {foundOnCart.quantity}
-                        </Typography>
-                        <Button
-                          disableElevation
-                          className={s.counterButton}
-                          onClick={() => handleIncreaseCart(productDetails._id)}
-                        >
-                          <AddIcon
-                            sx={{
-                              color: "rgb(17, 17, 17)",
-                              height: "100%",
-                              width: "100%",
-                              padding: "2px",
-                            }}
-                          />
-                        </Button>
+                          <Button
+                            disableElevation
+                            className={s.counterButton}
+                            onClick={() => handleDecreaseCart(productDetails._id)}
+                          >
+                            <RemoveIcon
+                              sx={{
+                                color: "rgb(17, 17, 17)",
+                                height: "100%",
+                                width: "100%",
+                                padding: "2px",
+                              }}
+                            />
+                          </Button>
+                          <Typography
+                            variant="h4"
+                            sx={{ fontFamily: "poppins", fontWeight: "700" }}
+                          >
+                            {foundOnCart.quantity}
+                          </Typography>
+                          <Button
+                            disableElevation
+                            className={s.counterButton}
+                            onClick={() => handleIncreaseCart(productDetails._id)}
+                          >
+                            <AddIcon
+                              sx={{
+                                color: "rgb(17, 17, 17)",
+                                height: "100%",
+                                width: "100%",
+                                padding: "2px",
+                              }}
+                            />
+                          </Button>
+                        </Box>
+                      )}
+                  </Box>
+                  {productDetails.stock !== 0 ?
+                    <Box sx={{ display: "flex", justifyContent: "center", flexDirection: "column", marginTop: "3rem" }}>
+                      <Box sx={{ textAlign: "center" }}>
+                        <Typography variant="subtitle1" sx={{ fontFamily: "poppins", fontWeight: "700", marginY: ".5rem" }}>Talles disponibles</Typography>
                       </Box>
-                    )}
-                  </Box>
-                  <Box sx={{display: "flex", justifyContent: "center", flexDirection: "column", marginTop: "3rem"}}>
-                    <Box sx={{textAlign: "center"}}>
-                      <Typography variant="subtitle1" sx={{ fontFamily: "poppins", fontWeight: "700", marginY: ".5rem" }}>Talles disponibles</Typography>
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <ButtonGroup fullWidth sx={{ width: "50%" }} disableRipple disableFocusRipple>
+                          {productDetails?.tallaCamiseta.length > 0
+                            ? productDetails?.tallaCamiseta.map((e, i) => {
+                              return <Button key={i} value={e}>{e}</Button>;
+                            })
+                            : productDetails?.tallaPantalón.map((e, i) => {
+                              return <Button key={i} value={e}>{e}</Button>;
+                            })}
+                        </ButtonGroup>
+                      </Box>
                     </Box>
-                    <Box sx={{display: "flex", justifyContent: "center"}}>
-                    <ButtonGroup fullWidth sx={{width: "50%"}} disableRipple disableFocusRipple>
-                    {productDetails?.tallaCamiseta.length > 0
-                              ? productDetails?.tallaCamiseta.map((e,i) => {
-                                return <Button key={i} value={e}>{e}</Button>;
-                              })
-                              : productDetails?.tallaPantalón.map((e, i) => {
-                                return <Button key={i} value={e}>{e}</Button>;
-                              })}
-                    </ButtonGroup>
-                    </Box>
-                  </Box>
+                    : ""
+                  }
                   <Box sx={{ paddingY: "3rem" }}>
                     <Box sx={{ paddingBottom: "1rem" }}>
                       <Typography
