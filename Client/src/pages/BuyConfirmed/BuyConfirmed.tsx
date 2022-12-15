@@ -32,7 +32,8 @@ function BuyConfirmed(props: any) {
         taxPrice: 0,
         shippingPrice: 0,
         totalPrice,
-        userId: user.userId
+        userId: user.userId,
+        userEmail: user.email
     }
 
     useEffect(() => {

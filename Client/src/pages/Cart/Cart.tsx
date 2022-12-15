@@ -111,7 +111,8 @@ console.log(orderItems)
       taxPrice: 0,
       shippingPrice: 0,
       totalPrice: subTotalPrice,
-      userId: user.userId
+      userId: user.userId,
+      userEmail: user.email
     }
 
     dispatch(createOrder(orderData))

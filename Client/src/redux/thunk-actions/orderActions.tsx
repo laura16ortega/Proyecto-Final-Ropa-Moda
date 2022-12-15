@@ -11,6 +11,7 @@ type SentOrder = {
     shippingPrice: number
     totalPrice: number | undefined
     userId: string
+    userEmail: string
 }
 
 export const createOrder = createAsyncThunk(
