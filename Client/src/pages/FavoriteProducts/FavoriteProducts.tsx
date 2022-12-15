@@ -54,7 +54,7 @@ const FavoriteProducts = () => {
       ) : favError ? (
         <h1>FavError:{favError}</h1>
       ) : !fav?.length ? (
-        <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
+        <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }} >
           <Box sx={{ paddingTop: "8rem", paddingBottom: "8rem" }}>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
               Aun no has agregado ninguna prenda a favoritos
@@ -74,7 +74,7 @@ const FavoriteProducts = () => {
           }
         </Box>
       ) : (
-        <Container maxWidth={"lg"} >
+        <Container maxWidth={"lg"} style={{marginBottom:'-0.5rem'}} >
           <Box sx={{ paddingY: "5rem", marginBottom:'2rem' }}>
 
             <Box>
@@ -170,7 +170,9 @@ const FavoriteProducts = () => {
               </Grid>
             </Box>
           </Box>
+          <div style={{height:'22rem'}}> </div>
         </Container>
+        
       )}
     </div>
   );
