@@ -75,13 +75,13 @@ export default function SearchBar() {
     e.preventDefault();
     setSearch("");
     dispatch(filterSearch(search));
-
     }
   };
 
   const handleChange = (e: any) => {
     e.preventDefault();
     setSearch(e.target.value);
+    dispatch(filterSearch(search));
   };
   return (
     <Box>
