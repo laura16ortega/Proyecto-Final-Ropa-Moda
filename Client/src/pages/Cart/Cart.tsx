@@ -178,7 +178,7 @@ console.log(orderItems)
             >
               <Typography variant="subtitle2">
                 Los pedidos se realizan dentro de las 48 horas, de lunes a
-                viernes. El minimo orden de pedido es $algo.
+                viernes.
               </Typography>
             </Box>
             <Box>
