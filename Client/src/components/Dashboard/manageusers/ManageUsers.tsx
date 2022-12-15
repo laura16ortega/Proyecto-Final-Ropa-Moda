@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { usersData } from '../allUsers/usersData/usersData';
-import AllUsersCard from '../allUsers/AllUsersCard';
+import AllUsersCard from '../AllUsers/AllUsersCard';
 import { getAllUsers } from '../../../redux/thunk-actions/allUsersActions';
 import { useAppDispatch, useAppSelector } from "../../../assets/hooks";
 import { selectUsers } from '../../../redux/slices/allUsersSlice';
@@ -36,7 +35,7 @@ function ManageUsers(props: any) {
                     {
         allUsers?.map((u: any, index: any) =>{ return (
         <div key={index}>
-        <AllUsersCard  key={index} image={u.image} _id={u._id} fullName={u.fullName} email={u.email} phone_number={u.phone_number} createdAt={u.createdAt} updatedAt={u.updatedAt} moreOptions='true' />
+        <AllUsersCard isAllowed={u.isAllowed} key={index} image={u.image} _id={u._id} fullName={u.fullName} email={u.email} phone_number={u.phone_number} createdAt={u.createdAt} updatedAt={u.updatedAt} moreOptions='true' />
         </div>
         )})}
         </div>

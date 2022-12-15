@@ -21,7 +21,7 @@ export const getAllUsers = createAsyncThunk(
         try {
             console.log('ENTERED ACTION')
             const {data}:any = await axios.get(
-                `${BACKEND_URL}/api/v1/users`, {
+                `${BACKEND_URL}/api/v1/users`, {    
                     headers:{
                         'Authorization': `token ${token}`
                     }
@@ -40,12 +40,21 @@ export const deleteUser = createAsyncThunk(
     async(info: any, thunkApi) => {
         
         try{ 
+            if(info.ban){
+                const { data }: any = await axios.patch(`${BACKEND_URL}/api/v1/users/find/${info.id}`, {
+                    headers:{
+                        'Authorization': `token ${info.token}`
+                    }
+                });
+                return data
+            }else{
             const { data }: any = await axios.delete(`${BACKEND_URL}/api/v1/users/find/${info.id}`, {
                 headers:{
                     'Authorization': `token ${info.token}`
                 }
             });
             return data
+        }
         }catch(err: any) {
             return thunkApi.rejectWithValue(err.response.data.message)
         }
