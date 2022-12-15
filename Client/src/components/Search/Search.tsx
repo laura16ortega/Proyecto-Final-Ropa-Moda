@@ -67,10 +67,8 @@ export default function SearchBar() {
   const handleSubmit = (e: any) => {
     if(location.pathname !== '/products'){    
       const persistedInput: any = window.localStorage.getItem('input');
-
-      dispatch(filterSearch(persistedInput))
       navigate('/products');
-      return
+      return dispatch(filterSearch(persistedInput))
     }else{
     e.preventDefault();
     setSearch("");
@@ -80,14 +78,15 @@ export default function SearchBar() {
 
   const handleChange = (e: any) => {
     e.preventDefault();
-    setSearch(e.target.value);
-    dispatch(filterSearch(search));
+    const target = event?.target as HTMLInputElement;
+    setSearch(target.value);
+    dispatch(filterSearch(search))
   };
   return (
     <Box>
       <form onSubmit={handleSubmit} className="form">
         <AppBar position="static">
-          <Search>
+          <Search>        
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

@@ -18,6 +18,7 @@ const ProfilePage = () => {
       dispatch(logout());
    };
 
+
    const boughtByUser = orders.filter(e => e.user && e.user._id  === user.userId).slice(-10).reverse()
 
    useEffect(() => {
