@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import React from 'react';
 import "./App.css";
 import {
   Footer,
@@ -22,23 +23,23 @@ import {
 import {AuthGuard,RoleGuard} from "./guards/index";
 import { PublicRoutes, PrivateRoutes } from "./models/index";
 import Dashboard from './components/Dashboard/MainDashboard/MainDashboard';
-import AllUsers from "./components/Dashboard/AllUsers/AllUsers";
-import ManageUsers from "./components/Dashboard/ManageUsers/ManageUsers";
-import Sidebar from "./components/Dashboard/sidebar/Sidebar";
+import ManageUsers from "./components/Dashboard/manageusers/ManageUsers"; 
 import DashboardHome from "./components/Dashboard/home/DashboardHome";
 import ProductsDashboard from "./components/ProductsDashboard/ProductsDashboard";
 import EditProduct from "./components/EditProduct/EditProduct";
+import OrdersDashboard from "./components/OrdersDashboard/OrdersDashboard";
+import OrdersDetail from "./components/OrdersDetail/OrdersDetail";
+import { Man } from "@mui/icons-material";
 
 
 function App() {
-  //const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-
   return (
     <div className="App">
       <Navbar />
       {/* SI NECESITAS CREAR NUEVAS RUTAS, CREALAS DE LA MANERA NROMAL/ANTERIOR Y DESPUES YO LAS REFACTORIZO */}
       <Routes>
         {/* PUBLIC ROUTES */}
+        <Route path='/users' element={<ManageUsers />} />
         <Route path="/" element={<LandingPage />} />
         <Route path={PublicRoutes.PRODUCTS} element={<Home />} />
         <Route path={PublicRoutes.CART} element={<Cart />} />
@@ -62,10 +63,11 @@ function App() {
           <Route path={PrivateRoutes.CREATE} element={<CreateForm />}/>
           <Route path="/dashboard" element={<Dashboard/>}>
               <Route index element={<DashboardHome/>}/>
-              <Route path="users" element={<><h1>Users Page</h1></>}/>
+              <Route path="users" element={<ManageUsers />}/>
               <Route path="products" element={<ProductsDashboard/>}/>
               <Route path="editProduct/:id" element={<EditProduct/>}/>
-              <Route path="actas" element={<><h1>actas Page</h1></>}/>
+              <Route path="orders" element={<OrdersDashboard/>}/>
+              <Route path="orders/:id" element={<OrdersDetail/>}/>
               <Route path="informes" element={<><h1>informes Page</h1></>}/>
               <Route path="perfil" element={<><h1>perfil Page</h1></>}/>
               <Route path="analitica" element={<><h1>analitica Page</h1></>}/>

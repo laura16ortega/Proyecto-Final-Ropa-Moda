@@ -45,6 +45,7 @@ const EditProduct = () => {
     const [file, setFile] = useState<FileType>({
         public_id: "", // url en public_id
     })
+    const [saveDisabled, setSaveDisabled] = useState<boolean>(false)
 
     const { id } = useParams<keyof ParamTypes>() as ParamTypes;
     const { updateLoading } = useAppSelector(state => state.data)
@@ -52,12 +53,6 @@ const EditProduct = () => {
     useEffect(() => {
         dispatch(getProductDetail(id))
     }, [])
-
-    useEffect(() => {
-        if (updateLoading) {
-            window.location.href = "/dashboard/products"
-        }
-    }, [updateLoading])
 
     const { detailsLoading, productDetails } = useAppSelector(state => state.productDetails)
 
@@ -124,7 +119,7 @@ const EditProduct = () => {
         showAdvancedOptions: false,
         cropping: true,
         multiple: false,
-    };
+    }; 
 
     const widgetDisplay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, setFieldValue: any) => {
         e.preventDefault();
@@ -142,10 +137,16 @@ const EditProduct = () => {
     };
 
     const handleSubmit = (value: InitialValue, actions: FormikHelpers<InitialValue>) => {
+        setSaveDisabled(true)
         if (file.public_id.length) {
             value.images = file
         }
-        dispatch(editProduct(value))
+        dispatch(editProduct(value)).then(res => {
+            if (typeof res === "object") {
+                setSaveDisabled(false)
+                window.location.href = "/dashboard/products"
+            }
+        })
     }
 
 
@@ -199,7 +200,7 @@ const EditProduct = () => {
                                                             fullWidth
                                                             margin='normal'
                                                             label="Marca"
-                                                            placeholder="Precio"
+                                                            placeholder="Marca"
                                                             error={Boolean(form.errors.marca)}
                                                             helperText={form.errors.marca && String(form.errors.marca)}
                                                         />
@@ -277,14 +278,9 @@ const EditProduct = () => {
                                     <Grid item md={6} xs={12}>
                                         <Box sx={{ padding: "10px", display: "flex", flexDirection: "column" }}>
                                             <Box>
-                                                <img src={
-                                                    !productDetails.images
-                                                        ? ""
-                                                        : productDetails.images.public_id
-                                                            ? productDetails.images.url
-                                                            : productDetails.images[0]}
-                                                    alt=""
-                                                    style={{ height: "auto", width: "100%", objectFit: "cover", border: "1px solid rgba(1, 1, 1, 0.3)" }} />
+                                                <img src={file.public_id ? file.public_id : productDetails?.images?.public_id}
+                                                alt={`${productDetails.name}`}
+                                                style={{ height: "auto", width: "100%", objectFit: "cover", border: "1px solid rgba(1, 1, 1, 0.3)" }} />
                                             </Box>
                                             <Box sx={{ paddingX: "5rem" }}>
                                                 <Box sx={{ marginY: "1rem" }}>
@@ -305,7 +301,7 @@ const EditProduct = () => {
                                                     </Field>
                                                 </Box>
                                                 <Box sx={{ display: "flex", justifyContent: "space-around", margin: "1rem" }}>
-                                                    <Button type="submit" variant="contained">Guardar</Button>
+                                                    <Button type="submit" variant="contained" disabled={saveDisabled}>Guardar</Button>
                                                     <Button variant="outlined">
                                                         <Link href="/dashboard/products">
                                                             Cancelar

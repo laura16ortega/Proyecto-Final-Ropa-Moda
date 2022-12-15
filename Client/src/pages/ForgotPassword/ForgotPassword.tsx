@@ -38,15 +38,16 @@ const ForgotPassword = () => {
     <Grid>
       <Paper  elevation={20} className={styles.paper}>
         <form onSubmit={forgotSubmit} className={styles.form}>
-               <fieldset>
-                <legend><strong>Forgot Password</strong></legend>
-                Email: <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+               <fieldset className='form-container'>
+                <legend><strong>Forgot Passwords</strong></legend>
+                Email: 
+                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
                </fieldset>
+               <input type="text" />
             <button>Send Email</button>
-            <div className={styles.links}>
-              <Link to="/register">Register</Link>
-              <Link to="/login">Login</Link>
-            </div>
             <ToastContainer
               position="top-right"
               autoClose={5000}
@@ -59,6 +60,10 @@ const ForgotPassword = () => {
               pauseOnHover
               theme="light"/>
         </form>
+            <div className={styles.links}>
+              <Link to="/register">Register</Link>
+              <Link to="/login">Login</Link>
+            </div>
       </Paper>
     </Grid>
   )

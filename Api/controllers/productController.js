@@ -69,7 +69,7 @@ exports.createProduct = async (req, res) => {
       images,
       stock,
       tallaCamiseta,
-      tallaPantalon,
+      tallaPantalón,
       marca,
       gender,
       summary,
@@ -85,11 +85,12 @@ exports.createProduct = async (req, res) => {
       category,
       stock,
       tallaCamiseta: tallaCamiseta ? tallaCamiseta : [],
-      tallaPantalon: tallaPantalon ? tallaPantalon : [],
+      tallaPantalón: tallaPantalón ? tallaPantalón : [],
       images: {
         public_id: images[0],
         url: images[0],
       },
+      marca,
       gender,
       summary,
     });
@@ -153,9 +154,10 @@ exports.addReveiw = async (req, res) => {
     product.reviews = [...product.reviews, createdReview._id];
     product.ratingsQuantity = product.reviews.length;
     await product.save();
-    return res.send({ message: "Review Created Succesfully" });
+    return res.status(201).send({ message: "Review Created Succesfully" });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({message: error})
   }
 };
 

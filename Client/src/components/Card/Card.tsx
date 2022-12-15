@@ -17,6 +17,8 @@ import IncreaseCartButton from "../IncreaseCartButton/IncreaseCartButton";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { removefavItem } from "../../redux/slices/favoriteSlice";
+import { formatNumber } from '../../assets/helpers'
+
 type productProps = {
   product: mappedDbProductsType;
   margin?: string; // Slider
@@ -82,13 +84,7 @@ const Card = ({ product }: productProps) => {
           <Link href={`/products/${product._id}`}>
             <Box>
               <img
-                src={
-                  !product.images
-                    ? ""
-                    : product.images.public_id
-                    ? product.images.public_id
-                    : product.images[0]
-                }
+                src={product.images.public_id}
                 alt={`${product.name} not found`}
                 className={s.image}
                 style={{ marginBottom: ".7rem" }}
@@ -109,7 +105,7 @@ const Card = ({ product }: productProps) => {
               variant="subtitle2"
               sx={{ color: "gray", userSelect: "none", marginLeft: "3px" }}
             >
-              {product.ratingsQuantity} review/s
+              {product.reviews.length} review/s
             </Typography>
           </Box>
           <Box>
@@ -119,7 +115,7 @@ const Card = ({ product }: productProps) => {
                 component="p"
                 sx={{ fontWeight: 500, fontFamily: "system-ui" }}
               >
-                {`$${product.price}`}
+                {`$${formatNumber(product.price)}`}
               </Typography>
             </Box>
             <Box

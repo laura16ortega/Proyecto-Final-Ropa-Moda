@@ -35,11 +35,9 @@ export const getAllProducts = createAsyncThunk<mappedDbProductsType[]>(
   "test/fetch",
   async (data, thunkApi) => {
     try {
-      const { data } = await axios.get<DbCall>(
-        `http://localhost:3001/api/v1/products` //DEV URL
-        //{/*`${BACKEND_URL}/api/v1/products`*/} DEPLOY URL
+      const {data} = await axios.get<DbCall>(
+      `${BACKEND_URL}/api/v1/products`
       );
-      console.log(data)
       const mappedData = data.data.products.map((e: DbProductType) => {
         return {
           images: e.images,
@@ -60,6 +58,7 @@ export const getAllProducts = createAsyncThunk<mappedDbProductsType[]>(
           quantity: 1,
         };
       });
+      
       return mappedData;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
@@ -73,7 +72,7 @@ export const createProduct = createAsyncThunk(
     try {
       const { data } = await axios.post(
         //{/*`${BACKEND_URL}/api/v1/products`*/}
-        `http://localhost:3001/api/v1/products`, 
+        `${BACKEND_URL}/api/v1/products`, 
         bodyData
       );
       console.log("Data post: ", data)
@@ -104,7 +103,7 @@ export const editProduct = createAsyncThunk(
      try {
         const { data } = await axios.patch(
           //{/*`${BACKEND_URL}/api/v1/payment/stripe`*/}
-          `http://localhost:3001/api/v1/products/${bodyData.productId}`, 
+          `${BACKEND_URL}/api/v1/products/${bodyData.productId}`, 
           bodyData
       )
         return "Producto actualizado"
@@ -121,26 +120,28 @@ export const deleteProduct = createAsyncThunk(
      try {
         const { data } = await axios.delete(
           //{/*`${BACKEND_URL}/api/v1/products/${productId}`*/}
-          `http://localhost:3001/api/v1/products/${productId}`
+          `${BACKEND_URL}/api/v1/products/${productId}`
       )
-        return data // json({ status: "success", data: null }); // ya no enviamos datos sino que enviamos null
+        return data
      } catch (error: any) {
         return thunkApi.rejectWithValue(error.message)
      }
   }
 )
 
-export const getCheckoutSessions = createAsyncThunk(
-  "test/getStripeData",
-  async(data, thunkApi) => {
+export const getAllBrands = createAsyncThunk(
+  "categories/getAll",
+  async (data, thunkApi) => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:3001/api/v1/payment/stripe"
-        //{/*`${BACKEND_URL}/api/v1/payment/stripe`*/} DEPLOY URL
-    )
-      return data
-    } catch (e) {
-      return thunkApi.rejectWithValue(e)
+      const { data } = await axios.get<DbCall>(
+        `${BACKEND_URL}/api/v1/products`
+      );
+      const allBrandsMap = data.data.products.map((e: DbProductType) => e.marca);
+      console.log(allBrandsMap)
+      const categories = [...new Set(allBrandsMap)]
+      return categories;
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.message);
     }
   }
 )

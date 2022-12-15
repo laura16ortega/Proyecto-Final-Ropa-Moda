@@ -6,6 +6,7 @@ import { deleteProduct, getAllProducts } from '../../redux/thunk-actions/testAct
 import { sortProducts } from '../../redux/slices/testSlice'
 import Pagination from '../Pagination/Pagination'
 import { useNotification } from '../UseNotification/UseNotification'
+import { formatNumber } from '../../assets/helpers'
 
 const ProductsDashboard = () => {
     const [filters, setFilters] = useState<any>({
@@ -20,11 +21,10 @@ const ProductsDashboard = () => {
     useEffect(() => {
         if (deleteLoading) {
             dispatch(getAllProducts())
-            setTimeout(() => {
-                displayNotification({ message: "Producto eliminado con exito", type: "success" })
-            }, 500);
         }
-        dispatch(getAllProducts())
+        else if (!allData.length) {
+            dispatch(getAllProducts())
+        }
     }, [deleteLoading])
 
     let maximo = allData.length / 10
@@ -46,7 +46,12 @@ const ProductsDashboard = () => {
     }
 
     const handleDelete = (productId: string) => {
-        dispatch(deleteProduct(productId))
+        dispatch(deleteProduct(productId)).then(res => {
+            if (res.meta.requestStatus === "fulfilled") {
+                dispatch(getAllProducts())
+                displayNotification({ message: "Producto eliminado con exito", type: "success" })
+            }
+        })
     }
 
     return (
@@ -96,7 +101,7 @@ const ProductsDashboard = () => {
                                             <Box sx={{ border: "1px solid #eee", marginBottom: "20px", borderRadius: "10px", overflow: "hidden"}}>
                                                 <Box>
                                                     <Link href={`/products/${e._id}`}>
-                                                        <img src={!e.images? "" : e.images.public_id ? e.images.public_id : e.images[0]} alt="" style={{ height: "100%", maxWidth: "100%", objectFit: "cover" }} />
+                                                        <img src={e.images.public_id} alt={`${e.name}`} style={{ height: "100%", maxWidth: "100%", objectFit: "cover" }} />
                                                     </Link>
                                                 </Box>
                                                 <Box sx={{ padding: "1rem", textAlign: "left" }}>
@@ -104,7 +109,7 @@ const ProductsDashboard = () => {
                                                         {e.name}
                                                     </Typography>
                                                     <Typography variant="subtitle2" sx={{ marginBottom: ".5rem" }}>
-                                                        {`$${e.price}`}
+                                                        {`$${formatNumber(e.price)}`}
                                                     </Typography>
                                                     <Box sx={{ marginTop: "1rem", display: "flex", justifyContent: "space-evenly" }}>
                                                         <Button variant="outlined" disableElevation size="small">

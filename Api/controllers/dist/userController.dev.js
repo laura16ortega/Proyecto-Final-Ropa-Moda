@@ -111,7 +111,7 @@ var getUser = function getUser(request, response) {
 
 
 var updatedUser = function updatedUser(request, response) {
-  var user, fullName, email, phone_number, _updatedUser;
+  var user, fullName, email, phone_number, image, _updatedUser;
 
   return regeneratorRuntime.async(function updatedUser$(_context3) {
     while (1) {
@@ -130,16 +130,16 @@ var updatedUser = function updatedUser(request, response) {
           }
 
           _context3.prev = 5;
-          fullName = user.fullName, email = user.email, phone_number = user.phone_number;
+          fullName = user.fullName, email = user.email, phone_number = user.phone_number, image = user.image;
           user.email = email;
+          user.image = request.body.image || image;
           user.fullName = request.body.fullName || fullName;
           user.phone_number = request.body.phone_number || phone_number;
-          _context3.next = 12;
+          _context3.next = 13;
           return regeneratorRuntime.awrap(user.save());
 
-        case 12:
+        case 13:
           _updatedUser = _context3.sent;
-          console.log(user);
           response.status(200).json({
             message: "User Update Succesfully",
             _id: _updatedUser._id,
@@ -176,7 +176,6 @@ var updatedUser = function updatedUser(request, response) {
 
 
 var deleteUser = function deleteUser(request, response) {
-  var allUsers;
   return regeneratorRuntime.async(function deleteUser$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
@@ -186,42 +185,25 @@ var deleteUser = function deleteUser(request, response) {
           return regeneratorRuntime.awrap(User.findByIdAndDelete(request.params.id));
 
         case 3:
-          if (!request.body.returnUsers) {
-            _context4.next = 10;
-            break;
-          }
-
-          _context4.next = 6;
-          return regeneratorRuntime.awrap(getAllUsers());
-
-        case 6:
-          allUsers = _context4.sent;
-          response.status(200).send(allUsers);
-          _context4.next = 11;
-          break;
-
-        case 10:
           response.status(200).json({
             message: "User has been deleted succesfully"
           });
-
-        case 11:
-          _context4.next = 16;
+          _context4.next = 9;
           break;
 
-        case 13:
-          _context4.prev = 13;
+        case 6:
+          _context4.prev = 6;
           _context4.t0 = _context4["catch"](0);
           response.status(500).json({
             message: _context4.t0
           });
 
-        case 16:
+        case 9:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 13]]);
+  }, null, null, [[0, 6]]);
 }; //Update User Password
 
 

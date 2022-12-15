@@ -22,6 +22,7 @@ import CartSlider from "../../components/CartSlider/CartSlider";
 import { stripeCheckout } from "../../redux/thunk-actions/cartActions";
 import { unwrapResult } from '@reduxjs/toolkit'
 import { createOrder } from "../../redux/thunk-actions/orderActions";
+import { formatNumber } from "../../assets/helpers"
 
 const Cart = () => {
   const { displayNotification } = useNotification();
@@ -90,11 +91,13 @@ const Cart = () => {
     return {
         name: e.name,
         qty: e.quantity,
-        image: e.images[0],
+        image: e.images.public_id,
         price: e.price,
         product: e._id
     }
 })
+
+console.log(orderItems)
 
   const onPaypalApprove = async (data: any, actions: any) => {
     const details = await actions.order?.capture()
@@ -112,6 +115,7 @@ const Cart = () => {
     }
 
     dispatch(createOrder(orderData))
+    setOpenPaypal(!openPaypal)
     dispatch(clearCart())
     window.localStorage.removeItem("paymentMethod")
     displayNotification({ message: "Transaccion realizada con exito! Muchas gracias", type: "success" })
@@ -174,7 +178,7 @@ const Cart = () => {
             >
               <Typography variant="subtitle2">
                 Los pedidos se realizan dentro de las 48 horas, de lunes a
-                viernes. El minimo orden de pedido es $algo.
+                viernes.
               </Typography>
             </Box>
             <Box>
@@ -205,7 +209,7 @@ const Cart = () => {
                         >
                           <Box sx={{ width: "8rem" /* mobile: 6rem */ }}>
                             <img
-                              src={!e.images ? "" : e.images.url ? e.images.url : e.images[0]}
+                              src={e.images.public_id}
                               alt=""
                               className={s.productImage}
                             />
@@ -332,7 +336,7 @@ const Cart = () => {
                                 color: "#333333",
                               }}
                             >
-                              {e.price && e.price <= 0 ? "-" : `$${e.price}`}
+                              {e.price && e.price <= 0 ? "-" : `$${formatNumber(e.price as number)}`}
                             </Typography>
                           </Box>
                         ))}
@@ -363,11 +367,11 @@ const Cart = () => {
                             color: "#333333",
                           }}
                         >
-                          {`$${priceData.reduce(
+                          {`$${formatNumber(priceData.reduce(
                             (total, item) =>
                               total + (item.price ? item.price : 0),
                             0
-                          )}`}
+                          ))}`}
                         </Typography>
                       </Box>
                       <Box sx={{ marginTop: "1.5rem", marginBottom: "2.5rem" }}>

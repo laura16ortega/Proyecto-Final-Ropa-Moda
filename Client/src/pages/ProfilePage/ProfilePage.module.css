@@ -14,6 +14,39 @@
     text-transform: uppercase;
 }
 
+.orderDate {
+    color: white !important;
+    position: relative;
+}
+
+.loader {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+
+.loader {
+    content: " ";
+    display: block;
+    width: 52px;
+    height: 52px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 3px solid white;
+    border-color: white transparent white transparent;
+    animation: loader 1.2s linear infinite;
+}
+
+@keyframes loader {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 
 @media (min-width: 1320px) {
     .customContainer {
@@ -22,7 +55,7 @@
 }
 
 @media (max-width: 900px) {
-        .title {
+    .title {
         font-size: 32px !important;
         margin-bottom: 1rem !important;
     }
@@ -33,6 +66,7 @@
         padding-left: 24px;
         padding-right: 24px;
     }
+
     .agregarAlgo {
         margin-bottom: 30px !important;
     }

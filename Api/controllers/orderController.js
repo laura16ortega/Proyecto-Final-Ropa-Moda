@@ -13,7 +13,7 @@ exports.getAllOrders = async (req, res) => {
     const keyword = req.query.keyword
       ? { name: { $regex: req.query.keyword, $options: "i" } }
       : {};
-    const orders = await Order.find({ ...keyword }); //esto va a devolver una promesa, por eso usamos await
+    const orders = await Order.find({ ...keyword }).populate("user"); //esto va a devolver una promesa, por eso usamos await
 
     //SEND RESPONSE
     res.status(203).json({
@@ -68,3 +68,28 @@ exports.getOrderById = asyncHandler(async (req, res) => {
     throw new Error("Order not found");
   }
 });
+
+exports.updateOrder = async (request, response) => {
+
+  const order = await Order.findById(request.body.orderId);
+
+  if (order) {
+    try {
+      const { isPaid, isDelivered } = order;
+      order.isPaid = request.body.isPaid || isPaid
+      order.isDelivered = request.body.isDelivered || isDelivered;
+
+      const updatedOrder = await order.save();
+
+      response.status(200).json({
+        message: "Order Update Succesfully",
+        isPaid: updatedOrder.isPaid,
+        isDelivered: updatedOrder.isDelivered,
+      })
+    } catch (e) {
+      response.status(400).json({ message: e })
+    }
+  } else {
+    response.status(400).json({ message: "No user" })
+  }
+}

@@ -13,7 +13,7 @@ import {
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import HomeIcon from "@mui/icons-material/Home";
-import { NavLink, UNSAFE_RouteContext } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
@@ -33,11 +33,11 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import {useAuth0} from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
-  const {logout:logoutAuth0} = useAuth0();
+  const { logout: logoutAuth0 } = useAuth0();
   const { cart } = useAppSelector((state) => state.cart); // Actualiza numeros del carro
   const cartItems = localStorage.getItem("cart")
     ? JSON.parse(localStorage.getItem("cart")!)
@@ -55,12 +55,11 @@ export const Navbar = () => {
     0
   );
 
-
   const handleLogout = (event: any) => {
     event.preventDefault();
     logoutAuth0();
     dispatch(logout());
-    window.localStorage.removeItem("User")
+    window.localStorage.removeItem("User");
     setTimeout(() => {
       window.location.href = "/";
     }, 500);
@@ -74,8 +73,6 @@ export const Navbar = () => {
 
   const navigate = useNavigate();
 
-
-  
   return (
     <nav>
       <AppBar position="static">
@@ -88,20 +85,6 @@ export const Navbar = () => {
             <img src={logo} alt="logo" className={styles.logo} />
           </Typography>
 
-          <Button
-            component={NavLink}
-            to="/create"
-            sx={{
-              textTransform: "none",
-              "&.active": {
-                background: "black",
-              },
-            }}
-            color="inherit"
-          >
-            Crea tu prenda
-          </Button>
-
           <li className={styles.logos}>
             <IconButton
               size="large"
@@ -109,7 +92,7 @@ export const Navbar = () => {
               color="inherit"
               aria-label="logo"
               onClick={() => {
-                navigate("/products");
+                navigate("/");
               }}
             >
               <HomeIcon />

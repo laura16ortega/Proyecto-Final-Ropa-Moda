@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-
-export const BACKEND_URL = 'http://localhost:3001'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 
 type User = {
@@ -22,12 +21,13 @@ export const getAllUsers = createAsyncThunk(
         try {
             console.log('ENTERED ACTION')
             const {data}:any = await axios.get(
-                `${BACKEND_URL}/api/v1/users`, {
+                `${BACKEND_URL}/api/v1/users`, {    
                     headers:{
                         'Authorization': `token ${token}`
                     }
                 }
             )
+            console.log(data)
             return data
         } catch (error: any) {
             return thunkApi.rejectWithValue(error.response.data.message)
@@ -38,13 +38,23 @@ export const getAllUsers = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
     "delete/users",
     async(info: any, thunkApi) => {
-        try{
+        
+        try{ 
+            if(info.ban){
+                const { data }: any = await axios.patch(`${BACKEND_URL}/api/v1/users/find/${info.id}`, {
+                    headers:{
+                        'Authorization': `token ${info.token}`
+                    }
+                });
+                return data
+            }else{
             const { data }: any = await axios.delete(`${BACKEND_URL}/api/v1/users/find/${info.id}`, {
                 headers:{
                     'Authorization': `token ${info.token}`
                 }
             });
             return data
+        }
         }catch(err: any) {
             return thunkApi.rejectWithValue(err.response.data.message)
         }

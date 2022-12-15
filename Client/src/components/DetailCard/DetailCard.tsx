@@ -15,6 +15,7 @@ import {
   MenuItem,
   Select,
   FormControl,
+  ButtonGroup
 } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../assets/hooks";
 import { useParams } from "react-router-dom";
@@ -81,39 +82,6 @@ export default function DetailCard() {
     };
   }, [reducerValue]);
 
-  const reviewPlaceholder = [
-    {
-      username: "CurtisAlfeld",
-      image:
-        "https://yt3.ggpht.com/5BV78-tDZi0Oki9Z_VMriNoDbidVUa7ik1dltGKXa47IHhucJgI4m8t6j0b2JCRSAiuhrWZQJ7M=s48-c-k-c0x00ffffff-no-rj",
-      comment:
-        "This truly is a bygone era in gaming. You never hear crazy urban legends about games, anymore, just because as soon as someone suggests something, data miners are there to debunk it. And then there's the hundreds of let's plays that would have found it in a day.",
-      rating: 3,
-    },
-    {
-      username: "JLjl1910",
-      image:
-        "https://yt3.ggpht.com/WA0tNSmI_cB8La35wJOaVx0sVeeYK7XWkuc8lXMIU6wJ0tJ7_0CFM3Q0TTR42UTTG7iHfsJN=s48-c-k-c0x00ffffff-no-rj",
-      comment:
-        "The guy who made the Bigfoot and aliens mod for San Andreas is an Italian youtuber, and when you installed the mod, it contained a virus that basically disables Adblock for his channel. True story.",
-      rating: 4,
-    },
-    {
-      username: "GhostSilk",
-      image:
-        "https://yt3.ggpht.com/ytc/AMLnZu-pH2XQrWBQSHWK9C_JOscoGqa4t2k-JulBb62LEw=s48-c-k-c0x00ffffff-no-rj",
-      comment:
-        "Honestly, Joel should do more of these video game easter egg/urban legend hunting streams. This one was an absolute blast.",
-      rating: 5,
-    },
-    {
-      username: "vanacutt1110",
-      image:
-        "https://yt3.ggpht.com/ytc/AMLnZu99fZxiQl4eB8JMyvX-MXBrYFvh1b9AYdi0f6CqrA=s48-c-k-c0x00ffffff-no-rj",
-      comment: `The only almost "spooky" thing that happened to me while playing San Andreas on PS2, was when I was spending some time on the southeast side of Flint County near RS Haul, I find this pedestrian photographer taking pictures of the ocean, and then suddenly he just started walking towards the water and died.`,
-      rating: 2.5,
-    },
-  ];
   console.log(productDetails);
   return (
     <Box sx={{ minHeight: "80vh", display: "flex", justifyContent: "center" }}>
@@ -177,13 +145,7 @@ export default function DetailCard() {
                   <Box>
                     <Box>
                       <img
-                        src={
-                          !productDetails.images
-                            ? ""
-                            : productDetails.images.public_id
-                            ? productDetails.images.public_id
-                            : productDetails.images[0]
-                        }
+                        src={productDetails?.images.public_id}
                         alt={`${productDetails?.name} not found`}
                         style={{ width: "100%" }}
                       />
@@ -215,37 +177,109 @@ export default function DetailCard() {
                         fontFamily: "poppins",
                         fontWeight: "800",
                         width: "100%",
-                        fontSize: "3rem",
+                        fontSize: "5rem",
                       }}
                     >
                       {productDetails?.name}
                     </Typography>
+                    <Typography variant="h5">
+                      {`${productDetails?.stock} en stock`}
+                    </Typography>
                   </Box>
-                  <Box sx={{ marginBottom: "1rem" }}>
+                  <Box sx={{ marginBottom: "1.4rem" }}>
                     <Box
                       sx={{
+                        paddingTop: "1rem",
                         display: "flex",
                         alignItems: "center",
                       }}
                     >
                       <Typography
                         variant="h4"
-                        sx={{
-                          fontFamily: "poppins",
-                          fontWeight: "800",
-                          color: "green",
-                          marginTop: "10px",
-                        }}
+                        sx={{ fontFamily: "poppins", fontWeight: "800" }}
                       >
                         {`$${productDetails?.price}`}
                       </Typography>
                     </Box>
                   </Box>
-                  <Typography variant="h5">
-                    {`${productDetails?.stock} en stock`}
-                  </Typography>
-
-                  <Box sx={{ paddingY: "1rem" }}>
+                  <Box>
+                    {!foundOnCart ? (
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        fullWidth
+                        size="large"
+                        className={s.addButton}
+                        onClick={() => handleCart(productDetails._id)}
+                        disabled={cartLoading}
+                      >
+                        {cartLoading ? "Agregando..." : "Agregar al carro"}
+                      </Button>
+                    ) : (
+                      <Box
+                        sx={{
+                          border: "2px solid rgb(0, 18, 51)",
+                          paddingX: "20px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          height: "4rem",
+                        }}
+                      >
+                        <Button
+                          disableElevation
+                          className={s.counterButton}
+                          onClick={() => handleDecreaseCart(productDetails._id)}
+                        >
+                          <RemoveIcon
+                            sx={{
+                              color: "rgb(17, 17, 17)",
+                              height: "100%",
+                              width: "100%",
+                              padding: "2px",
+                            }}
+                          />
+                        </Button>
+                        <Typography
+                          variant="h4"
+                          sx={{ fontFamily: "poppins", fontWeight: "700" }}
+                        >
+                          {foundOnCart.quantity}
+                        </Typography>
+                        <Button
+                          disableElevation
+                          className={s.counterButton}
+                          onClick={() => handleIncreaseCart(productDetails._id)}
+                        >
+                          <AddIcon
+                            sx={{
+                              color: "rgb(17, 17, 17)",
+                              height: "100%",
+                              width: "100%",
+                              padding: "2px",
+                            }}
+                          />
+                        </Button>
+                      </Box>
+                    )}
+                  </Box>
+                  <Box sx={{display: "flex", justifyContent: "center", flexDirection: "column", marginTop: "3rem"}}>
+                    <Box sx={{textAlign: "center"}}>
+                      <Typography variant="subtitle1" sx={{ fontFamily: "poppins", fontWeight: "700", marginY: ".5rem" }}>Talles disponibles</Typography>
+                    </Box>
+                    <Box sx={{display: "flex", justifyContent: "center"}}>
+                    <ButtonGroup fullWidth sx={{width: "50%"}} disableRipple disableFocusRipple>
+                    {productDetails?.tallaCamiseta.length > 0
+                              ? productDetails?.tallaCamiseta.map((e,i) => {
+                                return <Button key={i} value={e}>{e}</Button>;
+                              })
+                              : productDetails?.tallaPantalón.map((e, i) => {
+                                return <Button key={i} value={e}>{e}</Button>;
+                              })}
+                    </ButtonGroup>
+                    </Box>
+                  </Box>
+                  <Box sx={{ paddingY: "3rem" }}>
                     <Box sx={{ paddingBottom: "1rem" }}>
                       <Typography
                         variant="h5"
@@ -265,136 +299,46 @@ export default function DetailCard() {
                             : "Sin descripcion"}
                         </Typography>
                       </Box>
-                      <Box sx={{ paddingBottom: "10px" }}>
-                        <Typography
-                          variant="h5"
-                          sx={{ fontFamily: "poppins", fontWeight: "700" }}
-                        >
-                          Categoria
-                        </Typography>
+                      <Box>
+                        <Box sx={{ paddingBottom: "10px" }}>
+                          <Typography
+                            variant="h5"
+                            sx={{ fontFamily: "poppins", fontWeight: "700" }}
+                          >
+                            Categoria
+                          </Typography>
+                        </Box>
+                        <Box sx={{ marginBottom: ".6rem" }}>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{ fontFamily: "poppins" }}
+                          >
+                            {productDetails?.category}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ paddingBottom: "10px" }}>
+                          <Typography
+                            variant="h5"
+                            sx={{ fontFamily: "poppins", fontWeight: "700" }}
+                          >
+                            Marca
+                          </Typography>
+                        </Box>
+                        <Box sx={{ marginBottom: ".6rem" }}>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{ fontFamily: "poppins" }}
+                          >
+                            {productDetails?.marca
+                              ? productDetails?.marca
+                              : "Sin marca"}
+                          </Typography>
+                        </Box>
                       </Box>
-                      <Box sx={{ marginBottom: ".6rem" }}>
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ fontFamily: "poppins" }}
-                        >
-                          {productDetails?.category}
-                        </Typography>
-                      </Box>
-                      <Box sx={{ paddingBottom: "10px" }}>
-                        <Typography
-                          variant="h5"
-                          sx={{ fontFamily: "poppins", fontWeight: "700" }}
-                        >
-                          Marca
-                        </Typography>
-                      </Box>
-                      <Box sx={{ marginBottom: ".6rem" }}>
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ fontFamily: "poppins" }}
-                        >
-                          {productDetails?.marca
-                            ? productDetails?.marca
-                            : "Sin marca"}
-                        </Typography>
-                      </Box>
-                      <FormControl
-                        sx={{
-                          minWidth: 120,
-                          paddingBottom: "15px",
-                          paddingTop: "15px",
-                        }}
-                        size="small"
-                      >
-                        <InputLabel
-                          id="demo-simple-select-label"
-                          sx={{
-                            paddingTop: "15px",
-                          }}
-                        >
-                          Talla
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          label="Talla"
-                        >
-                          {productDetails?.tallaCamiseta.length > 0
-                            ? productDetails?.tallaCamiseta.map((i) => {
-                                return <MenuItem value={i}>{i}</MenuItem>;
-                              })
-                            : productDetails?.tallaPantalón.map((i) => {
-                                return <MenuItem value={i}>{i}</MenuItem>;
-                              })}
-                        </Select>
-                      </FormControl>
                     </Box>
                   </Box>
                 </Grid>
               </Grid>
-
-              <Box>
-                {!foundOnCart ? (
-                  <Button
-                    variant="contained"
-                    disableElevation
-                    fullWidth
-                    size="large"
-                    className={s.addButton}
-                    onClick={() => handleCart(productDetails._id)}
-                    disabled={cartLoading}
-                  >
-                    {cartLoading ? "Agregando..." : "Agregar al carro"}
-                  </Button>
-                ) : (
-                  <Box
-                    sx={{
-                      border: "2px solid rgb(0, 18, 51)",
-                      paddingX: "20px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      height: "4rem",
-                    }}
-                  >
-                    <Button
-                      disableElevation
-                      className={s.counterButton}
-                      onClick={() => handleDecreaseCart(productDetails._id)}
-                    >
-                      <RemoveIcon
-                        sx={{
-                          color: "rgb(17, 17, 17)",
-                          height: "100%",
-                          width: "100%",
-                          padding: "2px",
-                        }}
-                      />
-                    </Button>
-                    <Typography
-                      variant="h4"
-                      sx={{ fontFamily: "poppins", fontWeight: "700" }}
-                    >
-                      {foundOnCart.quantity}
-                    </Typography>
-                    <Button
-                      disableElevation
-                      className={s.counterButton}
-                      onClick={() => handleIncreaseCart(productDetails._id)}
-                    >
-                      <AddIcon
-                        sx={{
-                          color: "rgb(17, 17, 17)",
-                          height: "100%",
-                          width: "100%",
-                          padding: "2px",
-                        }}
-                      />
-                    </Button>
-                  </Box>
-                )}
-              </Box>
               <Box sx={{ paddingTop: "64px", borderTop: "dotted 3px #e1e2e2" }}>
                 <Box
                   sx={{
@@ -424,7 +368,7 @@ export default function DetailCard() {
                       precision={0.5}
                     />
                     <Typography variant="subtitle2" sx={{ marginLeft: "5px" }}>
-                      {`(${productDetails?.ratingsQuantity})`}
+                      {`(${productDetails?.reviews.length})`}
                     </Typography>
                   </Box>
                 </Box>
