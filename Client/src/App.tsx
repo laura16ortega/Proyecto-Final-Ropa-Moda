@@ -50,6 +50,7 @@ function App() {
         <Route path={PublicRoutes.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={PublicRoutes.CONTACT} element={<Contact />} />
         
+        
         {/* USER ROUTES */}
         <Route element={<AuthGuard privateValidation={true}/>}>
           <Route path={PrivateRoutes.PROFILE} element={<Profile />} />
@@ -71,7 +72,8 @@ function App() {
               <Route path="perfil" element={<><h1>perfil Page</h1></>}/>
               <Route path="analitica" element={<><h1>analitica Page</h1></>}/>
               <Route path="ventas" element={<><h1>ventas Page</h1></>}/>
-          </Route>
+              </Route>
+          
         </Route>
         
 

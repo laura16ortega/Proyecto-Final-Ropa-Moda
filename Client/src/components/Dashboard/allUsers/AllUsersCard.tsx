@@ -24,41 +24,66 @@ import {
 } from "@mui/material"
 import { Visibility } from '@mui/icons-material'
 
-function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedAt, moreOptions  }: any) {
+function AllUsersCard({ isAllowed, image,_id,fullName,email,phone_number,createdAt,updatedAt, moreOptions  }: any) {
  /*    const { allData } = props;
     const d = allData; */
     const { displayNotification } = useNotification();
     const { clearNotification } = useNotification();
 
-    const [confirm, setConfirm ] = useState(false);
+    const [confirm, setConfirm ] = useState({confirmation: false, delete: false,block:false });
     const dispatch = useAppDispatch();
     const currentToken = window.localStorage.getItem('jwt');
     const deleteValidations = {
         token: currentToken,
         id:_id
     }
+    const blockValidations = {
+        token: currentToken,
+        id:_id,
+        ban: true
+    }
+
     useEffect(() => {
 
     },[])
-    const handleConfirm = (e: MouseEvent) => {
-        setConfirm(!confirm);
+    const handleConfirmDel = (e: MouseEvent) => {
+        setConfirm({...confirm,confirmation:true, delete:true, block:false});
     }
+
+    const handleConfirmBlock = (e: MouseEvent ) => {
+        setConfirm({...confirm,confirmation:true, block:true, delete:false})
+    
+    }
+
     const handleDelete = (e: MouseEvent) => {
        
             dispatch(deleteUser(deleteValidations));
-        setConfirm(false);
+        setConfirm({...confirm,confirmation:false});
         dispatch(getAllUsers(currentToken!))
         displayNotification({ message: "Usuario eliminado satisfactoriamente", type: "success", timeout:1000 })
-
         
+    }
+    const handleBlock = (e: MouseEvent) => {
+        dispatch(deleteUser(blockValidations));
+        setConfirm({...confirm,confirmation:false});
+        
+        if(!isAllowed) {
+            displayNotification({ message: "Usuario desbloqueado", type: "success", timeout:1000 })
+            dispatch(getAllUsers(currentToken!))
+        }else{
+            displayNotification({ message: "El usuario ha sido bloqueado", type: "success", timeout:1000 })
+            dispatch(getAllUsers(currentToken!))
+        }
+       
     }
 
     return (
         <>
         { moreOptions === 'true' ? 
         (
-            <div style={{  boxShadow: '0px 2.5px 6px 0px rgba(0,0,0,0.35)',fontFamily:'Trebuchet MS', width:'35vh',height:'40vh', borderRadius:'1.5vh',backgroundColor:'#F5F5F5', display:'flex', flexDirection:'column',alignItems: 'center', justifyContent:'space-between', padding:'1rem 1rem 1rem 1rem',margin:'1rem 1rem 1rem 1rem'}}>
 
+            <div style={isAllowed ? { boxShadow: '0px 2.5px 6px 0px rgba(0,0,0,0.35)',fontFamily:'Trebuchet MS', width:'35vh',height:'40vh', borderRadius:'1.5vh',backgroundColor:'#F5F5F5', display:'flex', flexDirection:'column',alignItems: 'center', justifyContent:'space-between', padding:'1rem 1rem 1rem 1rem',margin:'1rem 1rem 1rem 1rem'} : { border:'1px solid red',boxShadow: '0px 2.5px 6px 0px rgba(0,0,0,0.35)',fontFamily:'Trebuchet MS', width:'35vh',height:'40vh', borderRadius:'1.5vh',backgroundColor:'#F5F5F5', display:'flex', flexDirection:'column',alignItems: 'center', justifyContent:'space-between', padding:'1rem 1rem 1rem 1rem',margin:'1rem 1rem 1rem 1rem'}}>
+                { !isAllowed ? <><h4 style={{color:'red'}}>Usuario bloqueado</h4></>: <></>}
 
                 <Avatar sx={{ width: 80, height: 80 }} src={image}/>
                 
@@ -83,16 +108,25 @@ function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedA
             </div>
     
 
-            {confirm ? 
+            {confirm.confirmation ? 
             (
                 <div>
-                    <div>
-                    Estas seguro?
+                    <div style={{marginTop:'0.6rem'}}>
+                    {confirm.delete ? <>Eliminar usuario?</> : <></> }
+                    {confirm.block ? <>Bloquear usuario?</> : <></> }
                     </div>
-                    <Button onClick={(e:any) => handleConfirm(e)}>
+                    <Button onClick={() => setConfirm({...confirm, confirmation:!confirm.confirmation})}>
                         <ClearIcon />
                     </Button>
-                    <Button onClick={(e:any)=> handleDelete(e)} ><CheckIcon /></Button>
+                    {
+                        confirm.delete ? (<Button onClick={(e:any)=> handleDelete(e)} ><CheckIcon /></Button> ) : (<></> )
+                    }
+                    {
+                        confirm.block ? (<Button onClick={(e:any)=> handleBlock(e)} ><CheckIcon /></Button> ) : (<></> )
+                    }
+
+
+                    
 
                 </div>
             )
@@ -101,12 +135,12 @@ function AllUsersCard({ image,_id,fullName,email,phone_number,createdAt,updatedA
                 <div className='buttons' style={{display:'flex', flexDirection:'row', marginRight:'50%', justifyContent:'space-evenly'}}>
     
                 <div>
-                    <Button name='delete' style={{marginTop:'1vh'}} onClick={(e: any) => handleConfirm(e)}>
+                    <Button name='delete' style={{marginTop:'1vh'}} onClick={(e: any) => handleConfirmDel(e)}>
                     <DeleteOutlineIcon  />
                     </Button>
                 </div>
                 <div>
-                    <Button name='block' style={{marginTop:'1vh'}} onClick={(e: any) => handleConfirm(e)}>
+                    <Button name='block' style={{marginTop:'1vh'}} onClick={(e: any) => handleConfirmBlock(e)}>
                     <BlockIcon />
                     </Button>
                 </div>
