@@ -92,14 +92,14 @@ const OrdersDashboard = () => {
                                 </TableHead>
                                 <TableBody>
                                     {orders
-                                        .filter((order) => order.user.fullName.toLowerCase().includes(search.toLowerCase()))
+                                        .filter((order) => order.user?.fullName.toLowerCase().includes(search.toLowerCase()))
                                         .reverse()
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map(e =>
                                             <TableRow key={e._id}>
                                                 <TableCell sx={{ display: "flex", alignItems: "center" }}>
-                                                    <Avatar src={e.user.image ? e.user.image : ""} sx={{ marginRight: "15px" }} />
-                                                    {e.user.fullName}
+                                                    <Avatar src={e.user?.image ? e.user.image : ""} sx={{ marginRight: "15px" }} />
+                                                    {e.user?.fullName ? e.user.fullName : "Usuario eliminado"}
                                                 </TableCell>
                                                 <TableCell>{`$${formatNumber(e.totalPrice)}`}</TableCell>
                                                 <TableCell>{`${e.paymentMethod === "Credit Card" ? "Tarjeta de credito" : e.paymentMethod}`}</TableCell>
