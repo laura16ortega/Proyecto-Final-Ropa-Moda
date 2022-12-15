@@ -43,8 +43,8 @@ export default function WidgetLg({ orderData }: WidgetLgProps) {
               {orderData.map((e, i) =>
                 <TableRow key={i}>
                   <TableCell sx={{display: "flex", alignItems: "center"}}>
-                    <Avatar src={e.user.image} sx={{marginRight: "15px"}}/>
-                    {e.user.fullName}
+                    <Avatar src={e.user?.image ? e.user.image : ""} sx={{marginRight: "15px"}}/>
+                    {e.user?.fullName ? e.user.fullName : "Usuario eliminado"}
                   </TableCell>
                   <TableCell>{`${new Date(e.createdAt).toLocaleString()}`}</TableCell>
                   <TableCell>{`$${formatNumber(e.totalPrice)}.0`}</TableCell>
