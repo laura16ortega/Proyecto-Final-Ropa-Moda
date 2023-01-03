@@ -12,3 +12,12 @@ Descripción
 🔹El diseño de los componentes fue hecho con Material UI y CSS.
 
 🔹El servidor fue creado utilizando Node.js, Express y MongoDB para la base de datos. A su vez se utilizó Mongoose como ORM.
+
+
+Tecnologías
+
+🔹 FrontEnd: React.js | Redux.js | CSS | TypeScript
+
+🔹 BackEnd: Node.js | Express.js | JavaScript 
+
+🔹 Database: MongoDB | Mongoose
