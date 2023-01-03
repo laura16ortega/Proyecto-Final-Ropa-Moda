@@ -4,7 +4,11 @@
 
 
 Descripción
+
 🔹Este proyecto fue creado en Soy Henry's Bootcamp
+
 🔹LA idea fue desarrollar un SPA ( Single Page Application ) usando React para el frontend y Redux para manejar los estados.
+
 🔹El diseño de los componentes fue hecho con Material UI y CSS.
+
 🔹El servidor fue creado utilizando Node.js, Express y MongoDB para la base de datos. A su vez se utilizó Mongoose como ORM.
