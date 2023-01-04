@@ -25,7 +25,7 @@ Tecnologías
 
 Instalación
 
-1. git clone https://github.com/Thdalessa/GamePedia.git
+1. git clone https://github.com/laura16ortega/Proyecto-Final-Ropa-Moda.git
 
 2.  En la terminal de tu editor de texto, se a la carpeta Api
 
