@@ -45,3 +45,8 @@ The command is: cd .\Client\
 
 6. Por último, repite los pasos 3 & 4
 
+
+Imágenes
+![image](https://user-images.githubusercontent.com/86984789/210461810-21e8c187-6340-499f-a86e-fb10d1fe40e1.png)
+
+
