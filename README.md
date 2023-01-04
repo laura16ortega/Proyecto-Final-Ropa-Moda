@@ -56,6 +56,13 @@ Imágenes
 
 ![foto4](https://user-images.githubusercontent.com/86984789/210462186-bfb916f6-3112-46fc-abcd-517310def658.png)
 
+![foto5](https://user-images.githubusercontent.com/86984789/210463260-5d8b69dc-b277-4eb5-9cdc-b1d315111fda.png)
+
+![foto6](https://user-images.githubusercontent.com/86984789/210463268-9ec639b4-2e05-4073-a2aa-7f6557260b46.png)
+
+![foto7](https://user-images.githubusercontent.com/86984789/210463278-3b43aa21-7dee-4bc4-9e94-d427c575b553.png)
+
+
 
 
 
