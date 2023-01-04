@@ -47,7 +47,16 @@ The command is: cd .\Client\
 
 
 Imágenes
+
 ![foto1](https://user-images.githubusercontent.com/86984789/210461878-bae35ca0-e423-4ba5-8b86-cc339ad80549.png)
+
+![foto2](https://user-images.githubusercontent.com/86984789/210461959-5c9554fc-a9f8-466c-9cdd-1d180217b4d4.png)
+
+![foto3](https://user-images.githubusercontent.com/86984789/210462100-96faa819-0430-481c-8ac5-a36ffaf4dd1f.png)
+
+![foto4](https://user-images.githubusercontent.com/86984789/210462186-bfb916f6-3112-46fc-abcd-517310def658.png)
+
+
 
 
 
