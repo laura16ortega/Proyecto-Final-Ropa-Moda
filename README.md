@@ -21,3 +21,27 @@ Tecnologías
 🔹 BackEnd: Node.js | Express.js | JavaScript 
 
 🔹 Database: MongoDB | Mongoose
+
+
+Instalación
+
+1. git clone https://github.com/Thdalessa/GamePedia.git
+
+2.  En la terminal de tu editor de texto, se a la carpeta Api
+
+El comando es: cd .\Api\
+
+3. Ahora, escribe en la terminal:
+
+npm install
+
+4. Siguiente, escribe en la terminal:
+
+npm start
+
+5. En otra terminal, ve a la carpeta cliente
+
+The command is: cd .\Client\
+
+6. Por último, repite los pasos 3 & 4
+
