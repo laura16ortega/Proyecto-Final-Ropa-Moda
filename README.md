@@ -45,6 +45,8 @@ The command is: cd .\Client\
 
 6. Por último, repite los pasos 3 & 4
 
+Enlace del despliegue: https://proyecto-final-ropa-moda-laura16ortega.vercel.app
+
 
 Imágenes
 
