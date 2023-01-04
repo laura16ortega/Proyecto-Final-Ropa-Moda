@@ -47,6 +47,7 @@ The command is: cd .\Client\
 
 
 Imágenes
-![image](https://user-images.githubusercontent.com/86984789/210461810-21e8c187-6340-499f-a86e-fb10d1fe40e1.png)
+![foto1](https://user-images.githubusercontent.com/86984789/210461878-bae35ca0-e423-4ba5-8b86-cc339ad80549.png)
+
 
 
