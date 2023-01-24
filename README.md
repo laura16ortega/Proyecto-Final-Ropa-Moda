@@ -5,7 +5,7 @@
 
 Descripción
 
-🔹Este proyecto fue creado en Soy Henry's Bootcamp
+🔹Este proyecto fue creado en Soy Henry Bootcamp
 
 🔹LA idea fue desarrollar un SPA ( Single Page Application ) usando React para el frontend y Redux para manejar los estados.
 
